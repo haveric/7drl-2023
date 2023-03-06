@@ -1,4 +1,5 @@
 import Texture from "./Texture";
+import engine from "../Engine";
 
 export default class TextureManager {
     constructor() {
@@ -23,5 +24,23 @@ export default class TextureManager {
             }
         }
         return null;
+    }
+
+    loadJson(textureName, json) {
+        const tileSize = json.tileSize;
+        const width = json.width;
+        const tiles = json.tiles;
+
+        let row = 0;
+        let col = 0;
+        for (const tile of tiles) {
+            engine.spriteManager.addImage(tile, textureName, col * tileSize, row * tileSize);
+
+            col ++;
+            if (col >= width) {
+                col -= width;
+                row ++;
+            }
+        }
     }
 }

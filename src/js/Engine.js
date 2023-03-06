@@ -8,6 +8,7 @@ import placeholderTexture from "../img/placeholder.gif";
 import playerTexture from "../img/player.gif";
 import scribbleTexture from "../img/kenney/scribble.png";
 import rlTilesTexture from "../img/rltiles/rltiles-2d-2x.png";
+import rltilesJson from "../img/rltiles/rltiles-2d-2x.json";
 
 class Engine {
     constructor() {
@@ -33,8 +34,7 @@ class Engine {
         this.spriteManager.addImage("wall", "scribble", 128, 0);
         this.spriteManager.addImage("stairs", "scribble", 448, 256);
         this.spriteManager.addImage("player", "scribble", 0, 512);
-        this.spriteManager.addImage("rat", "rltiles", 320, 640);
-        this.spriteManager.addImage("potion_red", "rltiles", 640, 2688);
+        this.textureManager.loadJson("rltiles", rltilesJson);
     }
 
     handleEvents() {
