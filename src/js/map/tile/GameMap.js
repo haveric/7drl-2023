@@ -344,13 +344,14 @@ export default class GameMap {
             }
         }
 
+        for (const item of engine.gameMap.items) {
+            item.draw();
+        }
+
         for (const actor of engine.gameMap.actors) {
             actor.draw();
         }
 
-        for (const item of engine.gameMap.items) {
-            item.draw();
-        }
         // const fov = engine.player.fov;
         // // for (const tile of fov.visibleTiles) {
         // //     tile.draw();

@@ -5,7 +5,7 @@
         "name": "Player",
         "color": "#00f",
         "letter": "@",
-        "sprite": "player",
+        "sprite": "scribble_red_character",
         "components": {
             "faction": {
                 "factions": "player",

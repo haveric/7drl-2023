@@ -1,7 +1,7 @@
 {
     "tileSize": 32,
     "width": 30,
-    "name": "rltiles-2d",
+    "name": "rltiles",
     "tiles": [
         "shade",
         "earth_elemental",

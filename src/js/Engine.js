@@ -7,6 +7,7 @@ import SpriteManager from "./sprite/SpriteManager";
 import placeholderTexture from "../img/placeholder.gif";
 import playerTexture from "../img/player.gif";
 import scribbleTexture from "../img/kenney/scribble.png";
+import scribbleJson from "../img/kenney/scribble.json";
 import rlTilesTexture from "../img/rltiles/rltiles-2d-2x.png";
 import rltilesJson from "../img/rltiles/rltiles-2d-2x.json";
 
@@ -30,11 +31,9 @@ class Engine {
 
         this.spriteManager = new SpriteManager();
         this.spriteManager.addImage("placeholder", "sprites", 0, 0);
-        this.spriteManager.addImage("floor", "scribble", 0, 0);
-        this.spriteManager.addImage("wall", "scribble", 128, 0);
-        this.spriteManager.addImage("stairs", "scribble", 448, 256);
-        this.spriteManager.addImage("player", "scribble", 0, 512);
         this.textureManager.loadJson("rltiles", rltilesJson);
+        this.textureManager.loadJson("scribble", scribbleJson);
+
     }
 
     handleEvents() {

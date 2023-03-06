@@ -28,13 +28,14 @@ export default class TextureManager {
 
     loadJson(textureName, json) {
         const tileSize = json.tileSize;
+        const name = json.name;
         const width = json.width;
         const tiles = json.tiles;
 
         let row = 0;
         let col = 0;
         for (const tile of tiles) {
-            engine.spriteManager.addImage(tile, textureName, col * tileSize, row * tileSize);
+            engine.spriteManager.addImage(name + "_" + tile, textureName, col * tileSize, row * tileSize);
 
             col ++;
             if (col >= width) {

@@ -3,7 +3,7 @@
         "id": "rat",
         "extends": "base_actor",
         "name": "Rat",
-        "sprite": "rat",
+        "sprite": "rltiles_rat",
         "components": {
             "faction": {
                 "factions": "monsters",

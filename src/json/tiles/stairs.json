@@ -2,7 +2,7 @@
     {
         "id": "stairs",
         "extends": "base_tile",
-        "sprite": "stairs",
+        "sprite": "scribble_stairs_down_detail",
         "components": {
             "blocksMovement": false,
             "blocksFov": false

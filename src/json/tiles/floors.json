@@ -12,6 +12,6 @@
         "extends": "base_floor",
         "name": "Floor",
         "color": "#ddd",
-        "sprite": "floor"
+        "sprite": "scribble_tiles"
     }
 ]
