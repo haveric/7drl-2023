@@ -1,0 +1,11 @@
+[
+    {
+        "id": "base_actor",
+        "type": "actor",
+        "sprite": "placeholder",
+        "components": {
+            "blocksMovement": true,
+            "fighter": {}
+        }
+    }
+]

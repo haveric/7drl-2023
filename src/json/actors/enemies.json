@@ -1,0 +1,25 @@
+[
+    {
+        "id": "rat",
+        "extends": "base_actor",
+        "name": "Rat",
+        "sprite": "rat",
+        "components": {
+            "faction": {
+                "factions": "monsters",
+                "enemies": "player"
+            },
+            "aiMeleeChase": {
+                "radius": 3,
+                "movementActions": 2
+            },
+            "fighter": {
+                "baseHp": 10,
+                "baseDamage": 2
+            },
+            "level": {
+                "xpGiven": 10
+            }
+        }
+    }
+]

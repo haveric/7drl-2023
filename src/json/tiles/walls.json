@@ -1,0 +1,17 @@
+[
+    {
+        "id": "base_wall",
+        "extends": "base_tile",
+        "components": {
+            "blocksMovement": true,
+            "blocksFov": true
+        }
+    },
+    {
+        "id": "wall",
+        "extends": "base_wall",
+        "name": "Wall",
+        "color": "#666",
+        "sprite": "wall"
+    }
+]

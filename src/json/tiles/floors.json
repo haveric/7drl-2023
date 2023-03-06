@@ -1,0 +1,17 @@
+[
+    {
+        "id": "base_floor",
+        "extends": "base_tile",
+        "components": {
+            "blocksMovement": false,
+            "blocksFov": false
+        }
+    },
+    {
+        "id": "floor",
+        "extends": "base_floor",
+        "name": "Floor",
+        "color": "#ddd",
+        "sprite": "floor"
+    }
+]

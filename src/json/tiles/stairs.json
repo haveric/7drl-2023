@@ -1,0 +1,11 @@
+[
+    {
+        "id": "stairs",
+        "extends": "base_tile",
+        "sprite": "stairs",
+        "components": {
+            "blocksMovement": false,
+            "blocksFov": false
+        }
+    }
+]

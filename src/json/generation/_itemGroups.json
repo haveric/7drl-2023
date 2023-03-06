@@ -1,0 +1,8 @@
+[
+    {
+        "id": "potion",
+        "items": [
+            {"id": "potion_health", "weight": 30}
+        ]
+    }
+]

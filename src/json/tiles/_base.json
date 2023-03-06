@@ -1,0 +1,11 @@
+[
+    {
+        "id": "base_tile",
+        "type": "tile",
+        "sprite": "placeholder",
+        "components": {
+            "blocksMovement": true,
+            "blocksFov": true
+        }
+    }
+]

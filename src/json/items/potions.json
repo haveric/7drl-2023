@@ -1,0 +1,22 @@
+[
+    {
+        "id": "potion",
+        "extends": "base_item",
+        "maxStackSize": 20,
+        "components": {
+
+        }
+    },
+    {
+        "id": "potion_health",
+        "extends": "potion",
+        "sprite": "potion_red",
+        "name": "Health Potion",
+        "description": "Recover a minor amount of health",
+        "components": {
+            "healingConsumable": {
+                "amount": 4
+            }
+        }
+    }
+]

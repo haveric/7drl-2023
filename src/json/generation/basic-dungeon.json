@@ -1,0 +1,11 @@
+[
+    {
+        "level": 1,
+        "actors": [
+            {"id": "rat", "weight": 50}
+        ],
+        "items": [
+            {"group": "potion", "weight": 50}
+        ]
+    }
+]

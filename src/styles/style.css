@@ -1,0 +1,132 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0 auto;
+    overflow: hidden;
+    width: 100vw;
+    height: 100vh;
+    font-size: 1.2vh;
+}
+
+.ui {
+    display: block;
+    z-index: -1000 !important;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.ui.active {
+    z-index: 0 !important;
+    opacity: 1;
+    pointer-events: all;
+}
+
+
+.details {
+    padding: 10px 15px;
+    font-size: 2vh;
+    display: block;
+    width: 20%;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ddd;
+}
+
+.details__header {
+    margin-top: 20px;
+}
+
+.details__line {
+    display: block;
+}
+
+.player-info {
+    height: calc(20vh - 10px);
+    border-bottom: 1px solid #000;
+}
+
+.view-info {
+    height: 30vh;
+    border-bottom: 1px solid #000;
+}
+
+.message-console {
+    position: relative;
+    height: calc(50vh - 10px);
+}
+
+.messages__wrap {
+    position: absolute;
+    opacity: 1;
+    padding: 15px 5px 5px;
+    width: 100%;
+    height: 100%;
+}
+
+.messages {
+    display:flex;
+    flex-direction:column-reverse;
+    height: 100%;
+    overflow-y: scroll;
+}
+
+
+.messages__inn {
+
+}
+
+.message {
+    font-size: 1.66vh;
+}
+
+.message__text {
+
+}
+
+.message__bold {
+    font-weight: bold;
+}
+
+.message__italics {
+    font-style: italic;
+}
+
+.message__amount {
+    margin-left: 1em;
+}
+
+
+.player-health {
+    position: relative;
+    width: 100%;
+    height: 2vh;
+    background-color: #000;
+}
+
+.player-health__fg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    background-color: #8B0000;
+}
+
+.player-health__text {
+    display: table;
+    position: absolute;
+    left: 0;
+    right: 0;
+    font-size: 1.8vh;
+    color: #fff;
+    margin: 0 auto;
+}
+
+.player-stat {
+    display: inline-block;
+    float: left;
+    width: 50%;
+}

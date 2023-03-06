@@ -1,0 +1,22 @@
+[
+    {
+        "id": "player",
+        "extends": "base_actor",
+        "name": "Player",
+        "color": "#00f",
+        "letter": "@",
+        "sprite": "player",
+        "components": {
+            "faction": {
+                "factions": "player",
+                "enemies": "monsters"
+            },
+            "fighter": {
+                "hp": 30,
+                "maxHp": 30,
+                "defense": 2,
+                "power": 5
+            }
+        }
+    }
+]

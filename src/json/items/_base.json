@@ -1,0 +1,10 @@
+[
+    {
+        "id": "base_item",
+        "type": "item",
+        "sprite": "placeholder",
+        "components": {
+
+        }
+    }
+]
