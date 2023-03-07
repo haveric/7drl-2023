@@ -13,5 +13,19 @@
         "name": "Floor",
         "color": "#ddd",
         "sprite": "scribble_tiles"
+    },
+    {
+        "id": "floor_center",
+        "extends": "base_floor",
+        "name": "Floor",
+        "color": "#ddd",
+        "sprite": "scribble_tiles_center"
+    },
+    {
+        "id": "floor_cracked",
+        "extends": "base_floor",
+        "name": "Floor",
+        "color": "#ddd",
+        "sprite": "scribble_tiles_cracked"
     }
 ]

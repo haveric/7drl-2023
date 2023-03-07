@@ -3,11 +3,11 @@
         "id": "rat",
         "extends": "base_actor",
         "name": "Rat",
-        "sprite": "rltiles_rat",
+        "sprite": "rltiles_giant_rat",
         "components": {
             "faction": {
                 "factions": "monsters",
-                "enemies": "player"
+                "enemies": "hero"
             },
             "aiMeleeChase": {
                 "radius": 3,
@@ -19,6 +19,95 @@
             },
             "level": {
                 "xpGiven": 10
+            }
+        }
+    },
+    {
+        "id": "rat_small",
+        "extends": "base_actor",
+        "name": "Small Rat",
+        "sprite": "rltiles_sewer_rat",
+        "components": {
+            "faction": {
+                "factions": "monsters",
+                "enemies": "hero"
+            },
+            "aiMeleeChase": {
+                "radius": 3,
+                "movementActions": 2
+            },
+            "fighter": {
+                "baseHp": 5,
+                "baseDamage": 1
+            },
+            "level": {
+                "xpGiven": 5
+            }
+        }
+    },
+    {
+        "id": "lizard_giant",
+        "extends": "base_actor",
+        "name": "Giant Lizard",
+        "sprite": "rltiles_giant_lizard",
+        "components": {
+            "faction": {
+                "factions": "monsters",
+                "enemies": "hero"
+            },
+            "aiMeleeChase": {
+                "radius": 3,
+                "movementActions": 2
+            },
+            "fighter": {
+                "baseHp": 15,
+                "baseDamage": 3
+            },
+            "level": {
+                "xpGiven": 15
+            }
+        }
+    },
+    {
+        "id": "web",
+        "extends": "base_interactable",
+        "name": "Web",
+        "sprite": "rltiles_web",
+        "components": {
+            "cleanable": {}
+        }
+    },
+    {
+        "id": "blood_large",
+        "extends": "base_interactable",
+        "name": "Pool of Blood",
+        "sprite": "scribble_blood_3",
+        "components": {
+            "cleanable": {
+                "decreasesTo": "blood_medium"
+            }
+        }
+    },
+    {
+        "id": "blood_medium",
+        "extends": "base_interactable",
+        "name": "Pool of Blood",
+        "sprite": "scribble_blood_2",
+        "components": {
+            "cleanable": {
+                "decreasesTo": "blood_small",
+                "increasesTo": "blood_large"
+            }
+        }
+    },
+    {
+        "id": "blood_small",
+        "extends": "base_interactable",
+        "name": "Pool of Blood",
+        "sprite": "scribble_blood_1",
+        "components": {
+            "cleanable": {
+                "increasesTo": "blood_medium"
             }
         }
     }

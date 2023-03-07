@@ -37,11 +37,20 @@ export default class RectangularRoom extends Room {
         const bottom = Math.min(gameMap.height, this.y2 + 1);
 
         const floorEntity = entityLoader.createFromTemplate("floor", {components: {position: {x: 0, y: 0}}});
+        const floorEntityCenter = entityLoader.createFromTemplate("floor_center", {components: {position: {x: 0, y: 0}}});
+        const floorEntityCracked = entityLoader.createFromTemplate("floor_cracked", {components: {position: {x: 0, y: 0}}});
         const wallEntity = entityLoader.createFromTemplate("wall", {components: {position: {x: 0, y: 0}}});
         for (let i = left; i < right; i++) {
             for (let j = top; j < bottom; j++) {
-
-                const floor = floorEntity.clone();
+                let floor;
+                const rand = Math.random();
+                if (rand < .06) {
+                    floor = floorEntityCracked.clone();
+                } else if (rand < .1) {
+                    floor = floorEntityCenter.clone();
+                } else {
+                    floor = floorEntity.clone();
+                }
                 floor.getComponent("position").moveTo(i, j);
                 gameMap.tiles[i][j] = floor;
 
@@ -59,8 +68,8 @@ export default class RectangularRoom extends Room {
         }
     }
 
-    placeEntities(name, level, maxMonsters) {
-        const numMonsters = MathUtil.randomInt(0, maxMonsters);
+    placeEntities(name, level, min, max) {
+        const numMonsters = MathUtil.randomInt(min, max);
         for (let i = 0; i < numMonsters; i++) {
             const x = MathUtil.randomInt(this.x1 + 1, this.x2 - 1);
             const y = MathUtil.randomInt(this.y1 + 1, this.y2 - 1);
@@ -72,7 +81,7 @@ export default class RectangularRoom extends Room {
                 const actorId = chanceLoader.getActorForLevel(name, level);
                 const actor = entityLoader.createFromTemplate(actorId, position);
 
-                engine.gameMap.actors.push(actor);
+                engine.gameMap.addActor(actor);
             }
         }
     }

@@ -4,12 +4,12 @@ import DefaultPlayerEventHandler from "./js/event/DefaultPlayerEventHandler";
 import messageManager from "./js/message/MessageManager";
 import entityLoader from "./js/entity/EntityLoader";
 import sceneState from "./js/SceneState";
-import BasicDungeon from "./js/map/tile/BasicDungeon";
 import viewInfo from "./js/ui/ViewInfo";
+import Tutorial from "./js/map/tile/Tutorial";
 
 (function () {
     function init() {
-        engine.gameMap = new BasicDungeon(31, 21);
+        engine.gameMap = new Tutorial(11, 11);
         engine.initTextures();
         engine.player = entityLoader.createFromTemplate("player", {components: {position: {x: 0, y: 0}}});
 
@@ -33,8 +33,6 @@ import viewInfo from "./js/ui/ViewInfo";
         //     }
         // }
         engine.gameMap.actors.push(engine.player);
-        // engine.gameMap.placeEntities("cave", 1, .03, 5);
-        // engine.gameMap.placeItems("cave", 1, .03, 5);
 
         engine.eventHandler = new DefaultPlayerEventHandler();
 

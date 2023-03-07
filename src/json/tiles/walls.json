@@ -12,6 +12,6 @@
         "extends": "base_wall",
         "name": "Wall",
         "color": "#666",
-        "sprite": "scribble_floor_wall_corner"
+        "sprite": "scribble_wall_full"
     }
 ]

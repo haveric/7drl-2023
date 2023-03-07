@@ -3,6 +3,27 @@
         "id": "stairs",
         "extends": "base_tile",
         "sprite": "scribble_stairs_down_detail",
+        "name": "Stairs",
+        "components": {
+            "blocksMovement": false,
+            "blocksFov": false
+        }
+    },
+    {
+        "id": "stairs_down",
+        "extends": "base_tile",
+        "sprite": "scribble_stairs_down",
+        "name": "Stairs",
+        "components": {
+            "blocksMovement": false,
+            "blocksFov": false
+        }
+    },
+    {
+        "id": "trap_door",
+        "extends": "base_tile",
+        "sprite": "scribble_trap_door",
+        "name": "Trap Door",
         "components": {
             "blocksMovement": false,
             "blocksFov": false

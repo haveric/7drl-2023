@@ -1,6 +1,7 @@
 import entityGroups from "../../../json/generation/_entityGroups.json";
 import itemGroups from "../../../json/generation/_itemGroups.json";
 import basicDungeon from "../../../json/generation/basic-dungeon.json";
+import tutorial from "../../../json/generation/tutorial.json";
 import MathUtil from "../../util/MathUtil";
 
 class ChanceLoader {
@@ -13,6 +14,7 @@ class ChanceLoader {
         this.loadItemGroups(itemGroups);
 
         this.loadGenerator("basic-dungeon", basicDungeon);
+        this.loadGenerator("tutorial", tutorial);
     }
 
     loadEntityGroups(entityGroups) {

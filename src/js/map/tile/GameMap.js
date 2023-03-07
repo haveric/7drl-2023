@@ -127,6 +127,10 @@ export default class GameMap {
         }
     }
 
+    addActor(actor) {
+        this.actors.push(actor);
+    }
+
     save() {
         if (engine.gameMap !== this && this.saveCache) {
             return this.saveCache;
@@ -206,7 +210,7 @@ export default class GameMap {
         const actors = json.actors;
         for (const actor of actors) {
             const createdActor = entityLoader.create(actor);
-            this.actors.push(createdActor);
+            this.addActor(createdActor);
         }
 
         const items = json.items;
@@ -314,12 +318,28 @@ export default class GameMap {
         return blockingActor;
     }
 
+    getCleanableActorAtLocation(x, y) {
+        let cleanableActor = null;
+        for (const actor of this.actors) {
+            const position = actor.getComponent("position");
+            if (position && x === position.x && y === position.y) {
+                const component = actor.getComponent("cleanable");
+                if (component) {
+                    cleanableActor = actor;
+                    break;
+                }
+            }
+        }
+
+        return cleanableActor;
+    }
+
     addPlayer(x, y) {
         if (!engine.player) {
             engine.player = entityLoader.createFromTemplate("player");
         }
 
-        this.actors.push(engine.player);
+        this.addActor(engine.player);
 
         const playerPosition = engine.player.getComponent("position");
         playerPosition.moveTo(x, y);

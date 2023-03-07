@@ -2,6 +2,7 @@ import AIDead from "./ai/AIDead";
 // import AIMeleeChase from "./ai/AIMeleeChase";
 import BlocksFov from "./BlocksFov";
 import BlocksMovement from "./BlocksMovement";
+import Cleanable from "./Cleanable";
 import Faction from "./Faction";
 import Fighter from "./Fighter";
 import Fov from "./Fov";
@@ -23,6 +24,7 @@ class ComponentLoader {
         //
         this.load(new BlocksFov());
         this.load(new BlocksMovement());
+        this.load(new Cleanable());
         this.load(new Faction());
         this.load(new Fighter());
         this.load(new Fov());

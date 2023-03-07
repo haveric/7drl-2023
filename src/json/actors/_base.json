@@ -7,5 +7,13 @@
             "blocksMovement": true,
             "fighter": {}
         }
+    },
+    {
+        "id": "base_interactable",
+        "type": "actor",
+        "sprite": "placeholder",
+        "components": {
+            "blocksMovement": false
+        }
     }
 ]

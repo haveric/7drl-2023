@@ -1,0 +1,14 @@
+[
+    {
+        "level": 1,
+        "actors": [
+            {"id": "web", "weight": 50},
+            {"id": "blood_large", "weight":  50},
+            {"id": "blood_medium", "weight":  50},
+            {"id": "blood_small", "weight":  50}
+        ],
+        "items": [
+            {"group": "potion", "weight": 50}
+        ]
+    }
+]
