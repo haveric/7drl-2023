@@ -1,22 +1,23 @@
 [
     {
-        "id": "player",
+        "id": "hero",
         "extends": "base_actor",
-        "name": "Player",
+        "name": "Hero",
         "color": "#00f",
         "letter": "@",
-        "sprite": "scribble_red_character",
+        "sprite": "scribble_yellow_character",
         "components": {
             "faction": {
-                "factions": "player",
-                "enemies": ""
+                "factions": "hero",
+                "enemies": "monsters, player"
             },
             "fighter": {
                 "hp": 30,
                 "maxHp": 30,
                 "defense": 2,
                 "power": 5
-            }
+            },
+            "aiHero": {}
         }
     }
 ]

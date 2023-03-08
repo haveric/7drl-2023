@@ -5,7 +5,7 @@
         "sprite": "scribble_stairs_down_detail",
         "name": "Stairs",
         "components": {
-            "blocksMovement": false,
+            "blocksMovement": true,
             "blocksFov": false
         }
     },

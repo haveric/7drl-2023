@@ -1,4 +1,5 @@
 import engine from "./Engine";
+import heroInfo from "./ui/HeroInfo";
 import playerInfo from "./ui/PlayerInfo";
 import viewInfo from "./ui/ViewInfo";
 import messageConsole from "./ui/MessageConsole";
@@ -20,6 +21,9 @@ class SceneState {
         this.canvas.classList.add("view");
 
         gameDom.appendChild(this.canvas);
+
+        heroInfo.open();
+        heroInfo.appendTo(gameDom);
 
         playerInfo.open();
         viewInfo.open();

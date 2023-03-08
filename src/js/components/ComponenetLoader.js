@@ -1,5 +1,6 @@
 import AIDead from "./ai/AIDead";
-// import AIMeleeChase from "./ai/AIMeleeChase";
+import AIHero from "./ai/AIHero";
+import AIMeleeChase from "./ai/AIMeleeChase";
 import BlocksFov from "./BlocksFov";
 import BlocksMovement from "./BlocksMovement";
 import Cleanable from "./Cleanable";
@@ -18,7 +19,8 @@ class ComponentLoader {
 
     init() {
         this.load(new AIDead());
-        // this.load(new AIMeleeChase());
+        this.load(new AIHero());
+        this.load(new AIMeleeChase());
         //
         // this.load(new HealingConsumable());
         //

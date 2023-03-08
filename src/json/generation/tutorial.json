@@ -6,7 +6,8 @@
             {"id": "web", "weight": 50},
             {"id": "blood_large", "weight":  50},
             {"id": "blood_medium", "weight":  50},
-            {"id": "blood_small", "weight":  50}
+            {"id": "blood_small", "weight":  50},
+            {"id": "rat", "weight":  500}
         ],
         "items": [
             {"group": "potion", "weight": 50}

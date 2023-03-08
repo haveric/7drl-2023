@@ -115,6 +115,8 @@ export default class Tutorial extends GameMap {
                 // }
 
                 this.addPlayer(centerX, centerY);
+                const hero = entityLoader.createFromTemplate("hero");
+                engine.gameMap.addActor(hero);
             } else {
                 //const lastRoom = rooms[rooms.length - 1];
                 //MapGeneration.tunnelBetween(this, lastRoom.getCenterX(), lastRoom.getCenterY(), newRoom.getCenterX(), newRoom.getCenterY());

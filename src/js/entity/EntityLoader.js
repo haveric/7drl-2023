@@ -3,6 +3,7 @@ import Tile from "./Tile";
 import Extend from "../util/Extend";
 import actorsBaseList from "../../json/actors/_base.json";
 import enemiesList from "../../json/actors/enemies.json";
+import heroList from "../../json/actors/hero.json";
 import playerList from "../../json/actors/player.json";
 import tilesBaseList from "../../json/tiles/_base.json";
 import floorsList from "../../json/tiles/floors.json";
@@ -78,6 +79,7 @@ class EntityLoader {
     loadTemplates() {
         this.loadTemplate(actorsBaseList);
         this.loadTemplate(enemiesList);
+        this.loadTemplate(heroList);
         this.loadTemplate(playerList);
 
         this.loadTemplate(tilesBaseList);

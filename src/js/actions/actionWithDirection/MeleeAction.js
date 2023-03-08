@@ -1,7 +1,7 @@
 import ActionWithDirection from "./_ActionWithDirection";
 import UnableToPerformAction from "../UnableToPerformAction";
 import engine from "../../Engine";
-import messageConsole from "../../ui/MessageConsole";
+import messageManager from "../../message/MessageManager";
 
 export default class MeleeAction extends ActionWithDirection {
     constructor(entity, dx = 0, dy = 0) {
@@ -46,10 +46,10 @@ export default class MeleeAction extends ActionWithDirection {
 
                 const damage = entityFighter.power - blockingFighter.defense;
                 if (damage > 0) {
-                    messageConsole.text(description + " for " + damage + " hit points.", attackColor).build();
+                    messageManager.text(description + " for " + damage + " hit points.", attackColor).build();
                     blockingFighter.takeDamage(damage);
                 } else {
-                    messageConsole.text(description + ", but does no damage.", attackColor).build();
+                    messageManager.text(description + ", but does no damage.", attackColor).build();
                 }
 
                 this.entity.callEvent("onMeleeAttack", blockingActor);
