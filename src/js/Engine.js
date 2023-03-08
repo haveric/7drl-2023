@@ -8,6 +8,8 @@ import placeholderTexture from "../img/placeholder.gif";
 import playerTexture from "../img/player.gif";
 import scribbleTexture from "../img/kenney/scribble.png";
 import scribbleJson from "../img/kenney/scribble.json";
+import websTexture from "../img/electronsandsuch/webs.png";
+import websJson from "../img/electronsandsuch/webs.json";
 import rlTilesTexture from "../img/rltiles/rltiles-2d-2x.png";
 import rltilesJson from "../img/rltiles/rltiles-2d-2x.json";
 
@@ -28,11 +30,13 @@ class Engine {
         this.textureManager.addTexture("player", playerTexture);
         this.textureManager.addTexture("scribble", scribbleTexture);
         this.textureManager.addTexture("rltiles", rlTilesTexture);
+        this.textureManager.addTexture("webs", websTexture);
 
         this.spriteManager = new SpriteManager();
         this.spriteManager.addImage("placeholder", "sprites", 0, 0);
         this.textureManager.loadJson("rltiles", rltilesJson);
         this.textureManager.loadJson("scribble", scribbleJson);
+        this.textureManager.loadJson("webs", websJson);
 
     }
 

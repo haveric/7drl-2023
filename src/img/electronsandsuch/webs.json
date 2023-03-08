@@ -1,0 +1,9 @@
+{
+    "tileSize": 64,
+    "width": 2,
+    "name": "webs",
+    "tiles": [
+        "cobweb_large",
+        "cobweb"
+    ]
+}

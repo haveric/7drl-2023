@@ -72,7 +72,7 @@
         "id": "web_large",
         "extends": "base_interactable",
         "name": "Web",
-        "sprite": "scribble_cobweb_large",
+        "sprite": "webs_cobweb_large",
         "components": {
             "cleanable": {
                 "decreasesTo": "web"
@@ -83,7 +83,7 @@
         "id": "web",
         "extends": "base_interactable",
         "name": "Web",
-        "sprite": "scribble_cobweb",
+        "sprite": "webs_cobweb",
         "components": {
             "cleanable": {
                 "increasesTo": "web_large"
