@@ -22,6 +22,9 @@ class Engine {
 
         this.textureManager = null;
         this.spriteManager = null;
+
+        this.xScale = 1;
+        this.yScale = 1;
     }
 
     initTextures() {

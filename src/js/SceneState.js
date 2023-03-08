@@ -50,8 +50,11 @@ class SceneState {
     }
 
     resizeCanvas() {
-        this.canvas.width = window.innerWidth * .8;
+        this.canvas.width = window.innerWidth;
         this.canvas.height = window.innerHeight;
+
+        engine.xScale = this.canvas.width / 2560;
+        engine.yScale = this.canvas.height / 1440;
 
         engine.needsRenderUpdate = true;
     }
