@@ -92,7 +92,7 @@ export default class AIHero extends _AI {
 
             this.setStatus("Hero has entered the dungeon!");
         } else {
-            // TODO: Attack Enemies, Loot, Escape Room
+            // TODO: Loot, Escape Room
 
             const entityPosition = entity.getComponent("position");
             if (entityPosition) {
