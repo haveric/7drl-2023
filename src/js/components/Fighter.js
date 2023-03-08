@@ -2,22 +2,27 @@ import _Component from "./_Component";
 import AIDead from "./ai/AIDead";
 import messageManager from "../message/MessageManager";
 import playerInfo from "../ui/PlayerInfo";
+import MathUtil from "../util/MathUtil";
 
 export default class Fighter extends _Component {
     constructor(args) {
         super(args, "fighter");
 
-        this.hp = 0;
-        this.maxHp = 0;
-        this.defense = 0;
-        this.power = 0;
+        this.baseHp = 0;
+        this.hp = null;
+        this.baseDefense = 0;
+        this.baseDamage = 0;
 
         if (this.hasComponent()) {
-            this.hp = this.loadArg("hp", 0);
-            this.maxHp = this.loadArg("maxHp", 0);
-            this.defense = this.loadArg("defense", 0);
-            this.power = this.loadArg("power", 0);
+            this.baseHp = this.loadArg("baseHp", 0);
+            this.hp = this.loadArg("hp", null);
+            this.baseDefense = this.loadArg("baseDefense", 0);
+            this.baseDamage = this.loadArg("baseDamage", 0);
         }
+
+        this.minDamage = 0;
+        this.maxDamage = 0;
+        this.defense = 0;
     }
 
     save() {
@@ -29,10 +34,11 @@ export default class Fighter extends _Component {
             fighter: {}
         };
 
+        saveJson.fighter.baseHp = this.baseHp;
         saveJson.fighter.hp = this.hp;
         saveJson.fighter.maxHp = this.maxHp;
-        saveJson.fighter.defense = this.defense;
-        saveJson.fighter.power = this.power;
+        saveJson.fighter.baseDefense = this.baseDefense;
+        saveJson.fighter.baseDamage = this.baseDamage;
 
         this.cachedSave = saveJson;
         return saveJson;
@@ -91,11 +97,105 @@ export default class Fighter extends _Component {
         this.clearSaveCache();
     }
 
+    getDamage() {
+        if (this.minDamage === this.maxDamage) {
+            return this.minDamage;
+        } else {
+            return MathUtil.randomInt(this.minDamage, this.maxDamage);
+        }
+    }
+
+    getDamageDisplay() {
+        if (this.minDamage === this.maxDamage) {
+            return this.minDamage;
+        } else {
+            return this.minDamage + " - " + this.maxDamage;
+        }
+    }
+
+    getBlockedDamage() {
+        return Math.floor(MathUtil.randomNumber(this.defense / 10, this.defense) / 10);
+    }
+
+    getMaxHp() {
+        const statHp = this.baseHp;
+
+        let equipmentHp = 0;
+        const equipment = this.parentEntity.getComponent("equipment");
+        if (equipment) {
+            const equippables = equipment.getEquippables();
+            for (const equippable of equippables) {
+                equipmentHp += equippable.health;
+            }
+        }
+
+        return statHp + equipmentHp;
+    }
+
+    recalculateStats(clear = true) {
+        const newMax = this.getMaxHp();
+        if (this.hp === null || this.hp >= this.maxHp) {
+            this.hp = newMax;
+        }
+        this.maxHp = newMax;
+
+        this.calculateDamage();
+        this.calculateDefense();
+
+        this.updateUI();
+
+        if (clear) {
+            this.clearSaveCache();
+        }
+    }
+
+    calculateDamage() {
+        const statDamage = this.baseDamage;
+
+        let equipmentMinDamage = 0;
+        let equipmentMaxDamage = 0;
+        const equipment = this.parentEntity.getComponent("equipment");
+        if (equipment) {
+            const equippables = equipment.getEquippables();
+            for (const equippable of equippables) {
+                equipmentMinDamage += equippable.minDamage;
+                equipmentMaxDamage += equippable.maxDamage;
+            }
+        }
+
+        this.minDamage = statDamage + equipmentMinDamage;
+        this.maxDamage = Math.floor(statDamage * 1.5) + equipmentMaxDamage;
+    }
+
+    calculateDefense() {
+        const statDefense = this.baseDefense;
+
+        let equipmentDefense = 0;
+        const equipment = this.parentEntity.getComponent("equipment");
+        if (equipment) {
+            const equippables = equipment.getEquippables();
+            for (const equippable of equippables) {
+                equipmentDefense += equippable.defense;
+            }
+        }
+
+        this.defense = statDefense + equipmentDefense;
+    }
+
+
     updateUI() {
         if (this.isPlayer()) {
             playerInfo.updateHealth(this.hp, this.maxHp);
-            playerInfo.updatePower(this.power);
+            playerInfo.updatePower(this.getDamageDisplay());
             playerInfo.updateDefense(this.defense);
         }
+    }
+
+    onComponentsLoaded() {
+        this.recalculateStats(false);
+    }
+
+    onEquipmentChange() {
+        this.recalculateStats();
     }
 }

@@ -137,3 +137,150 @@ body {
     left: 30%;
     width: 15%;
 }
+
+
+.inventory {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 30%;
+    height: 80%;
+    transform: translateX(100%);
+    transition: transform 1s ease;
+    background: #fff;
+    padding: 15px;
+}
+
+.inventory.active {
+    transform: translateX(0);
+}
+
+.inventory__equipment {
+    width: 100%;
+    height: 55%;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-rows: repeat(4, minmax(0, 1fr));
+    background-color: #333;
+    grid-gap: 0.2vw;
+    padding: 1vh 7.5vh
+}
+
+.inventory__storage-wrap {
+    width: 100%;
+    height: 40%;
+    background-color: #333;
+    position: relative;
+    overflow-y: auto;
+}
+
+.inventory__storage {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(10, minmax(0, 1fr));
+    grid-gap: 0.2vw;
+    padding: 0.2vw;
+}
+
+.inventory__storage-title {
+    grid-column: span 10;
+    padding: 5px;
+    background-color: #ccc;
+    font-size: 1.8vh;
+}
+
+.slot {
+    background-color: gray;
+    text-align: center;
+    border-radius: 5px;
+    position: relative;
+    font-family: helvetica, serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.inventory__equipment-slot .item {
+    font-size: 7.5vh;
+}
+
+.inventory__equipment-slot:before {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    font-size: 7.5vh;
+    opacity: 0.15;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.inventory__equipment-slot.has-item:before {
+    display: none;
+}
+
+.inventory__equipment-slot[data-index="0"]:before {
+    content: "⌈";
+}
+
+.inventory__equipment-slot[data-index="1"]:before {
+    content: "∩";
+}
+
+.inventory__equipment-slot[data-index="2"]:before {
+    content: "ᴕ";
+}
+
+.inventory__equipment-slot[data-index="3"]:before {
+    content: "†";
+    transform: rotate(180deg);
+}
+
+.inventory__equipment-slot[data-index="4"]:before {
+    content: "☗";
+}
+
+.inventory__equipment-slot[data-index="5"]:before {
+    content: "●";
+}
+
+.inventory__equipment-slot[data-index="6"]:before,
+.inventory__equipment-slot[data-index="8"]:before {
+    content: "○";
+}
+
+.inventory__equipment-slot[data-index="7"]:before {
+    content: "-";
+}
+
+.inventory__equipment-slot[data-index="9"]:before {
+    content: "ひ";
+}
+
+.inventory__equipment-slot[data-index="10"]:before {
+    content: "◫";
+}
+.inventory__equipment-slot[data-index="11"]:before {
+    content: "″";
+}
+
+.inventory__storage-slot {
+    height: 5.3vh;
+}
+
+.slot.has-item:hover {
+    cursor: pointer;
+    background-color: #999;
+}
+
+.slot.disabled {
+    background-color: #845b5b;
+}
+
+.slot.dragging .item {
+    display: none;
+}

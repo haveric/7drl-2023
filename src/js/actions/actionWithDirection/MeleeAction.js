@@ -44,7 +44,7 @@ export default class MeleeAction extends ActionWithDirection {
 
                 const description = name + " attack" + plural + " " + blockingName;
 
-                const damage = entityFighter.power - blockingFighter.defense;
+                const damage = entityFighter.getDamage() - blockingFighter.getBlockedDamage();
                 if (damage > 0) {
                     messageManager.text(description + " for " + damage + " hit points.", attackColor).build();
                     blockingFighter.takeDamage(damage);
