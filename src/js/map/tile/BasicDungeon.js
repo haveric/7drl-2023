@@ -120,6 +120,17 @@ export default class BasicDungeon extends GameMap {
                 const stairsDownY = MathUtil.randomInt(newRoom.y1 + 2, newRoom.y2 - 2);
                 this.tiles[stairsDownX][stairsDownY] = entityLoader.createFromTemplate("stairs_down", {components: {position: {x: stairsDownX, y: stairsDownY}}});
 
+                let trapDoorX = stairsDownX;
+                let trapDoorY = stairsDownY;
+
+                while (trapDoorX === stairsDownX && trapDoorY === stairsDownY) {
+                    trapDoorX = MathUtil.randomInt(newRoom.x1 + 2, newRoom.x2 - 2);
+                    trapDoorY = MathUtil.randomInt(newRoom.y1 + 2, newRoom.y2 - 2);
+
+                    if (trapDoorX !== stairsDownX || trapDoorY !== stairsDownY) {
+                        this.tiles[trapDoorX][trapDoorY] = entityLoader.createFromTemplate("trap_door", {components: {position: {x: trapDoorX, y: trapDoorY}}});
+                    }
+                }
                 // if (engine.player) {
                 //     const playerPosition = engine.player.getComponent("position");
                 //     if (playerPosition) {
