@@ -1,5 +1,5 @@
 import Extend from "../util/Extend";
-import componentLoader from "../components/ComponenetLoader";
+import componentLoader from "../components/ComponentLoader";
 import engine from "../Engine";
 import sceneState from "../SceneState";
 
