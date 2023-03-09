@@ -53,8 +53,10 @@ class SceneState {
         this.canvas.width = window.innerWidth;
         this.canvas.height = window.innerHeight;
 
-        engine.xScale = this.canvas.width / 2560;
-        engine.yScale = this.canvas.height / 1440;
+        const xScale = this.canvas.width / 2560;
+        const yScale = this.canvas.height / 1440;
+
+        engine.scale = Math.min(xScale, yScale);
 
         engine.needsRenderUpdate = true;
     }

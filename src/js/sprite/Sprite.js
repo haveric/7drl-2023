@@ -29,7 +29,7 @@ export default class Sprite {
 
             context.restore();
         } else {
-            context.drawImage(this.texture, this.x, this.y, this.w, this.h, i * engine.xScale, j * engine.yScale, this.w * engine.xScale, this.h * engine.yScale);
+            context.drawImage(this.texture, this.x, this.y, this.w, this.h, i * engine.scale, j * engine.scale, this.w * engine.scale, this.h * engine.scale);
         }
     }
 }
