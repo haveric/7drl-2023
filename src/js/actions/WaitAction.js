@@ -5,7 +5,7 @@ export default class WaitAction extends _Action {
         super(entity);
     }
 
-    perform() {
+    perform(/*gameMap*/) {
         return this;
     }
 }

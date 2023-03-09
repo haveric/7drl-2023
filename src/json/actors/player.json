@@ -12,10 +12,9 @@
                 "enemies": "hero"
             },
             "fighter": {
-                "hp": 30,
-                "maxHp": 30,
-                "defense": 2,
-                "power": 5
+                "baseHp": 30,
+                "baseDefense": 2,
+                "baseDamage": 5
             }
         }
     }

@@ -17,14 +17,14 @@ export default class ItemAction extends _Action {
         this.y = y;
     }
 
-    perform() {
+    perform(/*gameMap*/) {
         const consumable = this.item.getComponent("consumable");
         if (consumable) {
             return consumable.activate(this, this.x, this.y);
         }
     }
 
-    getTargetActor() {
-        return engine.gameMap.getAliveActorAtLocation(this.x, this.y);
+    getTargetActor(gameMap) {
+        return gameMap.getAliveActorAtLocation(this.x, this.y);
     }
 }

@@ -132,9 +132,9 @@ export default class GameMap {
     }
 
     save() {
-        if (engine.gameMap !== this && this.saveCache) {
-            return this.saveCache;
-        }
+        // if (engine.gameMap !== this && this.saveCache) {
+        //     return this.saveCache;
+        // }
 
         const saveData = {
             name: this.name,
@@ -227,9 +227,9 @@ export default class GameMap {
     revealFromPosition(x, y, radius, delay = 25) {
         const self = this;
         const minX = Math.max(0, x - radius);
-        const maxX = Math.min(engine.gameMap.width, x + radius);
+        const maxX = Math.min(this.width, x + radius);
         const minY = Math.max(0, y - radius);
-        const maxY = Math.min(engine.gameMap.height, y + radius);
+        const maxY = Math.min(this.height, y + radius);
 
         if (delay === 0) {
             self._revealGradually(minX, maxX, minY, maxY, x, y, 1, radius, delay);
@@ -351,25 +351,25 @@ export default class GameMap {
         details.updatePlayerDetails();
     }
 
-    draw() {
-        const tiles = engine.gameMap.tiles;
+    draw(xTileOffset = 0, yTileOffset = 0) {
+        const tiles = this.tiles;
 
         for (let i = 0; i < tiles.length; i++) {
             const tileX = tiles[i];
             for (let j = 0; j < tileX.length; j++) {
                 const tile = tileX[j];
                 if (tile) {
-                    tile.draw();
+                    tile.draw(xTileOffset, yTileOffset);
                 }
             }
         }
 
-        for (const item of engine.gameMap.items) {
-            item.draw();
+        for (const item of this.items) {
+            item.draw(xTileOffset, yTileOffset);
         }
 
-        for (const actor of engine.gameMap.actors) {
-            actor.draw();
+        for (const actor of this.actors) {
+            actor.draw(xTileOffset, yTileOffset);
         }
 
         // const fov = engine.player.fov;

@@ -1,6 +1,5 @@
 import ActionWithDirection from "./_ActionWithDirection";
 import UnableToPerformAction from "../UnableToPerformAction";
-import engine from "../../Engine";
 import entityLoader from "../../entity/EntityLoader";
 
 export default class CleanAction extends ActionWithDirection {
@@ -8,7 +7,7 @@ export default class CleanAction extends ActionWithDirection {
         super(entity, dx, dy);
     }
 
-    perform() {
+    perform(gameMap) {
         const position = this.entity.getComponent("position");
         if (!position) {
             return new UnableToPerformAction(this.entity, "Entity doesn't have a position.");
@@ -17,7 +16,7 @@ export default class CleanAction extends ActionWithDirection {
         const destX = position.x + this.dx;
         const destY = position.y + this.dy;
 
-        const cleanableActor = engine.gameMap.getCleanableActorAtLocation(destX, destY);
+        const cleanableActor = gameMap.getCleanableActorAtLocation(destX, destY);
         if (cleanableActor) {
             const cleanable = cleanableActor.getComponent("cleanable");
             if (cleanable) {
@@ -26,10 +25,10 @@ export default class CleanAction extends ActionWithDirection {
                     const cleanablePosition = cleanableActor.getComponent("position");
 
                     const changedEntity = entityLoader.createFromTemplate(decreasesTo, {components: {position: {x: cleanablePosition.x, y: cleanablePosition.y}}});
-                    engine.gameMap.addActor(changedEntity);
+                    gameMap.addActor(changedEntity);
                 }
 
-                engine.gameMap.removeActor(cleanableActor);
+                gameMap.removeActor(cleanableActor);
             }
         } else {
             return new UnableToPerformAction(this.entity, "There's nothing to clean there!");

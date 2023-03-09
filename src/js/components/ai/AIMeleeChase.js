@@ -4,7 +4,6 @@ import WanderAction from "../../actions/WanderAction";
 import MeleeAction from "../../actions/actionWithDirection/MeleeAction";
 import AStar from "../../pathfinding/AStar";
 import Graph from "../../pathfinding/Graph";
-import engine from "../../Engine";
 import WaitAction from "../../actions/WaitAction";
 import BumpAction from "../../actions/actionWithDirection/BumpAction";
 import MathUtil from "../../util/MathUtil";
@@ -51,11 +50,11 @@ export default class AIMeleeChase extends AI {
         return saveJson;
     }
 
-    perform() {
+    perform(gameMap) {
         const entity = this.parentEntity;
         const entityPosition = entity.getComponent("position");
         if (entityPosition) {
-            this.fov.compute(entityPosition.x, entityPosition.y, this.radius);
+            this.fov.compute(gameMap, entityPosition.x, entityPosition.y, this.radius);
 
             let closestEnemies = [];
             let closestDistance = null;
@@ -101,7 +100,7 @@ export default class AIMeleeChase extends AI {
                 };
 
                 if (closestDistance <= 1) {
-                    return new MeleeAction(entity, closestEnemyPosition.x - entityPosition.x, closestEnemyPosition.y - entityPosition.y).perform();
+                    return new MeleeAction(entity, closestEnemyPosition.x - entityPosition.x, closestEnemyPosition.y - entityPosition.y).perform(gameMap);
                 }
             } else {
                 if (this.chaseLocation !== null && this.chaseLocation.x === entityPosition.x && this.chaseLocation.y === entityPosition.y) {
@@ -109,7 +108,7 @@ export default class AIMeleeChase extends AI {
                 }
 
                 if (this.chaseLocation === null) {
-                    return new WanderAction(entity).perform();
+                    return new WanderAction(entity).perform(gameMap);
                 }
             }
 
@@ -117,7 +116,6 @@ export default class AIMeleeChase extends AI {
 
             if (this.currentMovement >= 1) {
                 // Move towards enemy
-                const gameMap = engine.gameMap;
                 const fovWidth = this.fov.right - this.fov.left;
                 const fovHeight = this.fov.bottom - this.fov.top;
                 const cost = Array(fovWidth).fill().map(() => Array(fovHeight).fill(0));
@@ -155,10 +153,10 @@ export default class AIMeleeChase extends AI {
                     if (path && path.length > 0) {
                         const next = path.shift();
                         if (next) {
-                            lastAction = new BumpAction(entity, next.x + this.fov.left - entityPosition.x, next.y + this.fov.top - entityPosition.y).perform();
+                            lastAction = new BumpAction(entity, next.x + this.fov.left - entityPosition.x, next.y + this.fov.top - entityPosition.y).perform(gameMap);
                         }
                     } else {
-                        lastAction = new WaitAction(entity).perform();
+                        lastAction = new WaitAction(entity).perform(gameMap);
                     }
 
                     this.currentMovement -= 1;

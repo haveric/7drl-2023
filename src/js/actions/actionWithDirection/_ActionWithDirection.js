@@ -8,7 +8,7 @@ export default class ActionWithDirection extends _Action {
         this.dy = dy;
     }
 
-    perform() {
+    perform(/*gameMap*/) {
         console.error("Not Implemented");
     }
 }

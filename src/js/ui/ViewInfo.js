@@ -9,7 +9,7 @@ class ViewInfo extends _UIElement {
 
     updatePlayerDetails() {
         const playerPosition = engine.player.getComponent("position");
-        const tile = engine.gameMap.tiles[playerPosition.x][playerPosition.y];
+        const tile = engine.playerMap.tiles[playerPosition.x][playerPosition.y];
         this.updatePositionDetails(tile);
     }
 

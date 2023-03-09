@@ -8,7 +8,7 @@ export default class MeleeAction extends ActionWithDirection {
         super(entity, dx, dy);
     }
 
-    perform() {
+    perform(gameMap) {
         const position = this.entity.getComponent("position");
         if (!position) {
             return new UnableToPerformAction(this.entity, "Entity doesn't have a position.");
@@ -17,7 +17,7 @@ export default class MeleeAction extends ActionWithDirection {
         const destX = position.x + this.dx;
         const destY = position.y + this.dy;
 
-        const blockingActor = engine.gameMap.getBlockingActorAtLocation(destX, destY);
+        const blockingActor = gameMap.getBlockingActorAtLocation(destX, destY);
         if (blockingActor) {
             const entityFighter = this.entity.getComponent("fighter");
             const blockingFighter = blockingActor.getComponent("fighter");

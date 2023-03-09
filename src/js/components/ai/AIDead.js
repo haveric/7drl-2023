@@ -26,5 +26,5 @@ export default class AIDead extends _AI {
         return saveJson;
     }
 
-    perform() {}
+    perform(/*gameMap*/) {}
 }

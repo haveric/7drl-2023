@@ -1,8 +1,8 @@
 import html from "../../html/ui/Inventory.html";
-import UIElement from "./UIElement";
+import _UIElement from "./_UIElement";
 import engine from "../Engine";
 
-class Inventory extends UIElement {
+class Inventory extends _UIElement {
     constructor() {
         super(html);
 

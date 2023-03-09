@@ -4,10 +4,10 @@ import MathUtil from "../../util/MathUtil";
 //import MapGeneration from "../mapGeneration/MapGeneration";
 import RectangularRoom from "./room/RectangularRoom";
 
-export default class BasicDungeon extends GameMap {
+export default class Shop extends GameMap {
     constructor(width, height, args = {}) {
         const level = args.level || 1;
-        const name = "basic-dungeon-" + level;
+        const name = "tutorial-" + level;
         super(name, width, height);
 
         this.maxRooms = args.maxRooms || 1;
@@ -16,24 +16,16 @@ export default class BasicDungeon extends GameMap {
         this.level = level;
 
         this.minMonstersByFloor = [
-            {level: 1, amount: 0},
-            {level: 4, amount: 1},
-            {level: 7, amount: 2}
+            {level: 1, amount: 2}
         ];
         this.maxMonstersByFloor = [
-            {level: 1, amount: 2},
-            {level: 4, amount: 3},
-            {level: 7, amount: 4}
+            {level: 1, amount: 2}
         ];
         this.minItemsByFloor = [
-            {level: 1, amount: 0},
-            {level: 4, amount: 1},
-            {level: 6, amount: 2}
+            {level: 1, amount: 2}
         ];
         this.maxItemsByFloor = [
-            {level: 1, amount: 2},
-            {level: 4, amount: 3},
-            {level: 6, amount: 5}
+            {level: 1, amount: 2}
         ];
     }
 
@@ -67,7 +59,6 @@ export default class BasicDungeon extends GameMap {
     create(previousMapName, stairsInteractable) {
         super.create();
 
-        //const floorEntity = entityLoader.createFromTemplate("floor", {components: {position: {x: 0, y: 0}}});
         const wallEntity = entityLoader.createFromTemplate("wall", {components: {position: {x: 0, y: 0}}});
         // Pre-fill with floor and walls
         for (let j = 0; j < this.height; j++) {
@@ -83,26 +74,7 @@ export default class BasicDungeon extends GameMap {
             const roomWidth = MathUtil.randomInt(this.roomMinSize, this.roomMaxSize);
             const roomHeight = MathUtil.randomInt(this.roomMinSize, this.roomMaxSize);
 
-            let x = 10 * i + 1;
-            let y = 1;
-
-            if (i >= (this.maxRooms / 2)) {
-                y = 11;
-                x -= 30;
-            }
-
-            const newRoom = new RectangularRoom(x, y, roomWidth, roomHeight);
-            let intersectsOtherRoom = false;
-            for (const room of rooms) {
-                if (newRoom.intersects(room)) {
-                    intersectsOtherRoom = true;
-                    break;
-                }
-            }
-
-            if (intersectsOtherRoom) {
-                continue;
-            }
+            const newRoom = new RectangularRoom(1, 1, roomWidth, roomHeight);
 
             newRoom.createRoom(this);
 
@@ -114,11 +86,7 @@ export default class BasicDungeon extends GameMap {
                     stairsInteractable.setPosition(centerX, centerY, 1);
                 }
 
-                this.tiles[centerX][0] = entityLoader.createFromTemplate("stairs_up", {components: {position: {x: centerX, y: 0}}});
-
-                const stairsDownX = MathUtil.randomInt(newRoom.x1 + 2, newRoom.x2 - 2);
-                const stairsDownY = MathUtil.randomInt(newRoom.y1 + 2, newRoom.y2 - 2);
-                this.tiles[stairsDownX][stairsDownY] = entityLoader.createFromTemplate("stairs_down", {components: {position: {x: stairsDownX, y: stairsDownY}}});
+                this.tiles[centerX][centerY] = entityLoader.createFromTemplate("trap_door", {components: {position: {x: centerX, y: centerY}}});
 
                 // if (engine.player) {
                 //     const playerPosition = engine.player.getComponent("position");
@@ -128,6 +96,10 @@ export default class BasicDungeon extends GameMap {
                 // } else {
                 //     this.tiles[centerX][centerY] = entityLoader.createFromTemplate("stairs_north", {components: {position: {x: centerX, y: centerY}, stairsInteractable: {map: "town", x: 31, y: 31}}});
                 // }
+                //
+                // this.addPlayer(centerX, centerY);
+                // const hero = entityLoader.createFromTemplate("hero");
+                // this.addActor(hero);
             } else {
                 //const lastRoom = rooms[rooms.length - 1];
                 //MapGeneration.tunnelBetween(this, lastRoom.getCenterX(), lastRoom.getCenterY(), newRoom.getCenterX(), newRoom.getCenterY());
@@ -142,8 +114,8 @@ export default class BasicDungeon extends GameMap {
         //this.tiles[lastRoomCenterX][lastRoomCenterY] = entityLoader.createFromTemplate("stairs_north", {components: {position: {x: lastRoomCenterX, y: lastRoomCenterY}, stairsInteractable: {generator: "basic-dungeon"}}});
 
         for (const room of rooms) {
-            room.placeEntities(this, "basic-dungeon", this.level, this.getFloorAmount(this.minMonstersByFloor), this.getFloorAmount(this.maxMonstersByFloor));
-            room.placeItems(this, "basic-dungeon", this.level, this.getFloorAmount(this.minItemsByFloor), this.getFloorAmount(this.maxItemsByFloor));
+            room.placeEntities(this, "tutorial", this.level, this.getFloorAmount(this.minMonstersByFloor), this.getFloorAmount(this.maxMonstersByFloor));
+            room.placeItems(this, "tutorial", this.level, this.getFloorAmount(this.minItemsByFloor), this.getFloorAmount(this.maxItemsByFloor));
         }
     }
 }

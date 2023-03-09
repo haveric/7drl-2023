@@ -1,9 +1,9 @@
 [
     {
-        "id": "stairs",
+        "id": "stairs_up",
         "extends": "base_tile",
         "sprite": "scribble_stairs_down_detail",
-        "name": "Stairs",
+        "name": "Stairs Up",
         "components": {
             "blocksMovement": true,
             "blocksFov": false
@@ -13,7 +13,7 @@
         "id": "stairs_down",
         "extends": "base_tile",
         "sprite": "scribble_stairs_down",
-        "name": "Stairs",
+        "name": "Stairs Down",
         "components": {
             "blocksMovement": false,
             "blocksFov": false

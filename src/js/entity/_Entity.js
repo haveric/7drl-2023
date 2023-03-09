@@ -39,10 +39,10 @@ export default class _Entity {
         this[event]?.(args);
     }
 
-    draw(/*x, y*/) {
+    draw(xTileOffset, yTileOffset) {
         const position = this.getComponent("position");
         if (position) {
-            engine.spriteManager.getImage(this.sprite).drawImage(sceneState.ctx, position.x * 64, position.y * 64);
+            engine.spriteManager.getImage(this.sprite).drawImage(sceneState.ctx, (position.x + xTileOffset) * 64, (position.y + yTileOffset) * 64);
         }
     }
 

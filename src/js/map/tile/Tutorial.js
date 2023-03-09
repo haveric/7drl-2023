@@ -1,5 +1,4 @@
 import GameMap from "./GameMap";
-import engine from "../../Engine";
 import entityLoader from "../../entity/EntityLoader";
 import MathUtil from "../../util/MathUtil";
 //import MapGeneration from "../mapGeneration/MapGeneration";
@@ -44,9 +43,9 @@ export default class Tutorial extends GameMap {
     }
 
     save() {
-        if (engine.gameMap !== this && this.saveCache) {
-            return this.saveCache;
-        }
+        // if (engine.gameMap !== this && this.saveCache) {
+        //     return this.saveCache;
+        // }
 
         const saveJson = super.save();
         if (this.level !== 1) {
@@ -87,7 +86,7 @@ export default class Tutorial extends GameMap {
                     stairsInteractable.setPosition(centerX, centerY, 1);
                 }
 
-                this.tiles[centerX][0] = entityLoader.createFromTemplate("stairs", {components: {position: {x: centerX, y: 0}}});
+                this.tiles[centerX][0] = entityLoader.createFromTemplate("stairs_up", {components: {position: {x: centerX, y: 0}}});
 
                 const stairsDownX = MathUtil.randomInt(newRoom.x1 + 2, newRoom.x2 - 2);
                 const stairsDownY = MathUtil.randomInt(newRoom.y1 + 2, newRoom.y2 - 2);
@@ -116,7 +115,7 @@ export default class Tutorial extends GameMap {
 
                 this.addPlayer(centerX, centerY);
                 const hero = entityLoader.createFromTemplate("hero");
-                engine.gameMap.addActor(hero);
+                this.addActor(hero);
             } else {
                 //const lastRoom = rooms[rooms.length - 1];
                 //MapGeneration.tunnelBetween(this, lastRoom.getCenterX(), lastRoom.getCenterY(), newRoom.getCenterX(), newRoom.getCenterY());
@@ -131,8 +130,8 @@ export default class Tutorial extends GameMap {
         //this.tiles[lastRoomCenterX][lastRoomCenterY] = entityLoader.createFromTemplate("stairs_north", {components: {position: {x: lastRoomCenterX, y: lastRoomCenterY}, stairsInteractable: {generator: "basic-dungeon"}}});
 
         for (const room of rooms) {
-            room.placeEntities("tutorial", this.level, this.getFloorAmount(this.minMonstersByFloor), this.getFloorAmount(this.maxMonstersByFloor));
-            room.placeItems("tutorial", this.level, this.getFloorAmount(this.minItemsByFloor), this.getFloorAmount(this.maxItemsByFloor));
+            room.placeEntities(this, "tutorial", this.level, this.getFloorAmount(this.minMonstersByFloor), this.getFloorAmount(this.maxMonstersByFloor));
+            room.placeItems(this, "tutorial", this.level, this.getFloorAmount(this.minItemsByFloor), this.getFloorAmount(this.maxItemsByFloor));
         }
     }
 }

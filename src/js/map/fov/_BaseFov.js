@@ -1,4 +1,3 @@
-import engine from "../../Engine";
 import Fov from "../../components/Fov";
 
 export default class BaseFov {
@@ -20,16 +19,16 @@ export default class BaseFov {
         this.visibleItems = [];
     }
 
-    compute(x, y, radius) {
+    compute(gameMap, x, y, radius) {
         this.previousVisibleTiles = this.visibleTiles;
         this.visibleTiles = [];
         this.visibleActors = [];
         this.visibleItems = [];
 
         this.left = Math.max(0, x - radius);
-        this.right = Math.min(engine.gameMap.width, x + radius + 1);
+        this.right = Math.min(gameMap.width, x + radius + 1);
         this.top = Math.max(0, y - radius);
-        this.bottom = Math.min(engine.gameMap.height, y + radius + 1);
+        this.bottom = Math.min(gameMap.height, y + radius + 1);
     }
 
     addVisibleTile(tile) {
@@ -81,8 +80,8 @@ export default class BaseFov {
     //     }
     // }
 
-    exploreTile(x, y) {
-        const tileArrayX =  engine.gameMap.tiles[x];
+    exploreTile(gameMap, x, y) {
+        const tileArrayX =  gameMap.tiles[x];
         if (tileArrayX) {
             const tile = tileArrayX[y];
 
@@ -91,7 +90,7 @@ export default class BaseFov {
             }
         }
 
-        for (const actor of engine.gameMap.actors) {
+        for (const actor of gameMap.actors) {
             const positionalObject = actor.getComponent("position");
             if (positionalObject) {
                 if (positionalObject.x === x && positionalObject.y === y) {
@@ -100,7 +99,7 @@ export default class BaseFov {
             }
         }
 
-        for (const item of engine.gameMap.items) {
+        for (const item of gameMap.items) {
             const positionalObject = item.getComponent("position");
             if (positionalObject) {
                 if (positionalObject.x === x && positionalObject.y === y) {

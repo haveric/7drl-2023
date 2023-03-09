@@ -8,14 +8,14 @@ export default class WanderAction extends Action {
         super(entity);
     }
 
-    perform() {
+    perform(gameMap) {
         const x = MathUtil.randomInt(-1, 1);
         const y = MathUtil.randomInt(-1, 1);
 
         if (x === 0 && y === 0) {
-            return new WaitAction(this.entity).perform();
+            return new WaitAction(this.entity).perform(gameMap);
         } else {
-            return new MovementAction(this.entity, x, y).perform();
+            return new MovementAction(this.entity, x, y).perform(gameMap);
         }
     }
 }

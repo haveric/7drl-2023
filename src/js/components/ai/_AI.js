@@ -9,7 +9,7 @@ export default class _AI extends _Component {
         return super.save();
     }
 
-    perform() {
+    perform(/*gameMap*/) {
         console.error("Not Implemented");
     }
 }

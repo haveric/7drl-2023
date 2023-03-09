@@ -1,7 +1,6 @@
 import Room from "./_Room";
 import MathUtil from "../../../util/MathUtil";
 import entityLoader from "../../../entity/EntityLoader";
-import engine from "../../../Engine";
 import chanceLoader from "../../mapGeneration/ChanceLoader";
 
 export default class RectangularRoom extends Room {
@@ -68,25 +67,25 @@ export default class RectangularRoom extends Room {
         }
     }
 
-    placeEntities(name, level, min, max) {
+    placeEntities(gameMap, name, level, min, max) {
         const numMonsters = MathUtil.randomInt(min, max);
         for (let i = 0; i < numMonsters; i++) {
             const x = MathUtil.randomInt(this.x1 + 1, this.x2 - 1);
             const y = MathUtil.randomInt(this.y1 + 1, this.y2 - 1);
 
-            const blockingActor = engine.gameMap.getBlockingActorAtLocation(x, y, 1);
+            const blockingActor = gameMap.getBlockingActorAtLocation(x, y);
             if (!blockingActor) {
                 const position = {components: {position: {x: x, y: y}}};
 
                 const actorId = chanceLoader.getActorForLevel(name, level);
                 const actor = entityLoader.createFromTemplate(actorId, position);
 
-                engine.gameMap.addActor(actor);
+                gameMap.addActor(actor);
             }
         }
     }
 
-    placeItems(name, level, maxItems) {
+    placeItems(gameMap, name, level, maxItems) {
         const numItems = MathUtil.randomInt(0, maxItems);
         for (let i = 0; i < numItems; i++) {
             const x = MathUtil.randomInt(this.x1 + 1, this.x2 - 1);
@@ -96,7 +95,7 @@ export default class RectangularRoom extends Room {
             const itemId = chanceLoader.getItemForLevel(name, level);
             const item = entityLoader.createFromTemplate(itemId, position);
 
-            engine.gameMap.items.push(item);
+            gameMap.items.push(item);
         }
         //
         // const numGoldItems = MathUtil.randomInt(0, maxItems);

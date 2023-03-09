@@ -8,7 +8,7 @@ export default class _Action {
     /**
      * @returns {_Action}
      */
-    perform() {
+    perform(/*gameMap*/) {
         console.error("Not Implemented");
     }
 

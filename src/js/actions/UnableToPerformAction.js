@@ -7,7 +7,7 @@ export default class UnableToPerformAction extends _Action {
         this.reason = reason;
     }
 
-    perform() {
+    perform(/*gameMap*/) {
         return this;
     }
 }
