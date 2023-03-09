@@ -8,7 +8,8 @@ export default class Tutorial extends GameMap {
     constructor(width, height, args = {}) {
         const level = args.level || 1;
         const name = "tutorial-" + level;
-        super(name, width, height);
+        const displayName = "Dungeon Entry";
+        super(name, displayName, width, height);
 
         this.maxRooms = args.maxRooms || 1;
         this.roomMinSize = args.roomMinSize || 8;
@@ -27,6 +28,8 @@ export default class Tutorial extends GameMap {
         this.maxItemsByFloor = [
             {level: 1, amount: 2}
         ];
+
+        this.explored = true;
     }
 
     getFloorAmount(weights) {

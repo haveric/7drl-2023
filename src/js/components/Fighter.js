@@ -188,7 +188,6 @@ export default class Fighter extends _Component {
 
 
     updateUI() {
-        console.log("Update: ", this);
         if (this.isPlayer()) {
             playerInfo.updateHealth(this.hp, this.maxHp);
             playerInfo.updatePower(this.getDamageDisplay());

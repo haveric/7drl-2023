@@ -14,7 +14,7 @@ import Shop from "./js/map/tile/Shop";
         engine.initTextures();
 
         engine.setHeroMap(new Tutorial(11, 11));
-        engine.setNextMap(new BasicDungeon(11, 11));
+        engine.setNextMap(new BasicDungeon(11, 11, {level: 2}));
         engine.setShopMap(new Shop(11, 11));
 
         engine.player = entityLoader.createFromTemplate("player", {components: {position: {x: 0, y: 0}}});

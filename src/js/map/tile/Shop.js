@@ -7,8 +7,9 @@ import RectangularRoom from "./room/RectangularRoom";
 export default class Shop extends GameMap {
     constructor(width, height, args = {}) {
         const level = args.level || 1;
-        const name = "tutorial-" + level;
-        super(name, width, height);
+        const name = "shop-" + level;
+        const displayName = "Shop";
+        super(name, displayName, width, height);
 
         this.maxRooms = args.maxRooms || 1;
         this.roomMinSize = args.roomMinSize || 8;

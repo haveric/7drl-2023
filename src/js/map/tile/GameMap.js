@@ -6,15 +6,19 @@ import Fov from "../../components/Fov";
 import Actor from "../../entity/Actor";
 import Item from "../../entity/Item";
 import details from "../../ui/Details";
+import sceneState from "../../SceneState";
 
 export default class GameMap {
-    constructor(name, width, height) {
+    constructor(name, displayName, width, height) {
         this.name = name;
+        this.displayName = displayName;
         this.width = width;
         this.height = height;
 
         this.timeout = null;
         this.saveCache = null;
+
+        this.explored = false;
 
         this.init();
     }
@@ -138,8 +142,10 @@ export default class GameMap {
 
         const saveData = {
             name: this.name,
+            displayName: this.displayName,
             width: this.width,
-            height: this.height
+            height: this.height,
+            explored: this.explored
         };
 
         saveData["tiles"] = {};
@@ -195,6 +201,8 @@ export default class GameMap {
 
     load(json) {
         const tiles = json.tiles;
+        this.explored = json.explored;
+        this.displayName = json.displayName;
 
         for (let i = 0; i < this.width; i++) {
             for (let j = 0; j < this.height; j++) {
@@ -352,26 +360,33 @@ export default class GameMap {
     }
 
     draw(xTileOffset = 0, yTileOffset = 0) {
-        const tiles = this.tiles;
+        if (this.explored) {
+            const tiles = this.tiles;
 
-        for (let i = 0; i < tiles.length; i++) {
-            const tileX = tiles[i];
-            for (let j = 0; j < tileX.length; j++) {
-                const tile = tileX[j];
-                if (tile) {
-                    tile.draw(xTileOffset, yTileOffset);
+            for (let i = 0; i < tiles.length; i++) {
+                const tileX = tiles[i];
+                for (let j = 0; j < tileX.length; j++) {
+                    const tile = tileX[j];
+                    if (tile) {
+                        tile.draw(xTileOffset, yTileOffset);
+                    }
                 }
             }
-        }
 
-        for (const item of this.items) {
-            item.draw(xTileOffset, yTileOffset);
-        }
+            for (const item of this.items) {
+                item.draw(xTileOffset, yTileOffset);
+            }
 
-        for (const actor of this.actors) {
-            actor.draw(xTileOffset, yTileOffset);
-        }
+            for (const actor of this.actors) {
+                actor.draw(xTileOffset, yTileOffset);
+            }
+        } else {
+            engine.spriteManager.getImage("map").drawImage(sceneState.ctx, xTileOffset * 64, yTileOffset * 64);
 
+            sceneState.ctx.font = "3vh serif";
+            sceneState.ctx.textAlign = "center";
+            sceneState.ctx.fillText(this.displayName, (xTileOffset * 64 + 352) * engine.scale, (yTileOffset * 64 + 364)  * engine.scale);
+        }
         // const fov = engine.player.fov;
         // // for (const tile of fov.visibleTiles) {
         // //     tile.draw();

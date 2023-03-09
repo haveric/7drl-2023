@@ -8,7 +8,8 @@ export default class BasicDungeon extends GameMap {
     constructor(width, height, args = {}) {
         const level = args.level || 1;
         const name = "basic-dungeon-" + level;
-        super(name, width, height);
+        const displayName = "Dungeon Level " + level;
+        super(name, displayName, width, height);
 
         this.maxRooms = args.maxRooms || 1;
         this.roomMinSize = args.roomMinSize || 8;

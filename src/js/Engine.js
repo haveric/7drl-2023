@@ -12,6 +12,7 @@ import websTexture from "../img/electronsandsuch/webs.png";
 import websJson from "../img/electronsandsuch/webs.json";
 import rlTilesTexture from "../img/rltiles/rltiles-2d-2x.png";
 import rltilesJson from "../img/rltiles/rltiles-2d-2x.json";
+import mapTexture from "../img/cron/parchment_square.png";
 //import GameMap from "./map/tile/GameMap";
 
 class Engine {
@@ -41,9 +42,11 @@ class Engine {
         this.textureManager.addTexture("scribble", scribbleTexture);
         this.textureManager.addTexture("rltiles", rlTilesTexture);
         this.textureManager.addTexture("webs", websTexture);
+        this.textureManager.addTexture("map", mapTexture);
 
         this.spriteManager = new SpriteManager();
         this.spriteManager.addImage("placeholder", "sprites", 0, 0);
+        this.spriteManager.addImage("map", "map", 0, 0, 704, 704);
         this.textureManager.loadJson("rltiles", rltilesJson);
         this.textureManager.loadJson("scribble", scribbleJson);
         this.textureManager.loadJson("webs", websJson);
