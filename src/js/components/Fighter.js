@@ -95,6 +95,9 @@ export default class Fighter extends _Component {
             entity.setComponent(new AIDead(aiArgs));
         }
 
+        entity.sprite = "rltiles_corpse";
+        entity.name = "Corpse of " + this.name;
+
         this.clearSaveCache();
     }
 
