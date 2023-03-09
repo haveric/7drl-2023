@@ -88,6 +88,12 @@ export default class Shop extends GameMap {
 
                 this.tiles[centerX][centerY] = entityLoader.createFromTemplate("trap_door", {components: {position: {x: centerX, y: centerY}}});
 
+
+                for (let i = newRoom.x1 + 2; i < newRoom.x2 - 1; i++) {
+                    this.tiles[i][3] = entityLoader.createFromTemplate("table", {components: {position: {x: i, y: 3}}});
+                    this.tiles[i][7] = entityLoader.createFromTemplate("table", {components: {position: {x: i, y: 7}}});
+                }
+
                 // if (engine.player) {
                 //     const playerPosition = engine.player.getComponent("position");
                 //     if (playerPosition) {
@@ -113,9 +119,9 @@ export default class Shop extends GameMap {
         // const lastRoomCenterY = lastRoom.getCenterY();
         //this.tiles[lastRoomCenterX][lastRoomCenterY] = entityLoader.createFromTemplate("stairs_north", {components: {position: {x: lastRoomCenterX, y: lastRoomCenterY}, stairsInteractable: {generator: "basic-dungeon"}}});
 
-        for (const room of rooms) {
-            room.placeEntities(this, "tutorial", this.level, this.getFloorAmount(this.minMonstersByFloor), this.getFloorAmount(this.maxMonstersByFloor));
-            room.placeItems(this, "tutorial", this.level, this.getFloorAmount(this.minItemsByFloor), this.getFloorAmount(this.maxItemsByFloor));
-        }
+        // for (const room of rooms) {
+        //     room.placeEntities(this, "tutorial", this.level, this.getFloorAmount(this.minMonstersByFloor), this.getFloorAmount(this.maxMonstersByFloor));
+        //     room.placeItems(this, "tutorial", this.level, this.getFloorAmount(this.minItemsByFloor), this.getFloorAmount(this.maxItemsByFloor));
+        // }
     }
 }

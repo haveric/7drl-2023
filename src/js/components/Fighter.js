@@ -3,6 +3,7 @@ import AIDead from "./ai/AIDead";
 import messageManager from "../message/MessageManager";
 import playerInfo from "../ui/PlayerInfo";
 import MathUtil from "../util/MathUtil";
+import heroInfo from "../ui/HeroInfo";
 
 export default class Fighter extends _Component {
     constructor(args) {
@@ -184,10 +185,15 @@ export default class Fighter extends _Component {
 
 
     updateUI() {
+        console.log("Update: ", this);
         if (this.isPlayer()) {
             playerInfo.updateHealth(this.hp, this.maxHp);
             playerInfo.updatePower(this.getDamageDisplay());
             playerInfo.updateDefense(this.defense);
+        } else if (this.parentEntity.id === "hero") {
+            heroInfo.updateHealth(this.hp, this.maxHp);
+            heroInfo.updatePower(this.getDamageDisplay());
+            heroInfo.updateDefense(this.defense);
         }
     }
 

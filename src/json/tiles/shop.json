@@ -1,0 +1,13 @@
+[
+    {
+        "id": "table",
+        "extends": "base_tile",
+        "name": "Table",
+        "color": "#ddd",
+        "sprite": "scribble_floor_table",
+        "components": {
+            "blocksMovement": true,
+            "blocksFov": false
+        }
+    }
+]

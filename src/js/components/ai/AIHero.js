@@ -141,7 +141,10 @@ export default class AIHero extends _AI {
                     };
 
                     if (closestDistance <= 1) {
+                        this.setStatus("Hero is fighting " + closestEnemy.name + "!");
                         return new MeleeAction(entity, closestEnemyPosition.x - entityPosition.x, closestEnemyPosition.y - entityPosition.y).perform(gameMap);
+                    } else {
+                        this.setStatus("Hero is moving to attack " + closestEnemy.name + ".");
                     }
                 } else {
                     if (this.chaseLocation !== null && this.chaseLocation.x === entityPosition.x && this.chaseLocation.y === entityPosition.y) {

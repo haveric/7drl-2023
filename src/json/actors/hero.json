@@ -5,7 +5,7 @@
         "name": "Hero",
         "color": "#00f",
         "letter": "@",
-        "sprite": "scribble_yellow_character",
+        "sprite": "rltiles_barbarian",
         "components": {
             "faction": {
                 "factions": "hero",
