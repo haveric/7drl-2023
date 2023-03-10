@@ -109,17 +109,16 @@ export default class BasicDungeon extends GameMap {
 
             if (rooms.length === 0) {
                 const centerX = newRoom.getCenterX();
-                const centerY = newRoom.getCenterY();
 
                 if (stairsInteractable) {
-                    stairsInteractable.setPosition(centerX, centerY, 1);
+                    stairsInteractable.setPosition(centerX, 0);
                 }
 
                 this.tiles[centerX][0] = entityLoader.createFromTemplate("stairs_up", {components: {position: {x: centerX, y: 0}}});
 
                 const stairsDownX = MathUtil.randomInt(newRoom.x1 + 2, newRoom.x2 - 2);
                 const stairsDownY = MathUtil.randomInt(newRoom.y1 + 2, newRoom.y2 - 2);
-                this.tiles[stairsDownX][stairsDownY] = entityLoader.createFromTemplate("stairs_down", {components: {position: {x: stairsDownX, y: stairsDownY}}});
+                this.tiles[stairsDownX][stairsDownY] = entityLoader.createFromTemplate("stairs_down", {components: {position: {x: stairsDownX, y: stairsDownY}, stairsInteractable: {generator: "basic-dungeon"}}});
 
                 let trapDoorX = stairsDownX;
                 let trapDoorY = stairsDownY;
@@ -129,7 +128,7 @@ export default class BasicDungeon extends GameMap {
                     trapDoorY = MathUtil.randomInt(newRoom.y1 + 2, newRoom.y2 - 2);
 
                     if (trapDoorX !== stairsDownX || trapDoorY !== stairsDownY) {
-                        this.tiles[trapDoorX][trapDoorY] = entityLoader.createFromTemplate("trap_door", {components: {position: {x: trapDoorX, y: trapDoorY}}});
+                        this.tiles[trapDoorX][trapDoorY] = entityLoader.createFromTemplate("trap_door", {components: {position: {x: trapDoorX, y: trapDoorY}, trapDoorInteractable: {generator: "shop"}}});
                     }
                 }
                 // if (engine.player) {

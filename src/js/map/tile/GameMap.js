@@ -1,12 +1,12 @@
 import ArrayUtil from "../../util/ArrayUtil";
 import entityLoader from "../../entity/EntityLoader";
+import sceneState from "../../SceneState";
 import engine from "../../Engine";
 import Fov from "../../components/Fov";
 // import details from "../../ui/Details";
 import Actor from "../../entity/Actor";
 import Item from "../../entity/Item";
 import details from "../../ui/Details";
-import sceneState from "../../SceneState";
 
 export default class GameMap {
     constructor(name, displayName, width, height) {
@@ -380,13 +380,21 @@ export default class GameMap {
             for (const actor of this.actors) {
                 actor.draw(xTileOffset, yTileOffset);
             }
+
+
         } else {
             engine.spriteManager.getImage("map").drawImage(sceneState.ctx, xTileOffset * 64, yTileOffset * 64);
-
-            sceneState.ctx.font = "3vh serif";
-            sceneState.ctx.textAlign = "center";
-            sceneState.ctx.fillText(this.displayName, (xTileOffset * 64 + 352) * engine.scale, (yTileOffset * 64 + 364)  * engine.scale);
         }
+
+        sceneState.ctx.font = "20vh serif";
+        sceneState.ctx.textAlign = "center";
+        sceneState.ctx.globalAlpha = 0.1;
+        let text = this.level;
+        if (this.name.startsWith("shop")) {
+            text = "$ " + text;
+        }
+        sceneState.ctx.fillText(text, (xTileOffset * 64 + 352) * engine.scale, (yTileOffset * 64 + 444)  * engine.scale);
+        sceneState.ctx.globalAlpha = 1;
         // const fov = engine.player.fov;
         // // for (const tile of fov.visibleTiles) {
         // //     tile.draw();

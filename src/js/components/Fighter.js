@@ -4,6 +4,7 @@ import messageManager from "../message/MessageManager";
 import playerInfo from "../ui/PlayerInfo";
 import MathUtil from "../util/MathUtil";
 import heroInfo from "../ui/HeroInfo";
+import engine from "../Engine";
 
 export default class Fighter extends _Component {
     constructor(args) {
@@ -73,7 +74,7 @@ export default class Fighter extends _Component {
 
     die() {
         const entity = this.parentEntity;
-        if (this.isPlayer()) {
+        if (engine.isPlayer(this.parentEntity)) {
             messageManager.text("You died!", "#f00").build();
         } else {
             messageManager.text(entity.name + " dies!", "#ffa030").build();
@@ -188,7 +189,7 @@ export default class Fighter extends _Component {
 
 
     updateUI() {
-        if (this.isPlayer()) {
+        if (engine.isPlayer(this.parentEntity)) {
             playerInfo.updateHealth(this.hp, this.maxHp);
             playerInfo.updatePower(this.getDamageDisplay());
             playerInfo.updateDefense(this.defense);

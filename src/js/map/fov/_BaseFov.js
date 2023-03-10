@@ -91,18 +91,18 @@ export default class BaseFov {
         }
 
         for (const actor of gameMap.actors) {
-            const positionalObject = actor.getComponent("position");
-            if (positionalObject) {
-                if (positionalObject.x === x && positionalObject.y === y) {
+            const position = actor.getComponent("position");
+            if (position) {
+                if (position.x === x && position.y === y) {
                     this.addVisibleActor(actor);
                 }
             }
         }
 
         for (const item of gameMap.items) {
-            const positionalObject = item.getComponent("position");
-            if (positionalObject) {
-                if (positionalObject.x === x && positionalObject.y === y) {
+            const position = item.getComponent("position");
+            if (position) {
+                if (position.x === x && position.y === y) {
                     this.addVisibleItem(item);
                 }
             }

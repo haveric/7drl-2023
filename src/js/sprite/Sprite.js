@@ -22,10 +22,10 @@ export default class Sprite {
     drawImage(context, i, j, degrees) {
         if (degrees !== null && degrees > 0) {
             context.save();
-            context.translate(i+this.w/2, j+this.h/2);
+            context.translate((i+this.w/2) * engine.scale, (j+this.h/2) * engine.scale);
             context.rotate(degrees * Math.PI / 180);
 
-            context.drawImage(this.texture, this.x, this.y, this.w, this.h, -this.w/2, -this.h/2, this.w, this.h);
+            context.drawImage(this.texture, this.x, this.y, this.w, this.h, (-this.w/2) * engine.scale, (-this.h/2) * engine.scale, this.w * engine.scale, this.h * engine.scale);
 
             context.restore();
         } else {

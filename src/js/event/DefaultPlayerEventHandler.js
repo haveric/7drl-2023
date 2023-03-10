@@ -3,6 +3,7 @@ import controls from "../controls/Controls";
 import BumpAction from "../actions/actionWithDirection/BumpAction";
 import engine from "../Engine";
 import WaitAction from "../actions/WaitAction";
+import InteractAction from "../actions/InteractAction";
 // import HexUtil from "../util/HexUtil";
 // import viewInfo from "../ui/ViewInfo";
 
@@ -37,6 +38,8 @@ export default class DefaultPlayerEventHandler extends _EventHandler {
                 action = new BumpAction(engine.player, 1, 1);
             } else if (controls.testPressed("wait")) {
                 action = new WaitAction(engine.player);
+            } else if (controls.testPressed("confirm")) {
+                action = new InteractAction(engine.player);
             }
         }
 

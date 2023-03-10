@@ -1,5 +1,3 @@
-import engine from "../Engine";
-
 export default class _Action {
     constructor(entity) {
         this.entity = entity;
@@ -10,9 +8,5 @@ export default class _Action {
      */
     perform(/*gameMap*/) {
         console.error("Not Implemented");
-    }
-
-    isPlayer() {
-        return this.entity === engine.player;
     }
 }

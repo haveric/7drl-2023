@@ -84,10 +84,10 @@ export default class Shop extends GameMap {
                 const centerY = newRoom.getCenterY();
 
                 if (stairsInteractable) {
-                    stairsInteractable.setPosition(centerX, centerY, 1);
+                    stairsInteractable.setPosition(centerX, centerY);
                 }
 
-                this.tiles[centerX][centerY] = entityLoader.createFromTemplate("trap_door", {components: {position: {x: centerX, y: centerY}}});
+                this.tiles[centerX][centerY] = entityLoader.createFromTemplate("stairs_down", {components: {position: {x: centerX, y: centerY}, stairsInteractable: {generator: "basic-dungeon"}}});
 
 
                 for (let i = newRoom.x1 + 2; i < newRoom.x2 - 1; i++) {

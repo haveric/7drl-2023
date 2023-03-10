@@ -14,7 +14,6 @@ class Controls {
         self.controls = new Map();
         self.defaults.set("up", [Key.NUMPAD_8, Key.UP]);
         self.defaults.set("down", [Key.NUMPAD_2, Key.DOWN]);
-
         self.defaults.set("left", [Key.NUMPAD_4, Key.LEFT]);
         self.defaults.set("right", [Key.NUMPAD_6, Key.RIGHT]);
         self.defaults.set("nw", [Key.NUMPAD_7]);
@@ -22,6 +21,9 @@ class Controls {
         self.defaults.set("sw", [Key.NUMPAD_1]);
         self.defaults.set("se", [Key.NUMPAD_3]);
         self.defaults.set("wait", [Key.NUMPAD_5]);
+
+        self.defaults.set("escape", [Key.ESCAPE]);
+        self.defaults.set("confirm", [Key.ENTER, Key.NUMPAD_ENTER]);
 
         self.load();
 

@@ -1,6 +1,9 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ESLintPlugin = require('eslint-webpack-plugin');
+const CircularDependencyPlugin = require('circular-dependency-plugin');
+
+let numCyclesDetected = 0;
 
 module.exports = {
     entry: {
@@ -11,6 +14,26 @@ module.exports = {
             title: '7DRL 2023',
         }),
         new ESLintPlugin(),
+        new CircularDependencyPlugin({
+            failOnError: false,
+            allowAsyncCycles: true,
+            onStart({compilation}) {
+                numCyclesDetected = 0;
+            },
+            onDetected({module: webpackModuleRecord, paths, compilation}) {
+                console.log(paths.join(' -> '),"\n");
+                numCyclesDetected++;
+                //compilation.errors.push(new Error(paths.join(' -> ')))
+            },
+            onEnd({compilation}) {
+                if (numCyclesDetected > 0) {
+                    console.log(`Detected ${numCyclesDetected} cycles`);
+                    // compilation.errors.push(new Error(
+                    //     `Detected ${numCyclesDetected} cycles`
+                    // ));
+                }
+            },
+        })
     ],
     output: {
         filename: '[name].[contenthash].js',

@@ -1,7 +1,7 @@
 import Extend from "../util/Extend";
 import componentLoader from "../components/ComponentLoader";
-import engine from "../Engine";
 import sceneState from "../SceneState";
+import engine from "../Engine";
 
 export default class _Entity {
     constructor(args) {

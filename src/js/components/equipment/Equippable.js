@@ -327,7 +327,7 @@ export default class Equippable extends _Component {
             this.storage[toIndex] = fromItem;
 
             this.clearSaveCache();
-            if (this.isPlayer()) {
+            if (engine.isPlayer(this.parentEntity)) {
                 inventory.populateInventory(engine.player);
             }
         }

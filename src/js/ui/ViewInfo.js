@@ -1,15 +1,14 @@
 import html from "../../html/ui/ViewInfo.html";
 import _UIElement from "./_UIElement";
-import engine from "../Engine";
 
 class ViewInfo extends _UIElement {
     constructor() {
         super(html);
     }
 
-    updatePlayerDetails() {
-        const playerPosition = engine.player.getComponent("position");
-        const tile = engine.playerMap.tiles[playerPosition.x][playerPosition.y];
+    updatePlayerDetails(player, playerMap) {
+        const playerPosition = player.getComponent("position");
+        const tile = playerMap.tiles[playerPosition.x][playerPosition.y];
         this.updatePositionDetails(tile);
     }
 

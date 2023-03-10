@@ -13,6 +13,7 @@ import websJson from "../img/electronsandsuch/webs.json";
 import rlTilesTexture from "../img/rltiles/rltiles-2d-2x.png";
 import rltilesJson from "../img/rltiles/rltiles-2d-2x.json";
 import mapTexture from "../img/cron/parchment_square.png";
+import MapLoader from "./map/MapLoader";
 //import GameMap from "./map/tile/GameMap";
 
 class Engine {
@@ -26,6 +27,7 @@ class Engine {
 
         this.heroMap = null;
         this.nextMap = null;
+        this.futureMap = null;
         this.shopMap = null;
         this.needsRenderUpdate = false;
 
@@ -33,6 +35,8 @@ class Engine {
         this.spriteManager = null;
 
         this.scale = 1;
+
+        this.mapLoader = new MapLoader();
     }
 
     initTextures() {
@@ -50,7 +54,6 @@ class Engine {
         this.textureManager.loadJson("rltiles", rltilesJson);
         this.textureManager.loadJson("scribble", scribbleJson);
         this.textureManager.loadJson("webs", websJson);
-
     }
 
     handleEvents() {
@@ -73,7 +76,7 @@ class Engine {
                 engine.needsRenderUpdate = true;
                 engine.player.fov.compute(engine.playerMap, engine.player, 5);
                 engine.player.fov.updateMap();
-                viewInfo.updatePlayerDetails();
+                viewInfo.updatePlayerDetails(this.player, this.playerMap);
 
                 this.handleEnemyTurns();
 
@@ -94,20 +97,35 @@ class Engine {
             }
         }
 
-        for (const actor of this.shopMap.actors) {
-            if (actor !== this.player) {
-                const ai = actor.getComponent("ai");
-                if (ai) {
-                    ai.perform(this.shopMap);
+        if (this.shopMap) {
+            for (const actor of this.shopMap.actors) {
+                if (actor !== this.player) {
+                    const ai = actor.getComponent("ai");
+                    if (ai) {
+                        ai.perform(this.shopMap);
+                    }
                 }
             }
         }
 
-        for (const actor of this.nextMap.actors) {
-            if (actor !== this.player) {
-                const ai = actor.getComponent("ai");
-                if (ai) {
-                    ai.perform(this.nextMap);
+        if (this.nextMap) {
+            for (const actor of this.nextMap.actors) {
+                if (actor !== this.player) {
+                    const ai = actor.getComponent("ai");
+                    if (ai) {
+                        ai.perform(this.nextMap);
+                    }
+                }
+            }
+        }
+
+        if (this.futureMap) {
+            for (const actor of this.futureMap.actors) {
+                if (actor !== this.player) {
+                    const ai = actor.getComponent("ai");
+                    if (ai) {
+                        ai.perform(this.futureMap);
+                    }
                 }
             }
         }
@@ -126,10 +144,10 @@ class Engine {
             return;
         }
 
-        if (previousMap) {
-            previousMap.teardown();
-            previousMap.removeActor(this.player);
-        }
+        // if (previousMap) {
+        //     previousMap.teardown();
+        //     previousMap.removeActor(this.player);
+        // }
 
         this.heroMap = map;
         this.addMap(map);
@@ -137,9 +155,9 @@ class Engine {
             previousMap.save();
         }
         map.save();
-        if (this.player && this.heroMap.actors.indexOf(this.player) === -1) {
-            this.heroMap.actors.push(this.player);
-        }
+        // if (this.player && this.heroMap.actors.indexOf(this.player) === -1) {
+        //     this.heroMap.actors.push(this.player);
+        // }
 
         this.heroMap.updatePlayerUI();
         this.needsRenderUpdate = true;
@@ -151,10 +169,10 @@ class Engine {
             return;
         }
 
-        if (previousMap) {
-            previousMap.teardown();
-            previousMap.removeActor(this.player);
-        }
+        // if (previousMap) {
+        //     previousMap.teardown();
+        //     previousMap.removeActor(this.player);
+        // }
 
         this.nextMap = map;
         this.addMap(map);
@@ -162,25 +180,51 @@ class Engine {
             previousMap.save();
         }
         map.save();
-        if (this.player && this.nextMap.actors.indexOf(this.player) === -1) {
-            this.nextMap.actors.push(this.player);
-        }
+        // if (this.player && this.nextMap.actors.indexOf(this.player) === -1) {
+        //     this.nextMap.actors.push(this.player);
+        // }
 
         this.nextMap.updatePlayerUI();
         this.needsRenderUpdate = true;
     }
 
+    setFutureMap(map) {
+        const previousMap = this.futureMap;
+        if (previousMap === map) {
+            return;
+        }
+
+        // if (previousMap) {
+        //     previousMap.teardown();
+        //     previousMap.removeActor(this.player);
+        // }
+
+        this.futureMap = map;
+        this.addMap(map);
+        if (previousMap) {
+            previousMap.save();
+        }
+        map.save();
+        // if (this.player && this.futureMap.actors.indexOf(this.player) === -1) {
+        //     this.futureMap.actors.push(this.player);
+        // }
+
+        this.futureMap.updatePlayerUI();
+        this.needsRenderUpdate = true;
+    }
+
     setShopMap(map) {
-        const previousMap = this.shopMap;
+        const previousMap = this.playerMap;
         if (previousMap === map) {
             return;
         }
 
         if (previousMap) {
-            previousMap.teardown();
+            //previousMap.teardown();
             previousMap.removeActor(this.player);
         }
 
+        this.playerMap = map;
         this.shopMap = map;
         this.addMap(map);
         if (previousMap) {
@@ -189,6 +233,9 @@ class Engine {
         map.save();
         if (this.player && this.shopMap.actors.indexOf(this.player) === -1) {
             this.shopMap.actors.push(this.player);
+            const position = this.player.getComponent("position");
+            position.moveTo(5, 5);
+
         }
 
         this.shopMap.updatePlayerUI();
@@ -203,8 +250,18 @@ class Engine {
 
     draw() {
         this.heroMap.draw();
-        this.nextMap.draw(0, 11);
-        this.shopMap.draw(20, 0);
+        if (this.nextMap) {
+            this.nextMap.draw(0, 11);
+        }
+
+        if (this.futureMap) {
+            this.futureMap.draw(11, 11);
+        }
+
+
+        if (this.shopMap) {
+            this.shopMap.draw(22, 0);
+        }
     }
 
     save(name) {
@@ -255,6 +312,10 @@ class Engine {
         //         }
         //     }
         // }
+    }
+
+    isPlayer(entity) {
+        return entity === this.player;
     }
 }
 

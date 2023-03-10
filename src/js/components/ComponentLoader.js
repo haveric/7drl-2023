@@ -1,6 +1,8 @@
 import AIDead from "./ai/AIDead";
 import AIHero from "./ai/AIHero";
 import AIMeleeChase from "./ai/AIMeleeChase";
+import StairsInteractable from "./interactable/StairsInteractable";
+import TrapDoorInteractable from "./interactable/TrapDoorInteractable";
 import BlocksFov from "./BlocksFov";
 import BlocksMovement from "./BlocksMovement";
 import Cleanable from "./Cleanable";
@@ -21,6 +23,9 @@ class ComponentLoader {
         this.load(new AIDead());
         this.load(new AIHero());
         this.load(new AIMeleeChase());
+
+        this.load(new StairsInteractable());
+        this.load(new TrapDoorInteractable());
         //
         // this.load(new HealingConsumable());
         //

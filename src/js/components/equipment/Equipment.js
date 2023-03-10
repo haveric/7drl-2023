@@ -116,13 +116,13 @@ export default class Equipment extends _Component {
             const parentPosition = this.parentEntity.getComponent("position");
             engine.gameMap.addItem(item, parentPosition);
 
-            if (this.isPlayer()) {
+            if (engine.isPlayer(this.parentEntity)) {
                 messageConsole.text("You dropped the " + item.name).build();
             }
 
             this.remove(item);
             this.clearSaveCache();
-            if (this.isPlayer()) {
+            if (engine.isPlayer(this.parentEntity)) {
                 inventory.populateInventory(engine.player);
             }
         }

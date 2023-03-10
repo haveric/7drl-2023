@@ -113,11 +113,11 @@ class Inventory extends _UIElement {
     }
 
     populateItemsAtGround() {
-        const position = engine.player.getComponent("positionalobject");
+        const position = engine.player.getComponent("position");
         this.itemsOnGround = [];
         for (const item of engine.gameMap.items) {
-            const itemPosition = item.getComponent("positionalobject");
-            if (position.x === itemPosition.x && position.y === itemPosition.y && position.z === itemPosition.z) {
+            const itemPosition = item.getComponent("position");
+            if (position.x === itemPosition.x && position.y === itemPosition.y) {
                 this.itemsOnGround.push(item);
             }
         }
@@ -151,7 +151,7 @@ class Inventory extends _UIElement {
 
     populateSlot(slot, item) {
         if (item) {
-            const itemPosition = item.getComponent("positionalobject");
+            const itemPosition = item.getComponent("position");
             if (itemPosition) {
                 let rotation = "";
                 if (itemPosition.zRot !== 0) {

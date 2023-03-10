@@ -86,7 +86,7 @@ class Details extends _UIElement {
         //         continue;
         //     }
         //
-        //     const position = actor.getComponent("positionalobject");
+        //     const position = actor.getComponent("position");
         //     if (position) {
         //         nearby.push(actor);
         //     }
@@ -96,7 +96,7 @@ class Details extends _UIElement {
         //     text += "<span class='details__line details__header'>Nearby:</span>";
         //
         //     for (const actor of nearby) {
-        //         const position = actor.getComponent("positionalobject");
+        //         const position = actor.getComponent("position");
         //         if (position) {
         //             text += "<span class='details__line'>";
         //             text += "<span style='color:" + position.color + "'>" + position.letter + "</span>: " + actor.name;

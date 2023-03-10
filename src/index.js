@@ -11,10 +11,13 @@ import Shop from "./js/map/tile/Shop";
 
 (function () {
     function init() {
+        engine.clearMaps();
         engine.initTextures();
+        sceneState.resizeCanvas();
 
         engine.setHeroMap(new Tutorial(11, 11));
         engine.setNextMap(new BasicDungeon(11, 11, {level: 2}));
+        engine.setFutureMap(new BasicDungeon(11, 11, {level: 3}));
         engine.setShopMap(new Shop(11, 11));
 
         engine.player = entityLoader.createFromTemplate("player", {components: {position: {x: 0, y: 0}}});
@@ -39,17 +42,17 @@ import Shop from "./js/map/tile/Shop";
 
         engine.heroMap.create();
         engine.nextMap.create();
+        engine.futureMap.create();
         engine.shopMap.create();
 
         engine.playerMap = engine.heroMap;
-        engine.heroMap.actors.push(engine.player);
 
         engine.eventHandler = new DefaultPlayerEventHandler();
 
         // const playerFighter = engine.player.getComponent("fighter");
         // playerFighter.updateUI();
 
-        viewInfo.updatePlayerDetails();
+        viewInfo.updatePlayerDetails(engine.player, engine.playerMap);
         messageManager.text("Welcome to the dungeon.").build();
 
         engine.needsRenderUpdate = true;

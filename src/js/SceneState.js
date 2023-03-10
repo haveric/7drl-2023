@@ -4,12 +4,12 @@ import playerInfo from "./ui/PlayerInfo";
 import viewInfo from "./ui/ViewInfo";
 import messageConsole from "./ui/MessageConsole";
 import details from "./ui/Details";
+import selectList from "./ui/SelectList";
 
 class SceneState {
     constructor() {
         this.setupGameHtml();
 
-        this.resizeCanvas();
         window.addEventListener( "resize", this);
     }
 
@@ -24,6 +24,8 @@ class SceneState {
 
         heroInfo.open();
         heroInfo.appendTo(gameDom);
+
+        selectList.appendTo(gameDom);
 
         playerInfo.open();
         viewInfo.open();

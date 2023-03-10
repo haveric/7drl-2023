@@ -24,7 +24,7 @@ export default class MeleeAction extends ActionWithDirection {
             if (entityFighter && blockingFighter) {
                 let name;
                 let plural;
-                if (this.isPlayer()) {
+                if (engine.isPlayer(this.entity)) {
                     name = "You";
                     plural = "";
                 } else {

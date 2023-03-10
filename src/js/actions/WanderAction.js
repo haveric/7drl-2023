@@ -1,9 +1,9 @@
 import MovementAction from "./actionWithDirection/MovementAction";
-import Action from "./_Action";
+import _Action from "./_Action";
 import WaitAction from "./WaitAction";
 import MathUtil from "../util/MathUtil";
 
-export default class WanderAction extends Action {
+export default class WanderAction extends _Action {
     constructor(entity) {
         super(entity);
     }
