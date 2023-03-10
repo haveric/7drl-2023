@@ -76,6 +76,10 @@ export default class Fighter extends _Component {
         const entity = this.parentEntity;
         if (engine.isPlayer(this.parentEntity)) {
             messageManager.text("You died!", "#f00").build();
+        } else if (this.parentEntity.id === "hero") {
+            messageManager.text(entity.name + " dies!", "#ffa030").build();
+            messageManager.text("You managed to keep the hero alive for " + engine.heroMap.level + " levels!", "#ffa030").build();
+            // TODO: Game Over
         } else {
             messageManager.text(entity.name + " dies!", "#ffa030").build();
         }

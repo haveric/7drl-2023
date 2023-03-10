@@ -128,6 +128,7 @@ export default class StairsInteractable extends _Interactable {
             const nextMap = engine.getMap(nextMapName);
             if (!nextMap || nextLevel > engine.playerMap.level) {
                 messageManager.text("The hero has gotten too far ahead.").build();
+                // TODO: Game Over
             } else {
                 engine.heroMap.removeActor(entityInteracted);
                 engine.heroMap = nextMap;
