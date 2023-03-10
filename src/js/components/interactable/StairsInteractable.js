@@ -136,6 +136,12 @@ export default class StairsInteractable extends _Interactable {
                 engine.heroMap.addActor(entityInteracted);
                 const entityPosition = entityInteracted.getComponent("position");
                 entityPosition.moveTo(5, 0);
+
+                if (engine.heroMap === engine.nextMap) {
+                    engine.nextMap = engine.futureMap;
+                    engine.setFutureMap(new BasicDungeon(11, 11, {level: engine.futureMap.level + 1}));
+                    engine.futureMap.create();
+                }
             }
         }
 
