@@ -9,6 +9,7 @@ import Graph from "../../pathfinding/Graph";
 import AStar from "../../pathfinding/AStar";
 import BumpAction from "../../actions/actionWithDirection/BumpAction";
 import WaitAction from "../../actions/WaitAction";
+import InteractAction from "../../actions/InteractAction";
 
 export default class AIHero extends _AI {
     constructor(args = {}) {
@@ -97,42 +98,7 @@ export default class AIHero extends _AI {
             if (entityPosition) {
                 this.fov.compute(gameMap, entityPosition.x, entityPosition.y, this.radius);
 
-                let closestEnemies = [];
-                let closestDistance = null;
-                const entityFaction = entity.getComponent("faction");
-                if (entityFaction) {
-                    for (const actor of this.fov.visibleActors) {
-                        if (actor.isAlive()) {
-                            const actorFaction = actor.getComponent("faction");
-                            if (entityFaction.isEnemyOf(actorFaction)) {
-                                const actorPosition = actor.getComponent("position");
-
-                                if (actorPosition) {
-                                    const dx = Math.abs(actorPosition.x - entityPosition.x);
-                                    const dy = Math.abs(actorPosition.y - entityPosition.y);
-                                    const distance = Math.max(dx, dy);
-
-                                    if (closestDistance === null || distance < closestDistance) {
-                                        closestEnemies = [];
-                                        closestEnemies.push(actor);
-                                        closestDistance = distance;
-                                    } else if (distance === closestDistance) {
-                                        closestEnemies.push(actor);
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-
-                let closestEnemy;
-                if (closestEnemies.length === 1) {
-                    closestEnemy = closestEnemies[0];
-                } else if (closestEnemies.length > 1) {
-                    const index = MathUtil.randomInt(0, closestEnemies.length - 1);
-                    closestEnemy = closestEnemies[index];
-                }
-
+                const closestEnemy = this.getClosestEnemy();
                 if (closestEnemy) {
                     const closestEnemyPosition = closestEnemy.getComponent("position");
                     this.chaseLocation = {
@@ -140,75 +106,173 @@ export default class AIHero extends _AI {
                         y: closestEnemyPosition.y
                     };
 
-                    if (closestDistance <= 1) {
+                    const distance = entityPosition.distanceTo(closestEnemyPosition);
+                    if (distance <= 1) {
                         this.setStatus("Hero is fighting " + closestEnemy.name + "!");
                         return new MeleeAction(entity, closestEnemyPosition.x - entityPosition.x, closestEnemyPosition.y - entityPosition.y).perform(gameMap);
                     } else {
                         this.setStatus("Hero is moving to attack " + closestEnemy.name + ".");
                     }
                 } else {
+                    const closestStairs = this.getClosestStairs();
+                    if (closestStairs) {
+                        const closestStairsPosition = closestStairs.getComponent("position");
+                        this.chaseLocation = {
+                            x: closestStairsPosition.x,
+                            y: closestStairsPosition.y
+                        };
+
+                        const distance = entityPosition.distanceTo(closestStairsPosition);
+                        if (distance <= 0) {
+                            this.setStatus("Hero is climbing down the stairs!");
+                            return new InteractAction(entity).perform(gameMap);
+                        } else {
+                            this.setStatus("Hero is moving towards the stairs!");
+                        }
+                    }
+
                     if (this.chaseLocation !== null && this.chaseLocation.x === entityPosition.x && this.chaseLocation.y === entityPosition.y) {
                         this.chaseLocation = null;
                     }
 
                     if (this.chaseLocation === null) {
+                        this.setStatus("Hero is wandering aimlessly.");
                         return new WanderAction(entity).perform(gameMap);
                     }
                 }
 
-                this.currentMovement += this.movementActions;
+                return this.moveTowards(gameMap);
+            }
+        }
+    }
 
-                if (this.currentMovement >= 1) {
-                    // Move towards enemy
-                    const fovWidth = this.fov.right - this.fov.left;
-                    const fovHeight = this.fov.bottom - this.fov.top;
-                    const cost = Array(fovWidth).fill().map(() => Array(fovHeight).fill(0));
+    getClosestEnemy() {
+        const entity = this.parentEntity;
+        const entityPosition = entity.getComponent("position");
 
-                    for (let i = this.fov.left; i < this.fov.right; i++) {
-                        for (let j = this.fov.top; j < this.fov.bottom; j++) {
-                            const tile = gameMap.tiles[i][j];
-                            if (tile) {
-                                const blocksMovementComponent = tile.getComponent("blocksMovement");
-                                if (blocksMovementComponent && blocksMovementComponent.blocksMovement) {
-                                    continue;
-                                }
+        let closestEnemies = [];
+        let closestDistance = null;
+        const entityFaction = entity.getComponent("faction");
+        if (entityFaction) {
+            for (const actor of this.fov.visibleActors) {
+                if (actor.isAlive()) {
+                    const actorFaction = actor.getComponent("faction");
+                    if (entityFaction.isEnemyOf(actorFaction)) {
+                        const actorPosition = actor.getComponent("position");
+                        if (actorPosition) {
+                            const distance = entityPosition.distanceTo(actorPosition);
 
-                                cost[i - this.fov.left][j - this.fov.top] += 10;
+                            if (closestDistance === null || distance < closestDistance) {
+                                closestEnemies = [];
+                                closestEnemies.push(actor);
+                                closestDistance = distance;
+                            } else if (distance === closestDistance) {
+                                closestEnemies.push(actor);
                             }
                         }
                     }
-
-                    for (const actor of this.fov.visibleActors) {
-                        if (actor.isAlive()) {
-                            const actorPosition = actor.getComponent("position");
-                            if (actorPosition) {
-                                cost[actorPosition.x - this.fov.left][actorPosition.y - this.fov.top] += 100;
-                            }
-                        }
-                    }
-
-                    const costGraph = new Graph(cost, {diagonal: true});
-
-                    const start = costGraph.grid[entityPosition.x - this.fov.left][entityPosition.y - this.fov.top];
-                    const end = costGraph.grid[this.chaseLocation.x - this.fov.left][this.chaseLocation.y - this.fov.top];
-                    const path = AStar.search(costGraph, start, end);
-                    let lastAction;
-                    while (this.currentMovement >= 1) {
-                        if (path && path.length > 0) {
-                            const next = path.shift();
-                            if (next) {
-                                lastAction = new BumpAction(entity, next.x + this.fov.left - entityPosition.x, next.y + this.fov.top - entityPosition.y).perform(gameMap);
-                            }
-                        } else {
-                            lastAction = new WaitAction(entity).perform(gameMap);
-                        }
-
-                        this.currentMovement -= 1;
-                    }
-
-                    return lastAction;
                 }
             }
+        }
+
+        if (closestEnemies.length === 1) {
+            return closestEnemies[0];
+        } else if (closestEnemies.length > 1) {
+            const index = MathUtil.randomInt(0, closestEnemies.length - 1);
+            return closestEnemies[index];
+        }
+
+        return null;
+    }
+
+    getClosestStairs() {
+        const entity = this.parentEntity;
+        const entityPosition = entity.getComponent("position");
+
+        let closestStairs = [];
+        let closestDistance = null;
+        for (const tile of this.fov.visibleTiles) {
+            const interactable = tile.getComponent("interactable");
+            if (interactable && interactable.type === "stairsInteractable") {
+                const tilePosition = tile.getComponent("position");
+                if (tilePosition) {
+                    const distance = entityPosition.distanceTo(tilePosition);
+
+                    if (closestDistance === null || distance < closestDistance) {
+                        closestStairs = [];
+                        closestStairs.push(tile);
+                        closestDistance = distance;
+                    } else if (distance === closestDistance) {
+                        closestStairs.push(tile);
+                    }
+                }
+            }
+        }
+
+        if (closestStairs.length === 1) {
+            return closestStairs[0];
+        } else if (closestStairs.length > 1) {
+            const index = MathUtil.randomInt(0, closestStairs.length - 1);
+            return closestStairs[index];
+        }
+
+        return null;
+    }
+
+    moveTowards(gameMap) {
+        const entity = this.parentEntity;
+        const entityPosition = entity.getComponent("position");
+
+        this.currentMovement += this.movementActions;
+        if (this.currentMovement >= 1) {
+            // Move towards enemy
+            const fovWidth = this.fov.right - this.fov.left;
+            const fovHeight = this.fov.bottom - this.fov.top;
+            const cost = Array(fovWidth).fill().map(() => Array(fovHeight).fill(0));
+
+            for (let i = this.fov.left; i < this.fov.right; i++) {
+                for (let j = this.fov.top; j < this.fov.bottom; j++) {
+                    const tile = gameMap.tiles[i][j];
+                    if (tile) {
+                        const blocksMovementComponent = tile.getComponent("blocksMovement");
+                        if (blocksMovementComponent && blocksMovementComponent.blocksMovement) {
+                            continue;
+                        }
+
+                        cost[i - this.fov.left][j - this.fov.top] += 10;
+                    }
+                }
+            }
+
+            for (const actor of this.fov.visibleActors) {
+                if (actor.isAlive()) {
+                    const actorPosition = actor.getComponent("position");
+                    if (actorPosition) {
+                        cost[actorPosition.x - this.fov.left][actorPosition.y - this.fov.top] += 100;
+                    }
+                }
+            }
+
+            const costGraph = new Graph(cost, {diagonal: true});
+
+            const start = costGraph.grid[entityPosition.x - this.fov.left][entityPosition.y - this.fov.top];
+            const end = costGraph.grid[this.chaseLocation.x - this.fov.left][this.chaseLocation.y - this.fov.top];
+            const path = AStar.search(costGraph, start, end);
+            let lastAction;
+            while (this.currentMovement >= 1) {
+                if (path && path.length > 0) {
+                    const next = path.shift();
+                    if (next) {
+                        lastAction = new BumpAction(entity, next.x + this.fov.left - entityPosition.x, next.y + this.fov.top - entityPosition.y).perform(gameMap);
+                    }
+                } else {
+                    lastAction = new WaitAction(entity).perform(gameMap);
+                }
+
+                this.currentMovement -= 1;
+            }
+
+            return lastAction;
         }
     }
 }

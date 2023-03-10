@@ -52,4 +52,11 @@ export default class Position extends _Component {
         this.y = newY;
         this.clearSaveCache();
     }
+
+    distanceTo(position) {
+        const dx = Math.abs(position.x - this.x);
+        const dy = Math.abs(position.y - this.y);
+
+        return Math.max(dx, dy);
+    }
 }

@@ -242,6 +242,11 @@ class Engine {
         this.needsRenderUpdate = true;
     }
 
+
+    getMap(mapName) {
+        return this.gameMaps.get(mapName);
+    }
+
     addMap(map) {
         if (!this.gameMaps.has(map.name)) {
             this.gameMaps.set(map.name, map);

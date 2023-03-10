@@ -3,6 +3,7 @@ import engine from "../../Engine";
 import StairsSelectEventHandler from "../../event/askUserEventHandler/selectListEventHandler/StairsSelectEventHandler";
 import WaitAction from "../../actions/WaitAction";
 import BasicDungeon from "../../map/tile/BasicDungeon";
+import messageManager from "../../message/MessageManager";
 
 export default class StairsInteractable extends _Interactable {
     constructor(args = {}) {
@@ -122,10 +123,20 @@ export default class StairsInteractable extends _Interactable {
                 engine.eventHandler.render((this.x * 64 * engine.scale) + 100, this.y * 64 * engine.scale);
             }
         } else {
-            engine.nextMap.explored = true;
-            engine.needsRenderUpdate = true;
-            engine.nextMap.addActor(entityInteracted);
-            engine.heroMap.removeActor(entityInteracted);
+            const nextLevel = engine.heroMap.level + 1;
+            const nextMapName = (this.generator || this.map) + "-" + nextLevel.toString();
+            const nextMap = engine.getMap(nextMapName);
+            if (!nextMap || nextLevel > engine.playerMap.level) {
+                messageManager.text("The hero has gotten too far ahead.").build();
+            } else {
+                engine.heroMap.removeActor(entityInteracted);
+                engine.heroMap = nextMap;
+                engine.heroMap.explored = true;
+                engine.needsRenderUpdate = true;
+                engine.heroMap.addActor(entityInteracted);
+                const entityPosition = entityInteracted.getComponent("position");
+                entityPosition.moveTo(5, 0);
+            }
         }
 
         // if (this.map) {
