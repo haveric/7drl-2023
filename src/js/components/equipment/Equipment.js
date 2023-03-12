@@ -9,7 +9,6 @@ import inventory from "../../ui/Inventory";
 export default class Equipment extends _Component {
     constructor(args = {}) {
         super(args, "equipment");
-        const hasComponent = args.components && args.components.equipment !== undefined;
 
         this.items = [];
         this.items.push(new EquipmentSlot(EquipmentType.SHOULDER));
@@ -25,7 +24,7 @@ export default class Equipment extends _Component {
         this.items.push(new EquipmentSlot(EquipmentType.BOOTS));
         this.items.push(new EquipmentSlot(EquipmentType.GLOVES));
 
-        if (hasComponent) {
+        if (this.hasComponent()) {
             const equipment = args.components.equipment;
             if (equipment.items !== undefined) {
                 for (let i = 0; i < equipment.items.length; i++) {

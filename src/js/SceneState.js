@@ -5,6 +5,7 @@ import viewInfo from "./ui/ViewInfo";
 import messageConsole from "./ui/MessageConsole";
 import details from "./ui/Details";
 import selectList from "./ui/SelectList";
+import tradeList from "./ui/TradeList";
 
 class SceneState {
     constructor() {
@@ -26,6 +27,7 @@ class SceneState {
         heroInfo.appendTo(gameDom);
 
         selectList.appendTo(gameDom);
+        tradeList.appendTo(gameDom);
 
         playerInfo.open();
         viewInfo.open();

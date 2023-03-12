@@ -1,6 +1,7 @@
 import AIDead from "./ai/AIDead";
 import AIHero from "./ai/AIHero";
 import AIMeleeChase from "./ai/AIMeleeChase";
+import LootableInteractable from "./interactable/LootableInteractable";
 import StairsInteractable from "./interactable/StairsInteractable";
 import TrapDoorInteractable from "./interactable/TrapDoorInteractable";
 import BlocksFov from "./BlocksFov";
@@ -10,7 +11,8 @@ import Faction from "./Faction";
 import Fighter from "./Fighter";
 import Fov from "./Fov";
 import Position from "./Position";
-// import HealingConsumable from "./consumable/HealingConsumable";
+import Inventory from "./Inventory";
+import HealingConsumable from "./consumable/HealingConsumable";
 
 class ComponentLoader {
     constructor() {
@@ -24,17 +26,19 @@ class ComponentLoader {
         this.load(new AIHero());
         this.load(new AIMeleeChase());
 
+        this.load(new LootableInteractable());
         this.load(new StairsInteractable());
         this.load(new TrapDoorInteractable());
-        //
-        // this.load(new HealingConsumable());
-        //
+
+        this.load(new HealingConsumable());
+
         this.load(new BlocksFov());
         this.load(new BlocksMovement());
         this.load(new Cleanable());
         this.load(new Faction());
         this.load(new Fighter());
         this.load(new Fov());
+        this.load(new Inventory());
         this.load(new Position());
     }
 

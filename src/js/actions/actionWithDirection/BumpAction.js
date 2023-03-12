@@ -3,6 +3,7 @@ import UnableToPerformAction from "../UnableToPerformAction";
 import MovementAction from "./MovementAction";
 import MeleeAction from "./MeleeAction";
 import CleanAction from "./CleanAction";
+import InteractAtAction from "./InteractAtAction";
 
 export default class BumpAction extends ActionWithDirection {
     constructor(entity, dx = 0, dy = 0) {
@@ -30,10 +31,15 @@ export default class BumpAction extends ActionWithDirection {
 
         const tileX = gameMap.tiles[destX];
         if (tileX) {
-            // const tileXY = tileX[destY];
-            // if (tileXY) {
-            //     // TODO: Open or other actions
-            // }
+            const tileXY = tileX[destY];
+            if (tileXY) {
+                const interactable = tileXY.getComponent("interactable");
+                if (interactable) {
+                    if (interactable.type !== "stairsInteractable" && interactable.type !== "trapDoorInteractable") {
+                        return new InteractAtAction(this.entity, this.dx, this.dy).perform(gameMap);
+                    }
+                }
+            }
             return new MovementAction(this.entity, this.dx, this.dy).perform(gameMap);
         } else {
             return new UnableToPerformAction(this.entity, "Nowhere to move.");

@@ -1,0 +1,11 @@
+[
+    {
+        "id": "lootable_containers",
+        "tiles": [
+            {"id": "barrel", "weight": 100},
+            {"id": "barrels", "weight": 75},
+            {"id": "barrels_stacked", "weight": 50},
+            {"id": "chest", "weight": 25}
+        ]
+    }
+]

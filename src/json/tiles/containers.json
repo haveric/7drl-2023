@@ -1,0 +1,58 @@
+[
+    {
+        "id": "base_container",
+        "extends": "base_tile",
+        "components": {
+            "blocksMovement": true,
+            "blocksFov": false
+        }
+    },
+    {
+        "id": "barrel",
+        "extends": "base_container",
+        "name": "Barrel",
+        "color": "#ddd",
+        "sprite": "scribble_floor_barrel",
+        "components": {
+            "lootableInteractable": {
+                "capacity": 1
+            }
+        }
+    },
+    {
+        "id": "barrels",
+        "extends": "base_container",
+        "name": "Barrels",
+        "color": "#ddd",
+        "sprite": "scribble_floor_barrels",
+        "components": {
+            "lootableInteractable": {
+                "capacity": 2
+            }
+        }
+    },
+    {
+        "id": "barrels_stacked",
+        "extends": "base_container",
+        "name": "Barrels",
+        "color": "#ddd",
+        "sprite": "scribble_floor_barrels_stacked",
+        "components": {
+            "lootableInteractable": {
+                "capacity": 3
+            }
+        }
+    },
+    {
+        "id": "chest",
+        "extends": "base_container",
+        "name": "Chest",
+        "color": "#ddd",
+        "sprite": "scribble_floor_chest",
+        "components": {
+            "lootableInteractable": {
+                "capacity": 5
+            }
+        }
+    }
+]

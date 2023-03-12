@@ -67,6 +67,22 @@ export default class RectangularRoom extends Room {
         }
     }
 
+    placeTiles(gameMap, name, level, min, max) {
+        const numTiles = MathUtil.randomInt(min, max);
+        for (let i = 0; i < numTiles; i++) {
+            const x = MathUtil.randomInt(this.x1 + 1, this.x2 - 1);
+            const y = MathUtil.randomInt(this.y1 + 1, this.y2 - 1);
+
+            const blockingActor = gameMap.getBlockingActorAtLocation(x, y);
+            if (!blockingActor) {
+                const position = {components: {position: {x: x, y: y}}};
+
+                const tiledId = chanceLoader.getTileForLevel(name, level);
+                gameMap.tiles[x][y] = entityLoader.createFromTemplate(tiledId, position);
+            }
+        }
+    }
+
     placeEntities(gameMap, name, level, min, max) {
         const numMonsters = MathUtil.randomInt(min, max);
         for (let i = 0; i < numMonsters; i++) {

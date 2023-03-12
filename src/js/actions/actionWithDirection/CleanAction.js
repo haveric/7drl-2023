@@ -1,8 +1,8 @@
-import ActionWithDirection from "./_ActionWithDirection";
+import _ActionWithDirection from "./_ActionWithDirection";
 import UnableToPerformAction from "../UnableToPerformAction";
 import entityLoader from "../../entity/EntityLoader";
 
-export default class CleanAction extends ActionWithDirection {
+export default class CleanAction extends _ActionWithDirection {
     constructor(entity, dx = 0, dy = 0) {
         super(entity, dx, dy);
     }

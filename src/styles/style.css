@@ -294,7 +294,8 @@ body {
     display: none;
 }
 
-.select-list {
+.select-list,
+.trade-list {
     background-color: #ccc;
     border-radius: 5px;
     padding: 15px;
@@ -304,17 +305,37 @@ body {
     font-size: 1.5vh;
 }
 
-.select-list__title {
+.select-list__title,
+.trade-list__title {
     margin: 0;
     padding-bottom: 5px;
     border-bottom: 1px solid #666;
     font-size: 2.5vh;
 }
 
-.select-list__option::marker {
+.select-list__option::marker,
+.trade-list__option::marker {
     color: #000;
 }
-.select-list__option.active {
+.select-list__option.active,
+.trade-list__option.active{
     background-color: #1E90FF;
     color: #fff;
+}
+
+.trade-list__option {
+    border: 1px dashed #666;
+    padding: 5px 10px;
+}
+
+.trade-list__left {
+    width: 50%;
+    float: left;
+    border-right: 1px solid #000;
+}
+
+.trade-list__right {
+    width: 50%;
+    float: left;
+
 }

@@ -1,5 +1,6 @@
 import entityGroups from "../../../json/generation/_entityGroups.json";
 import itemGroups from "../../../json/generation/_itemGroups.json";
+import tileGroups from "../../../json/generation/_tileGroups.json";
 import basicDungeon from "../../../json/generation/basic-dungeon.json";
 import tutorial from "../../../json/generation/tutorial.json";
 import MathUtil from "../../util/MathUtil";
@@ -8,10 +9,12 @@ class ChanceLoader {
     constructor() {
         this.entityGroups = new Map();
         this.itemGroups = new Map();
+        this.tileGroups = new Map();
         this.generators = new Map();
 
         this.loadEntityGroups(entityGroups);
         this.loadItemGroups(itemGroups);
+        this.loadTileGroups(tileGroups);
 
         this.loadGenerator("basic-dungeon", basicDungeon);
         this.loadGenerator("tutorial", tutorial);
@@ -26,6 +29,12 @@ class ChanceLoader {
     loadItemGroups(itemGroups) {
         for (const group of itemGroups) {
             this.itemGroups.set(group.id, group.items);
+        }
+    }
+
+    loadTileGroups(tileGroups) {
+        for (const group of tileGroups) {
+            this.tileGroups.set(group.id, group.tiles);
         }
     }
 
@@ -71,6 +80,19 @@ class ChanceLoader {
         }
 
         return itemOrGroup.id;
+    }
+
+    getTileForLevel(name, level) {
+        const chances = this.getChancesForLevel(name, level);
+        const tiles = chances.tiles;
+
+        let tileOrGroup = this.getRandomFromGroup(tiles);
+        while (tileOrGroup.group !== undefined) {
+            const tileGroup = this.tileGroups.get(tileOrGroup.group);
+            tileOrGroup = this.getRandomFromGroup(tileGroup);
+        }
+
+        return tileOrGroup.id;
     }
 
     getRandomFromGroup(group) {

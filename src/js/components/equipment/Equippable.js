@@ -8,27 +8,19 @@ import inventory from "../../ui/Inventory";
 export default class Equippable extends _Component {
     constructor(args = {}) {
         super(args, "equippable");
-        const hasComponent = args.components && args.components.equippable !== undefined;
+
         this.slot = EquipmentType.MAIN_HAND;
         this.minDamage = 0;
         this.maxDamage = 0;
         this.defense = 0;
-        this.blockChance = 0;
         this.health = 0;
-        this.mana = 0;
-        this.strength = 0;
-        this.agility = 0;
-        this.constitution = 0;
-        this.wisdom = 0;
-        this.lightRadius = 0;
+
         this.maxStorage = 0;
         this.storage = [];
 
-        if (hasComponent) {
+        if (this.hasComponent()) {
             const equippable = args.components.equippable;
-            if (equippable.slot !== undefined) {
-                this.slot = equippable.slot;
-            }
+            this.loadArg("slot", EquipmentType.MAIN_HAND);
 
             const damage = equippable.damage;
             if (damage !== undefined) {
@@ -47,45 +39,9 @@ export default class Equippable extends _Component {
                 }
             }
 
-            if (equippable.defense !== undefined) {
-                this.defense = this.parseRandIntBetween(equippable.defense);
-            }
-
-            if (equippable.blockChance !== undefined) {
-                this.blockChance = this.parseRandIntBetween(equippable.blockChance);
-            }
-
-            if (equippable.health !== undefined) {
-                this.health = this.parseRandIntBetween(equippable.health);
-            }
-
-            if (equippable.mana !== undefined) {
-                this.mana = this.parseRandIntBetween(equippable.mana);
-            }
-
-            if (equippable.strength !== undefined) {
-                this.strength = this.parseRandIntBetween(equippable.strength);
-            }
-
-            if (equippable.agility !== undefined) {
-                this.agility = this.parseRandIntBetween(equippable.agility);
-            }
-
-            if (equippable.constitution !== undefined) {
-                this.constitution = this.parseRandIntBetween(equippable.constitution);
-            }
-
-            if (equippable.wisdom !== undefined) {
-                this.wisdom = this.parseRandIntBetween(equippable.wisdom);
-            }
-
-            if (equippable.lightRadius !== undefined) {
-                this.lightRadius = this.parseRandIntBetween(equippable.lightRadius);
-            }
-
-            if (equippable.maxStorage !== undefined) {
-                this.maxStorage = equippable.maxStorage;
-            }
+            this.loadArgRandIntBetween("defense", 0);
+            this.loadArgRandIntBetween("health", 0);
+            this.loadArgRandIntBetween("maxStorage", 0);
 
             if (equippable.storage !== undefined) {
                 for (let i = 0; i < equippable.storage.length; i++) {
@@ -128,37 +84,10 @@ export default class Equippable extends _Component {
             saveJson.equippable.defense = this.defense;
         }
 
-        if (this.blockChance !== 0) {
-            saveJson.equippable.blockChance = this.blockChance;
-        }
-
         if (this.health !== 0) {
             saveJson.equippable.health = this.health;
         }
 
-        if (this.mana !== 0) {
-            saveJson.equippable.mana = this.mana;
-        }
-
-        if (this.strength !== 0) {
-            saveJson.equippable.strength = this.strength;
-        }
-
-        if (this.agility !== 0) {
-            saveJson.equippable.agility = this.agility;
-        }
-
-        if (this.constitution !== 0) {
-            saveJson.equippable.constitution = this.constitution;
-        }
-
-        if (this.wisdom !== 0) {
-            saveJson.equippable.wisdom = this.wisdom;
-        }
-
-        if (this.lightRadius !== 0) {
-            saveJson.equippable.lightRadius = this.lightRadius;
-        }
 
         if (this.maxStorage !== 0) {
             saveJson.equippable.maxStorage = this.maxStorage;
@@ -198,36 +127,8 @@ export default class Equippable extends _Component {
             description += "<span class='item__details-line'>Defense: <span style='color: #fff;'>" + this.defense + "</span></span>";
         }
 
-        if (this.blockChance !== 0) {
-            description += "<span class='item__details-line'>Block Chance: <span style='color: #fff;'>" + this.blockChance + "</span></span>";
-        }
-
         if (this.health !== 0) {
             description += "<span class='item__details-line'>Health: <span style='color: #fff;'>+" + this.health + "</span></span>";
-        }
-
-        if (this.mana !== 0) {
-            description += "<span class='item__details-line'>Mana: <span style='color: #fff;'>+" + this.mana + "</span></span>";
-        }
-
-        if (this.strength !== 0) {
-            description += "<span class='item__details-line'>Strength: <span style='color: #fff;'>+" + this.strength + "</span></span>";
-        }
-
-        if (this.agility !== 0) {
-            description += "<span class='item__details-line'>Agility: <span style='color: #fff;'>+" + this.agility + "</span></span>";
-        }
-
-        if (this.constitution !== 0) {
-            description += "<span class='item__details-line'>Constitution: <span style='color: #fff;'>+" + this.constitution + "</span></span>";
-        }
-
-        if (this.wisdom !== 0) {
-            description += "<span class='item__details-line'>Wisdom: <span style='color: #fff;'>+" + this.wisdom + "</span></span>";
-        }
-
-        if (this.lightRadius !== 0) {
-            description += "<span class='item__details-line'>Light Radius: <span style='color: #fff;'>+" + this.lightRadius + "</span></span>";
         }
 
         if (this.maxStorage === -1) {

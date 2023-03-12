@@ -2,8 +2,8 @@ import _Component from "../_Component";
 import ItemAction from "../../actions/itemAction/ItemAction";
 
 export default class _Consumable extends _Component {
-    constructor(args = {}) {
-        super(args, "consumable");
+    constructor(args = {}, type) {
+        super(args, "consumable", type);
     }
 
     save() {

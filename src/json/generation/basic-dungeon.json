@@ -10,6 +10,9 @@
         ],
         "items": [
             {"group": "potion", "weight": 50}
+        ],
+        "tiles": [
+            {"group": "lootable_containers", "weight":  50}
         ]
     }
 ]

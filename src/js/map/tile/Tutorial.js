@@ -16,6 +16,12 @@ export default class Tutorial extends GameMap {
         this.roomMaxSize = args.roomMaxSize || 8;
         this.level = level;
 
+        this.minTilesByFloor = [
+            {level: 1, amount: 3}
+        ];
+        this.maxTilesByFloor = [
+            {level: 1, amount: 3}
+        ];
         this.minMonstersByFloor = [
             {level: 1, amount: 2}
         ];
@@ -133,6 +139,7 @@ export default class Tutorial extends GameMap {
         //this.tiles[lastRoomCenterX][lastRoomCenterY] = entityLoader.createFromTemplate("stairs_north", {components: {position: {x: lastRoomCenterX, y: lastRoomCenterY}, stairsInteractable: {generator: "basic-dungeon"}}});
 
         for (const room of rooms) {
+            room.placeTiles(this, "tutorial", this.level, this.getFloorAmount(this.minTilesByFloor), this.getFloorAmount(this.maxTilesByFloor));
             room.placeEntities(this, "tutorial", this.level, this.getFloorAmount(this.minMonstersByFloor), this.getFloorAmount(this.maxMonstersByFloor));
             room.placeItems(this, "tutorial", this.level, this.getFloorAmount(this.minItemsByFloor), this.getFloorAmount(this.maxItemsByFloor));
         }

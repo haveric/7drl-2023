@@ -15,6 +15,13 @@
                 "baseHp": 30,
                 "baseDefense": 2,
                 "baseDamage": 5
+            },
+            "inventory": {
+                "items": [
+                    {
+                        "load": "potion_health"
+                    }
+                ]
             }
         }
     }

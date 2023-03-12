@@ -16,6 +16,16 @@ export default class BasicDungeon extends GameMap {
         this.roomMaxSize = args.roomMaxSize || 8;
         this.level = level;
 
+        this.minTilesByFloor = [
+            {level: 1, amount: 2},
+            {level: 4, amount: 3},
+            {level: 7, amount: 4}
+        ];
+        this.maxTilesByFloor = [
+            {level: 1, amount: 4},
+            {level: 4, amount: 6},
+            {level: 7, amount: 8}
+        ];
         this.minMonstersByFloor = [
             {level: 1, amount: 0},
             {level: 4, amount: 1},
@@ -153,6 +163,7 @@ export default class BasicDungeon extends GameMap {
         //this.tiles[lastRoomCenterX][lastRoomCenterY] = entityLoader.createFromTemplate("stairs_north", {components: {position: {x: lastRoomCenterX, y: lastRoomCenterY}, stairsInteractable: {generator: "basic-dungeon"}}});
 
         for (const room of rooms) {
+            room.placeTiles(this, "basic-dungeon", this.level, this.getFloorAmount(this.minTilesByFloor), this.getFloorAmount(this.maxTilesByFloor));
             room.placeEntities(this, "basic-dungeon", this.level, this.getFloorAmount(this.minMonstersByFloor), this.getFloorAmount(this.maxMonstersByFloor));
             room.placeItems(this, "basic-dungeon", this.level, this.getFloorAmount(this.minItemsByFloor), this.getFloorAmount(this.maxItemsByFloor));
         }

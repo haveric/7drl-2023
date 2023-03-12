@@ -1,3 +1,5 @@
+import MathUtil from "../util/MathUtil";
+
 export default class _Component {
     constructor(args = {}, baseType, type) {
         this.args = args;
@@ -56,5 +58,23 @@ export default class _Component {
         }
 
         return array;
+    }
+
+    loadArgRandIntBetween(name) {
+        const value = this.args.components[this.type][name];
+        return this.parseRandIntBetween(value);
+    }
+
+    parseRandIntBetween(value) {
+        if (typeof value === "string") {
+            const split = value.trim().split("-");
+            if (split.length > 1) {
+                return MathUtil.randomInt(parseInt(split[0].trim()), parseInt(split[1].trim()));
+            } else {
+                return parseInt(split[0].trim());
+            }
+        } else {
+            return value;
+        }
     }
 }

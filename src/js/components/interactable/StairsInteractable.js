@@ -120,7 +120,9 @@ export default class StairsInteractable extends _Interactable {
                         return new WaitAction();
                     }
                 }, engine.eventHandler);
-                engine.eventHandler.render((this.x * 64 * engine.scale) + 100, this.y * 64 * engine.scale);
+
+                const entityPosition = entityInteracted.getComponent("position");
+                engine.eventHandler.render((entityPosition.x * 64 * engine.scale) + 100, entityPosition.y * 64 * engine.scale);
             }
         } else {
             const nextLevel = engine.heroMap.level + 1;
