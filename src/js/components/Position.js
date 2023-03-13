@@ -27,7 +27,7 @@ export default class Position extends _Component {
     }
 
     isAt(x, y) {
-        return this.x === x && this.y === y;
+        return this.x.get() === x && this.y.get() === y;
     }
 
     isEqual(position) {
