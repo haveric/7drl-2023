@@ -84,5 +84,11 @@ import Shop from "./js/map/tile/Shop";
         engine.draw();
     }
 
-    init();
+
+    const preloadEntities = window.setInterval(() => {
+        if (entityLoader.isLoaded()) {
+            clearInterval(preloadEntities);
+            init();
+        }
+    }, 0);
 }());

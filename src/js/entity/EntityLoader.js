@@ -1,24 +1,14 @@
 import Actor from "./Actor";
 import Tile from "./Tile";
 import Extend from "../util/Extend";
-import actorsBaseList from "../../json/actors/_base.json";
-import enemiesList from "../../json/actors/enemies.json";
-import heroList from "../../json/actors/hero.json";
-import playerList from "../../json/actors/player.json";
-import tilesBaseList from "../../json/tiles/_base.json";
-import containersList from "../../json/tiles/containers.json";
-import floorsList from "../../json/tiles/floors.json";
-import shopList from "../../json/tiles/shop.json";
-import stairsList from "../../json/tiles/stairs.json";
-import wallsList from "../../json/tiles/walls.json";
-import itemsBaseList from "../../json/items/_base.json";
-import potionsList from "../../json/items/potions.json";
+
 import Item from "./Item";
 
 class EntityLoader {
     constructor() {
         this.types = new Map();
         this.templates = new Map();
+        this.loaded = false;
 
         this.init();
     }
@@ -67,6 +57,10 @@ class EntityLoader {
         }
     }
 
+    isLoaded() {
+        return this.loaded;
+    }
+
     loadTemplate(entities) {
         for (const entity of entities) {
             const id = entity.id;
@@ -79,20 +73,19 @@ class EntityLoader {
     }
 
     loadTemplates() {
-        this.loadTemplate(actorsBaseList);
-        this.loadTemplate(enemiesList);
-        this.loadTemplate(heroList);
-        this.loadTemplate(playerList);
+        const components = require.context("../../json/entities/", true, /\.json$/, "eager");
+        const numToLoad = components.keys().length;
+        let numLoaded = 0;
+        components.keys().forEach(filePath => {
+            components(filePath).then(module => {
+                this.loadTemplate(module);
 
-        this.loadTemplate(tilesBaseList);
-        this.loadTemplate(containersList);
-        this.loadTemplate(floorsList);
-        this.loadTemplate(shopList);
-        this.loadTemplate(stairsList);
-        this.loadTemplate(wallsList);
-
-        this.loadTemplate(itemsBaseList);
-        this.loadTemplate(potionsList);
+                numLoaded ++;
+                if (numLoaded === numToLoad) {
+                    this.loaded = true;
+                }
+            });
+        });
     }
 }
 
