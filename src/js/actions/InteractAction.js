@@ -13,7 +13,7 @@ export default class InteractAction extends _Action {
             return new UnableToPerformAction(this.entity, "Entity doesn't have a position.");
         }
 
-        const tile = gameMap.tiles[position.x][position.y];
+        const tile = gameMap.tiles[position.x.get()][position.y.get()];
         if (tile) {
             const interactable = tile.getComponent("interactable");
             if (interactable) {

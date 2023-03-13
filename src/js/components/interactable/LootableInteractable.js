@@ -1,82 +1,31 @@
 import _Interactable from "./_Interactable";
 import engine from "../../Engine";
-import entityLoader from "../../entity/EntityLoader";
 import LootableEventHandler from "../../event/askUserEventHandler/tradeListEventHandler/LootableEventHandler";
 import WaitAction from "../../actions/WaitAction";
 import inventory from "../../ui/Inventory";
+import Arg from "../_arg/Arg";
+import ArgEntityLoader from "../_arg/ArgEntityLoader";
 
 export default class LootableInteractable extends _Interactable {
     constructor(args = {}) {
         super(args, "lootableInteractable");
 
-        this.isLooted = true;
-        this.isOpen = true;
-        this.capacity = 1;
-        this.openSprite = "";
-        this.closedSprite = "";
-        this.items = [];
-
-        if (this.hasComponent()) {
-            this.isLooted = this.loadArg("isLooted", true);
-            this.isOpen = this.loadArg("isOpen", true);
-            this.capacity = this.loadArg("capacity", 1);
-            this.openSprite = this.loadArg("openSprite", "");
-            this.closedSprite = this.loadArg("closedSprite", "");
-
-            const lootableInteractable = args.components.lootableInteractable;
-            if (lootableInteractable.items !== undefined) {
-                for (let i = 0; i < lootableInteractable.items.length; i++) {
-                    const item = lootableInteractable.items[i];
-                    if (item !== null) {
-                        if (item.load !== undefined) {
-                            this.items[i] = entityLoader.createFromTemplate(item.load, item);
-                        } else {
-                            this.items[i] = entityLoader.create(item);
-                        }
-                        this.items[i].parentEntity = this;
-                    }
-                }
-            }
-        }
-    }
-
-    save() {
-        if (this.cachedSave) {
-            return this.cachedSave;
-        }
-
-        const saveJson = {
-            "lootableInteractable": {}
-        };
-
-        const itemJson = [];
-        for (const item of this.items) {
-            if (item) {
-                itemJson.push(JSON.stringify(item.save()));
-            }
-        }
-
-        saveJson.lootableInteractable.isLooted = this.isLooted;
-        saveJson.lootableInteractable.isOpen = this.isOpen;
-        saveJson.lootableInteractable.items = itemJson;
-        saveJson.lootableInteractable.maxItems = this.maxItems;
-        saveJson.lootableInteractable.openSprite = this.openSprite;
-        saveJson.lootableInteractable.closedSprite = this.closedSprite;
-
-        this.cachedSave = saveJson;
-        return saveJson;
+        this.isLooted = this.addArg(new Arg("isLooted", true));
+        this.isOpen = this.addArg(new Arg("isOpen", true));
+        this.capacity = this.addArg(new Arg("capacity", 1));
+        this.openSprite = this.addArg(new Arg("openSprite", ""));
+        this.closedSprite = this.addArg(new Arg("closedSprite", ""));
+        this.items = this.addArg(new ArgEntityLoader("items"));
     }
 
     interact(entityInteracted) {
         if (engine.isPlayer(entityInteracted)) {
-
-
             engine.eventHandler = new LootableEventHandler(function() {
                 return new WaitAction();
             }, engine.eventHandler, "Viewing " + this.parentEntity.name + "'s Contents", entityInteracted, this);
 
             const entityPosition = entityInteracted.getComponent("position");
-            engine.eventHandler.render((entityPosition.x * 64 * engine.scale) + 100, entityPosition.y * 64 * engine.scale);
+            engine.eventHandler.render((entityPosition.x.get() * 64 * engine.scale) + 100, entityPosition.y.get() * 64 * engine.scale);
         } else if (this.parentEntity.id === "hero") {
             //
         }
@@ -89,8 +38,9 @@ export default class LootableInteractable extends _Interactable {
         }
         let success = false;
 
-        for (let i = 0; i < this.items.length; i++) {
-            const item = this.items[i]?.item;
+        const items = this.items.get();
+        for (let i = 0; i < items.length; i++) {
+            const item = items[i]?.item;
             if (item) {
                 success = this.addPartialStacks(itemToAdd);
                 if (success) {
@@ -109,14 +59,15 @@ export default class LootableInteractable extends _Interactable {
     addFullStacks(item) {
         this.clearSaveCache();
 
+        const items = this.items.get();
         // Add full stack
-        if (this.capacity === -1) {
-            this.items.push(item);
+        if (this.capacity.get() === -1) {
+            items.push(item);
             item.parentEntity = this;
         } else {
-            for (let i = 0; i < this.capacity; i++) {
-                if (!this.items[i]) {
-                    this.items[i] = item;
+            for (let i = 0; i < this.capacity.get(); i++) {
+                if (!items[i]) {
+                    items[i] = item;
                     item.parentEntity = this;
                     return true;
                 }
@@ -135,15 +86,16 @@ export default class LootableInteractable extends _Interactable {
         const originalAmount = item.amount;
         let amountToAdd = item.amount;
 
+        const items = this.items.get();
         let partialMax;
-        if (this.capacity === -1) {
-            partialMax = this.items.length;
+        if (this.capacity.get() === -1) {
+            partialMax = items.length;
         } else {
-            partialMax = this.capacity;
+            partialMax = this.capacity.get();
         }
         // Add partial stack
         for (let i = 0; i < partialMax; i++) {
-            const inventoryItem = this.items[i];
+            const inventoryItem = items[i];
             if (inventoryItem) {
                 if (item.id === inventoryItem.id) {
                     const amountCanAdd = inventoryItem.maxStackSize - inventoryItem.amount;
@@ -173,7 +125,7 @@ export default class LootableInteractable extends _Interactable {
 
     removeByIndex(index) {
         if (index > -1) {
-            this.items.splice(index, 1, null);
+            this.items.get().splice(index, 1, null);
         }
 
         this.clearSaveCache();
@@ -181,25 +133,26 @@ export default class LootableInteractable extends _Interactable {
     }
 
     remove(item) {
-        const index = this.items.indexOf(item);
+        const index = this.items.get().indexOf(item);
         this.removeByIndex(index);
     }
 
     getItem(index) {
-        return this.items[index];
+        return this.items.get()[index];
     }
 
     setItem(index, item) {
-        this.items[index] = item;
+        this.items.get()[index] = item;
         this.clearSaveCache();
     }
 
     move(fromIndex, toIndex) {
+        const items = this.items.get();
         if (fromIndex !== toIndex) {
-            const fromItem = this.items[fromIndex];
+            const fromItem = items[fromIndex];
 
-            this.items[fromIndex] = this.items[toIndex];
-            this.items[toIndex] = fromItem;
+            items[fromIndex] = items[toIndex];
+            items[toIndex] = fromItem;
 
             this.clearSaveCache();
             if (engine.isPlayer(this.parentEntity)) {

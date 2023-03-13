@@ -13,8 +13,8 @@ export default class InteractAtAction extends _ActionWithDirection {
             return new UnableToPerformAction(this.entity, "Entity doesn't have a position.");
         }
 
-        const destX = position.x + this.dx;
-        const destY = position.y + this.dy;
+        const destX = position.x.get() + this.dx;
+        const destY = position.y.get() + this.dy;
 
         const tile = gameMap.tiles[destX][destY];
         if (tile) {

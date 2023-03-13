@@ -93,7 +93,7 @@ export default class BaseFov {
         for (const actor of gameMap.actors) {
             const position = actor.getComponent("position");
             if (position) {
-                if (position.x === x && position.y === y) {
+                if (position.x.get() === x && position.y.get() === y) {
                     this.addVisibleActor(actor);
                 }
             }
@@ -102,7 +102,7 @@ export default class BaseFov {
         for (const item of gameMap.items) {
             const position = item.getComponent("position");
             if (position) {
-                if (position.x === x && position.y === y) {
+                if (position.x.get() === x && position.y.get() === y) {
                     this.addVisibleItem(item);
                 }
             }
@@ -111,10 +111,7 @@ export default class BaseFov {
 
     updateMap() {
         for (const tile of this.previousVisibleTiles) {
-            const fov = tile.getComponent("fov");
-            if (fov) {
-                fov.setVisible(false);
-            }
+            tile.getComponent("fov")?.setVisible(false);
         }
 
         for (const tile of this.visibleTiles) {

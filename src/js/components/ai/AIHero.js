@@ -10,6 +10,7 @@ import AStar from "../../pathfinding/AStar";
 import BumpAction from "../../actions/actionWithDirection/BumpAction";
 import WaitAction from "../../actions/WaitAction";
 import InteractAction from "../../actions/InteractAction";
+import Arg from "../_arg/Arg";
 
 export default class AIHero extends _AI {
     constructor(args = {}) {
@@ -17,76 +18,37 @@ export default class AIHero extends _AI {
 
         this.fov = new AdamMilazzoFov();
         this.chaseLocation = null;
-        this.radius = 10;
-        this.movementActions = 1;
-        this.currentMovement = 0;
+        this.radius = this.addArg(new Arg("radius", 10));
+        this.movementActions = this.addArg(new Arg("movementActions", 1));
+        this.currentMovement = this.addArg(new Arg("currentMovement", 0));
 
-        this.turnsToEnterDungeon = 30;
-        this.status = "Hero will arrive in " + this.turnsToEnterDungeon + " turns.";
-
-        if (this.hasComponent()) {
-            this.radius = this.loadArg("radius", 10);
-            this.movementActions = this.loadArg("movementActions", 1);
-            this.currentMovement = this.loadArg("currentMovement", 0);
-            this.turnsToEnterDungeon = this.loadArg("turnsToEnterDungeon", 30);
-            this.status = this.loadArg("status", "Hero will arrive in " + this.turnsToEnterDungeon + " turns.");
-        }
+        this.turnsToEnterDungeon = this.addArg(new Arg("turnsToEnterDungeon", 30));
+        this.status = this.addArg(new Arg("status", "Hero will arrive in " + this.turnsToEnterDungeon.get() + " turns."));
 
         this.updateUIStatus();
-    }
-
-    save() {
-        if (this.cachedSave) {
-            return this.cachedSave;
-        }
-
-        const saveJson = {
-            aiHero: {}
-        };
-
-        if (this.radius !== 10) {
-            saveJson.aiHero.radius = this.radius;
-        }
-
-        if (this.movementActions !== 1) {
-            saveJson.aiHero.movementActions = this.movementActions;
-        }
-
-        if (this.currentMovement !== 0) {
-            saveJson.aiHero.currentMovement = this.currentMovement;
-        }
-
-        saveJson.aiHero.turnsToEnterDungeon = this.turnsToEnterDungeon;
-        saveJson.aiHero.status = this.status;
-
-        this.cachedSave = saveJson;
-        return saveJson;
     }
 
     decreaseTurnsToEnterDungeon() {
-        this.turnsToEnterDungeon --;
-
-        this.clearSaveCache();
+        this.turnsToEnterDungeon.set(this.turnsToEnterDungeon.get() - 1);
     }
 
     setStatus(newStatus) {
-        this.status = newStatus;
+        this.status.set(newStatus);
 
         this.updateUIStatus();
-        this.clearSaveCache();
     }
 
     updateUIStatus() {
-        HeroInfo.updateStatus(this.status);
+        HeroInfo.updateStatus(this.status.get());
     }
 
     perform(gameMap) {
         const entity = this.parentEntity;
 
-        if (this.turnsToEnterDungeon > 0) {
+        if (this.turnsToEnterDungeon.get() > 0) {
             this.decreaseTurnsToEnterDungeon();
-            this.setStatus("Hero will arrive in " + this.turnsToEnterDungeon + " turns.");
-        } else if (this.turnsToEnterDungeon === 0) {
+            this.setStatus("Hero will arrive in " + this.turnsToEnterDungeon.get() + " turns.");
+        } else if (this.turnsToEnterDungeon.get() === 0) {
             entity.setComponent(new Position({components: {position: {x: 5, y: 0}}}));
             this.decreaseTurnsToEnterDungeon();
 
@@ -96,20 +58,20 @@ export default class AIHero extends _AI {
 
             const entityPosition = entity.getComponent("position");
             if (entityPosition) {
-                this.fov.compute(gameMap, entityPosition.x, entityPosition.y, this.radius);
+                this.fov.compute(gameMap, entityPosition.x.get(), entityPosition.y.get(), this.radius.get());
 
                 const closestEnemy = this.getClosestEnemy();
                 if (closestEnemy) {
                     const closestEnemyPosition = closestEnemy.getComponent("position");
                     this.chaseLocation = {
-                        x: closestEnemyPosition.x,
-                        y: closestEnemyPosition.y
+                        x: closestEnemyPosition.x.get(),
+                        y: closestEnemyPosition.y.get()
                     };
 
                     const distance = entityPosition.distanceTo(closestEnemyPosition);
                     if (distance <= 1) {
                         this.setStatus("Hero is fighting " + closestEnemy.name + "!");
-                        return new MeleeAction(entity, closestEnemyPosition.x - entityPosition.x, closestEnemyPosition.y - entityPosition.y).perform(gameMap);
+                        return new MeleeAction(entity, closestEnemyPosition.x.get() - entityPosition.x.get(), closestEnemyPosition.y.get() - entityPosition.y.get()).perform(gameMap);
                     } else {
                         this.setStatus("Hero is moving to attack " + closestEnemy.name + ".");
                     }
@@ -118,8 +80,8 @@ export default class AIHero extends _AI {
                     if (closestStairs) {
                         const closestStairsPosition = closestStairs.getComponent("position");
                         this.chaseLocation = {
-                            x: closestStairsPosition.x,
-                            y: closestStairsPosition.y
+                            x: closestStairsPosition.x.get(),
+                            y: closestStairsPosition.y.get()
                         };
 
                         const distance = entityPosition.distanceTo(closestStairsPosition);
@@ -131,7 +93,7 @@ export default class AIHero extends _AI {
                         }
                     }
 
-                    if (this.chaseLocation !== null && this.chaseLocation.x === entityPosition.x && this.chaseLocation.y === entityPosition.y) {
+                    if (this.chaseLocation !== null && this.chaseLocation.x === entityPosition.x.get() && this.chaseLocation.y === entityPosition.y.get()) {
                         this.chaseLocation = null;
                     }
 
@@ -223,8 +185,8 @@ export default class AIHero extends _AI {
         const entity = this.parentEntity;
         const entityPosition = entity.getComponent("position");
 
-        this.currentMovement += this.movementActions;
-        if (this.currentMovement >= 1) {
+        this.currentMovement.set(this.movementActions.get());
+        if (this.currentMovement.get() >= 1) {
             // Move towards enemy
             const fovWidth = this.fov.right - this.fov.left;
             const fovHeight = this.fov.bottom - this.fov.top;
@@ -234,8 +196,7 @@ export default class AIHero extends _AI {
                 for (let j = this.fov.top; j < this.fov.bottom; j++) {
                     const tile = gameMap.tiles[i][j];
                     if (tile) {
-                        const blocksMovementComponent = tile.getComponent("blocksMovement");
-                        if (blocksMovementComponent && blocksMovementComponent.blocksMovement) {
+                        if (tile.getComponent("blocksMovement")?.blocksMovement.get()) {
                             continue;
                         }
 
@@ -248,28 +209,28 @@ export default class AIHero extends _AI {
                 if (actor.isAlive()) {
                     const actorPosition = actor.getComponent("position");
                     if (actorPosition) {
-                        cost[actorPosition.x - this.fov.left][actorPosition.y - this.fov.top] += 100;
+                        cost[actorPosition.x.get() - this.fov.left][actorPosition.y.get() - this.fov.top] += 100;
                     }
                 }
             }
 
             const costGraph = new Graph(cost, {diagonal: true});
 
-            const start = costGraph.grid[entityPosition.x - this.fov.left][entityPosition.y - this.fov.top];
+            const start = costGraph.grid[entityPosition.x.get() - this.fov.left][entityPosition.y.get() - this.fov.top];
             const end = costGraph.grid[this.chaseLocation.x - this.fov.left][this.chaseLocation.y - this.fov.top];
             const path = AStar.search(costGraph, start, end);
             let lastAction;
-            while (this.currentMovement >= 1) {
+            while (this.currentMovement.get() >= 1) {
                 if (path && path.length > 0) {
                     const next = path.shift();
                     if (next) {
-                        lastAction = new BumpAction(entity, next.x + this.fov.left - entityPosition.x, next.y + this.fov.top - entityPosition.y).perform(gameMap);
+                        lastAction = new BumpAction(entity, next.x + this.fov.left - entityPosition.x.get(), next.y + this.fov.top - entityPosition.y.get()).perform(gameMap);
                     }
                 } else {
                     lastAction = new WaitAction(entity).perform(gameMap);
                 }
 
-                this.currentMovement -= 1;
+                this.currentMovement.set(this.currentMovement.get() - 1);
             }
 
             return lastAction;

@@ -8,7 +8,7 @@ class ViewInfo extends _UIElement {
 
     updatePlayerDetails(player, playerMap) {
         const playerPosition = player.getComponent("position");
-        const tile = playerMap.tiles[playerPosition.x][playerPosition.y];
+        const tile = playerMap.tiles[playerPosition.x.get()][playerPosition.y.get()];
         this.updatePositionDetails(tile);
     }
 
@@ -18,8 +18,7 @@ class ViewInfo extends _UIElement {
 
     updatePositionDetails(tile) {
         let text;
-        const tileFov = tile.getComponent("fov");
-        if (tileFov && tileFov.explored) {
+        if (tile.getComponent("fov")?.isExplored()) {
             text = this.getDetailsLine(tile.name);
 
         } else {

@@ -16,8 +16,8 @@ export default class BumpAction extends ActionWithDirection {
             return new UnableToPerformAction(this.entity, "Entity doesn't have a position.");
         }
 
-        const destX = position.x + this.dx;
-        const destY = position.y + this.dy;
+        const destX = position.x.get() + this.dx;
+        const destY = position.y.get() + this.dy;
 
         const blockingActor = gameMap.getBlockingActorAtLocation(destX, destY);
         if (blockingActor) {

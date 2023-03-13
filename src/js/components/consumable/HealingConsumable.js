@@ -1,31 +1,13 @@
 import _Consumable from "./_Consumable";
 import UnableToPerformAction from "../../actions/UnableToPerformAction";
 import messageManager from "../../message/MessageManager";
+import Arg from "../_arg/Arg";
 
 export default class HealingConsumable extends _Consumable {
     constructor(args = {}) {
         super(args, "healingConsumable");
 
-        this.amount = 0;
-
-        if (this.hasComponent()) {
-            this.loadArg("amount", 0);
-        }
-    }
-
-    save() {
-        if (this.cachedSave) {
-            return this.cachedSave;
-        }
-
-        const saveJson = {
-            "healingConsumable": {
-                amount: this.amount
-            }
-        };
-
-        this.cachedSave = saveJson;
-        return saveJson;
+        this.amount = this.addArg(new Arg("amount", 0));
     }
 
     /**
@@ -36,7 +18,7 @@ export default class HealingConsumable extends _Consumable {
         const consumer = action.entity;
         const fighter = consumer.getComponent("fighter");
         if (fighter) {
-            const amountHealed = fighter.heal(this.amount);
+            const amountHealed = fighter.heal(this.amount.get());
 
             if (amountHealed > 0) {
                 this.consume();
@@ -51,6 +33,6 @@ export default class HealingConsumable extends _Consumable {
     }
 
     getDescription() {
-        return "<span class='item__details-line'>Recovers <span style='color: #c00;'>" + this.amount + "</span> health</span>";
+        return "<span class='item__details-line'>Recovers <span style='color: #c00;'>" + this.amount.get() + "</span> health</span>";
     }
 }

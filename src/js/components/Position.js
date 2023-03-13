@@ -1,61 +1,27 @@
 import _Component from "./_Component";
+import Arg from "./_arg/Arg";
 
 export default class Position extends _Component {
     constructor(args = {}) {
         super(args, "position");
 
-        this.x = 0;
-        this.y = 0;
-
-        if (this.hasComponent()) {
-            this.x = this.loadArg("x", 0);
-            this.y = this.loadArg("y", 0);
-        }
-    }
-
-    save() {
-        if (this.cachedSave) {
-            return this.cachedSave;
-        }
-
-        const saveJson = {
-            position: {}
-        };
-
-        saveJson.position.x = this.x;
-        saveJson.position.y = this.y;
-
-        this.cachedSave = saveJson;
-        return saveJson;
+        this.x = this.addArg(new Arg("x", 0));
+        this.y = this.addArg(new Arg("y", 0));
     }
 
     moveTo(newX, newY) {
-        this.x = newX;
-        this.y = newY;
-
-        this.clearSaveCache();
+        this.x.set(newX);
+        this.y.set(newY);
     }
 
     move(xOffset, yOffset) {
-        this.x += xOffset;
-        this.y += yOffset;
-
-        this.clearSaveCache();
-    }
-
-    setX(newX) {
-        this.x = newX;
-        this.clearSaveCache();
-    }
-
-    setY(newY) {
-        this.y = newY;
-        this.clearSaveCache();
+        this.x.set(this.x.get() + xOffset);
+        this.y.set(this.y.get() + yOffset);
     }
 
     distanceTo(position) {
-        const dx = Math.abs(position.x - this.x);
-        const dy = Math.abs(position.y - this.y);
+        const dx = Math.abs(position.x.get() - this.x.get());
+        const dy = Math.abs(position.y.get() - this.y.get());
 
         return Math.max(dx, dy);
     }

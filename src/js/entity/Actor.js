@@ -16,6 +16,6 @@ export default class Actor extends _Entity {
 
     isAlive() {
         const fighter = this.getComponent("fighter");
-        return fighter && fighter.hp > 0;
+        return fighter && fighter.hp.get() > 0;
     }
 }

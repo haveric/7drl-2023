@@ -4,68 +4,29 @@ import StairsSelectEventHandler from "../../event/askUserEventHandler/selectList
 import WaitAction from "../../actions/WaitAction";
 import BasicDungeon from "../../map/tile/BasicDungeon";
 import messageManager from "../../message/MessageManager";
+import Arg from "../_arg/Arg";
 
 export default class StairsInteractable extends _Interactable {
     constructor(args = {}) {
         super(args, "stairsInteractable");
 
-        this.map = null;
-        this.x = null;
-        this.y = null;
-        this.generator = null;
-
-        if (this.hasComponent()) {
-            this.map = this.loadArg("map", null);
-            this.x = this.loadArg("x", null);
-            this.y = this.loadArg("y", null);
-            this.generator = this.loadArg("generator", null);
-        }
-    }
-
-    save() {
-        if (this.cachedSave) {
-            return this.cachedSave;
-        }
-
-        const saveJson = {
-            "stairsInteractable": {}
-        };
-
-        if (this.map) {
-            saveJson.stairsInteractable.map = this.map;
-        }
-
-        if (this.x !== null) {
-            saveJson.stairsInteractable.x = this.x;
-        }
-
-        if (this.y !== null) {
-            saveJson.stairsInteractable.y = this.y;
-        }
-
-        if (this.generator !== null) {
-            saveJson.stairsInteractable.generator = this.generator;
-        }
-
-        this.cachedSave = saveJson;
-
-        return saveJson;
+        this.map = this.addArg(new Arg("map", null));
+        this.x = this.addArg(new Arg("x", null));
+        this.y = this.addArg(new Arg("y", null));
+        this.generator = this.addArg(new Arg("generator", null));
     }
 
     setPosition(x, y) {
-        this.x = x;
-        this.y = y;
-        this.clearSaveCache();
+        this.x.set(x);
+        this.y.set(y);
     }
 
     setMap(map) {
-        this.map = map;
-        this.clearSaveCache();
+        this.map.set(map);
     }
 
     setGenerator(generator) {
-        this.generator = generator;
-        this.clearSaveCache();
+        this.generator.set(generator);
     }
 
     interact(entityInteracted) {
@@ -122,11 +83,11 @@ export default class StairsInteractable extends _Interactable {
                 }, engine.eventHandler);
 
                 const entityPosition = entityInteracted.getComponent("position");
-                engine.eventHandler.render((entityPosition.x * 64 * engine.scale) + 100, entityPosition.y * 64 * engine.scale);
+                engine.eventHandler.render((entityPosition.x.get() * 64 * engine.scale) + 100, entityPosition.y.get() * 64 * engine.scale);
             }
         } else {
             const nextLevel = engine.heroMap.level + 1;
-            const nextMapName = (this.generator || this.map) + "-" + nextLevel.toString();
+            const nextMapName = (this.generator.get() || this.map.get()) + "-" + nextLevel.toString();
             const nextMap = engine.getMap(nextMapName);
             if (!nextMap || nextLevel > engine.playerMap.level) {
                 messageManager.text("The hero has gotten too far ahead.").build();
@@ -148,24 +109,23 @@ export default class StairsInteractable extends _Interactable {
             }
         }
 
-        // if (this.map) {
+        // if (this.map.get()) {
         //     // const entity = this.parentEntity;
         //     // const position = entity.getComponent("position");
-        //     // position.x = this.x;
-        //     // position.y = this.y;
+        //     // position.moveTo(this.x.get(), this.y.get());
         //     //
         //     // if (engine.isPlayer(entityInteracted)) {
         //     //     engine.eventHandler = new StairsSelectEventHandler(engine.eventHandler);
-        //     //     engine.eventHandler.render((this.x * 64 * engine.scale) + 100, this.y * 64 * engine.scale);
+        //     //     engine.eventHandler.render((this.x.get() * 64 * engine.scale) + 100, this.y.get() * 64 * engine.scale);
         //     // } else {
         //     //     //
         //     // }
-        // } else if (this.generator) {
+        // } else if (this.generator.get()) {
         //     const args = {};
         //     if (engine.heroMap.level) {
         //         args.level = engine.heroMap.level + 1;
         //     }
-        //     const newMap = engine.mapLoader.loadMap(this.generator, args);
+        //     const newMap = engine.mapLoader.loadMap(this.generator.get(), args);
         //     newMap.create();
         //     newMap.explored = true;
         //

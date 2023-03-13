@@ -26,7 +26,7 @@ export default class _Consumable extends _Component {
         return new ItemAction(this.getConsumer(), this.getItem());
     }
 
-    activate() {
+    activate(action) { // eslint-disable-line no-unused-vars
         console.error("Not Implemented");
     }
 

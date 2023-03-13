@@ -42,7 +42,7 @@ export default class _Entity {
     draw(xTileOffset, yTileOffset) {
         const position = this.getComponent("position");
         if (position) {
-            engine.spriteManager.getImage(this.sprite).drawImage(sceneState.ctx, (position.x + xTileOffset) * 64, (position.y + yTileOffset) * 64);
+            engine.spriteManager.getImage(this.sprite).drawImage(sceneState.ctx, (position.x.get() + xTileOffset) * 64, (position.y.get() + yTileOffset) * 64);
         }
     }
 

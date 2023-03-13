@@ -1,45 +1,27 @@
 import _Component from "./_Component";
+import Arg from "./_arg/Arg";
 
 export default class Fov extends _Component {
     constructor(args) {
         super(args, "fov");
 
-        this.explored = false;
-        this.visible = false;
-
-        if (this.hasComponent()) {
-            this.explored = this.loadArg("explored", false);
-            this.visible = this.loadArg("visible", false);
-        }
+        this.explored = this.addArg(new Arg("explored", false));
+        this.visible = this.addArg(new Arg("visible", false));
     }
 
-    save() {
-        if (this.cachedSave) {
-            return this.cachedSave;
-        }
-
-        const saveJson = {
-            fov: {}
-        };
-
-        if (this.explored !== false) {
-            saveJson.fov.explored = this.explored;
-        }
-
-        if (this.visible !== false) {
-            saveJson.fov.visible = this.visible;
-        }
-
-        this.cachedSave = saveJson;
-        return saveJson;
+    isExplored() {
+        return this.explored.get();
     }
 
     setExplored(explored) {
-        this.explored = explored;
-        this.clearSaveCache();
+        this.explored.set(explored);
+    }
+
+    isVisible() {
+        return this.visible.get();
     }
 
     setVisible(visible) {
-        this.visible = visible;
+        this.visible.set(visible);
     }
 }

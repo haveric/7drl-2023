@@ -57,8 +57,8 @@ import Shop from "./js/map/tile/Shop";
 
         engine.needsRenderUpdate = true;
         const playerPosition = engine.player.getComponent("position");
-        engine.heroMap.revealFromPosition(playerPosition.x, playerPosition.y, 20, 0);
-        engine.player.fov.compute(engine.playerMap, playerPosition.x, playerPosition.y, 5);
+        engine.heroMap.revealFromPosition(playerPosition.x.get(), playerPosition.y.get(), 20, 0);
+        engine.player.fov.compute(engine.playerMap, playerPosition.x.get(), playerPosition.y.get(), 5);
         engine.player.fov.updateMap();
 
 

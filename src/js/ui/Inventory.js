@@ -117,7 +117,7 @@ class Inventory extends _UIElement {
         this.itemsOnGround = [];
         for (const item of engine.gameMap.items) {
             const itemPosition = item.getComponent("position");
-            if (position.x === itemPosition.x && position.y === itemPosition.y) {
+            if (position.x.get() === itemPosition.x.get() && position.y.get() === itemPosition.y.get()) {
                 this.itemsOnGround.push(item);
             }
         }

@@ -12,8 +12,8 @@ export default class MovementAction extends ActionWithDirection {
             return new UnableToPerformAction(this.entity, "Entity doesn't have a position.");
         }
 
-        const destX = position.x + this.dx;
-        const destY = position.y + this.dy;
+        const destX = position.x.get() + this.dx;
+        const destY = position.y.get() + this.dy;
 
         if (!gameMap.isInBounds(destX, destY)) {
             return new UnableToPerformAction(this.entity, "Location is outside the map!");
@@ -35,8 +35,7 @@ export default class MovementAction extends ActionWithDirection {
 
         const tile = gameMap.tiles[destX][destY];
         if (tile) {
-            const blocksMovementComponent = tile.getComponent("blocksMovement");
-            if (blocksMovementComponent && blocksMovementComponent.blocksMovement) {
+            if (tile.getComponent("blocksMovement")?.blocksMovement.get()) {
                 return new UnableToPerformAction(this.entity, "There's a " + tile.name + " in the way!");
             }
         }

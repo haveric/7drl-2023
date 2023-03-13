@@ -15,6 +15,6 @@ export default class Tile extends _Entity {
     }
 
     isWall() {
-        return this.getComponent("blocksMovement")?.blocksMovement;
+        return this.getComponent("blocksMovement")?.blocksMovement.get();
     }
 }

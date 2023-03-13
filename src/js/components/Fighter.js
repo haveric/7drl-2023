@@ -5,69 +5,43 @@ import playerInfo from "../ui/PlayerInfo";
 import MathUtil from "../util/MathUtil";
 import heroInfo from "../ui/HeroInfo";
 import engine from "../Engine";
+import Arg from "./_arg/Arg";
 
 export default class Fighter extends _Component {
     constructor(args) {
         super(args, "fighter");
 
-        this.baseHp = 0;
-        this.hp = null;
-        this.baseDefense = 0;
-        this.baseDamage = 0;
-
-        if (this.hasComponent()) {
-            this.baseHp = this.loadArg("baseHp", 0);
-            this.hp = this.loadArg("hp", null);
-            this.baseDefense = this.loadArg("baseDefense", 0);
-            this.baseDamage = this.loadArg("baseDamage", 0);
-        }
+        this.baseHp = this.addArg(new Arg("baseHp", 0));
+        this.hp = this.addArg(new Arg("hp", null));
+        this.baseDefense = this.addArg(new Arg("baseDefense", 0));
+        this.baseDamage = this.addArg(new Arg("baseDamage", 0));
 
         this.minDamage = 0;
         this.maxDamage = 0;
         this.defense = 0;
     }
 
-    save() {
-        if (this.cachedSave) {
-            return this.cachedSave;
-        }
-
-        const saveJson = {
-            fighter: {}
-        };
-
-        saveJson.fighter.baseHp = this.baseHp;
-        saveJson.fighter.hp = this.hp;
-        saveJson.fighter.maxHp = this.maxHp;
-        saveJson.fighter.baseDefense = this.baseDefense;
-        saveJson.fighter.baseDamage = this.baseDamage;
-
-        this.cachedSave = saveJson;
-        return saveJson;
-    }
-
     setHp(newHp) {
-        this.hp = Math.max(0, Math.min(newHp, this.maxHp));
+        this.hp.set(Math.max(0, Math.min(newHp, this.maxHp)));
         this.updateUI();
-        this.clearSaveCache();
     }
 
     heal(amount) {
-        if (this.hp === this.maxHp) {
+        if (this.hp.get() === this.maxHp) {
             return 0;
         }
 
-        const newHp = Math.min(this.maxHp, this.hp + amount);
-        const healedHp = newHp - this.hp;
+        const newHp = Math.min(this.maxHp, this.hp.get() + amount);
+        const healedHp = newHp - this.hp.get();
         this.setHp(newHp);
 
         return healedHp;
     }
 
     takeDamage(damage) {
-        this.setHp(this.hp - damage);
+        this.setHp(this.hp.get() - damage);
 
-        if (this.hp <= 0) {
+        if (this.hp.get() <= 0) {
             this.die();
         }
     }
@@ -104,6 +78,7 @@ export default class Fighter extends _Component {
         entity.name = "Corpse of " + this.name;
 
         this.clearSaveCache();
+        entity.clearSaveCache();
     }
 
     getDamage() {
@@ -127,7 +102,7 @@ export default class Fighter extends _Component {
     }
 
     getMaxHp() {
-        const statHp = this.baseHp;
+        const statHp = this.baseHp.get();
 
         let equipmentHp = 0;
         const equipment = this.parentEntity.getComponent("equipment");
@@ -143,8 +118,8 @@ export default class Fighter extends _Component {
 
     recalculateStats(clear = true) {
         const newMax = this.getMaxHp();
-        if (this.hp === null || this.hp >= this.maxHp) {
-            this.hp = newMax;
+        if (this.hp.get() === null || this.hp >= this.maxHp) {
+            this.hp.set(newMax);
         }
         this.maxHp = newMax;
 
@@ -159,7 +134,7 @@ export default class Fighter extends _Component {
     }
 
     calculateDamage() {
-        const statDamage = this.baseDamage;
+        const statDamage = this.baseDamage.get();
 
         let equipmentMinDamage = 0;
         let equipmentMaxDamage = 0;
@@ -177,7 +152,7 @@ export default class Fighter extends _Component {
     }
 
     calculateDefense() {
-        const statDefense = this.baseDefense;
+        const statDefense = this.baseDefense.get();
 
         let equipmentDefense = 0;
         const equipment = this.parentEntity.getComponent("equipment");
@@ -194,11 +169,11 @@ export default class Fighter extends _Component {
 
     updateUI() {
         if (engine.isPlayer(this.parentEntity)) {
-            playerInfo.updateHealth(this.hp, this.maxHp);
+            playerInfo.updateHealth(this.hp.get(), this.maxHp);
             playerInfo.updatePower(this.getDamageDisplay());
             playerInfo.updateDefense(this.defense);
         } else if (this.parentEntity.id === "hero") {
-            heroInfo.updateHealth(this.hp, this.maxHp);
+            heroInfo.updateHealth(this.hp.get(), this.maxHp);
             heroInfo.updatePower(this.getDamageDisplay());
             heroInfo.updateDefense(this.defense);
         }

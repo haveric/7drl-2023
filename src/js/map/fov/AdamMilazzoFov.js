@@ -150,7 +150,7 @@ export default class AdamMilazzoFov extends BaseFov {
             if (wallTile) {
                 const blocksFov = wallTile.getComponent("blocksFov");
                 if (blocksFov) {
-                    blocksLight = blocksFov.blocksFov;
+                    blocksLight = blocksFov.blocksFov.get();
                 }
             }
         }

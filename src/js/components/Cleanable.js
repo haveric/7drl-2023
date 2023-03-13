@@ -1,32 +1,12 @@
 import _Component from "./_Component";
+import Arg from "./_arg/Arg";
 
 export default class Cleanable extends _Component {
     constructor(args = {}) {
         super(args, "cleanable");
 
-        this.decreasesTo = "";
-        this.increasesTo = "";
-
-        if (this.hasComponent()) {
-            this.decreasesTo = this.loadArg("decreasesTo", "");
-            this.increasesTo = this.loadArg("increasesTo", "");
-        }
-    }
-
-    save() {
-        if (this.cachedSave) {
-            return this.cachedSave;
-        }
-
-        const saveJson = {
-            cleanable: {}
-        };
-
-        saveJson.cleanable.decreasesTo = this.decreasesTo;
-        saveJson.cleanable.increasesTo = this.increasesTo;
-
-        this.cachedSave = saveJson;
-        return saveJson;
+        this.decreasesTo = this.addArg(new Arg("decreasesTo", ""));
+        this.increasesTo = this.addArg(new Arg("increasesTo", ""));
     }
 
     perform() {}

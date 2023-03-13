@@ -65,7 +65,7 @@ export default class DefaultPlayerEventHandler extends _EventHandler {
         //         this.targetedTile = tile;
         //
         //         const tileFov = tile.getComponent("fov");
-        //         if (tileFov && tileFov.visible) {
+        //         if (tileFov && tileFov.isVisible()) {
         //             const costGraph = engine.player.fov.getCostGraph();
         //             const playerHex = engine.player.getComponent("hex");
         //             const tileHex = tile.getComponent("hex");

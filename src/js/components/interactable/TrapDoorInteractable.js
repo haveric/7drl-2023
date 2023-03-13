@@ -1,71 +1,32 @@
 import _Interactable from "./_Interactable";
 import engine from "../../Engine";
+import Arg from "../_arg/Arg";
 
 export default class TrapDoorInteractable extends _Interactable {
     constructor(args = {}) {
         super(args, "trapDoorInteractable");
 
-        this.map = null;
-        this.x = null;
-        this.y = null;
-        this.generator = null;
-
-        if (this.hasComponent()) {
-            this.map = this.loadArg("map", null);
-            this.x = this.loadArg("x", null);
-            this.y = this.loadArg("y", null);
-            this.generator = this.loadArg("generator", null);
-        }
-    }
-
-    save() {
-        if (this.cachedSave) {
-            return this.cachedSave;
-        }
-
-        const saveJson = {
-            "trapDoorInteractable": {}
-        };
-
-        if (this.map) {
-            saveJson.trapDoorInteractable.map = this.map;
-        }
-
-        if (this.x !== null) {
-            saveJson.trapDoorInteractable.x = this.x;
-        }
-
-        if (this.y !== null) {
-            saveJson.trapDoorInteractable.y = this.y;
-        }
-
-        if (this.generator !== null) {
-            saveJson.trapDoorInteractable.generator = this.generator;
-        }
-
-        this.cachedSave = saveJson;
-
-        return saveJson;
+        this.map = this.addArg(new Arg("map", null));
+        this.x = this.addArg(new Arg("x", null));
+        this.y = this.addArg(new Arg("y", null));
+        this.generator = this.addArg(new Arg("generator", null));
     }
 
     setPosition(x, y) {
-        this.x = x;
-        this.y = y;
-        this.clearSaveCache();
+        this.x.set(x);
+        this.y.set(y);
     }
 
     setMap(map) {
-        this.map = map;
-        this.clearSaveCache();
+        this.map.set(map);
     }
 
     setGenerator(generator) {
-        this.generator = generator;
-        this.clearSaveCache();
+        this.generator.set(generator);
     }
 
     interact(/*entityInteracted*/) {
-        if (this.map) {
+        if (this.map.get()) {
             // const entity = this.parentEntity;
             // const position = entity.getComponent("position");
             // position.x = this.x;
@@ -77,12 +38,12 @@ export default class TrapDoorInteractable extends _Interactable {
             // } else {
             //     //
             // }
-        } else if (this.generator) {
+        } else if (this.generator.get()) {
             const args = {};
             if (engine.playerMap.level) {
                 args.level = engine.playerMap.level;
             }
-            const newMap = engine.mapLoader.loadMap(this.generator, args);
+            const newMap = engine.mapLoader.loadMap(this.generator.get(), args);
             newMap.create();
             newMap.explored = true;
 

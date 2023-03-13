@@ -300,7 +300,7 @@ export default class GameMap {
         for (const actor of this.actors) {
             if (actor.isAlive()) {
                 const position = actor.getComponent("position");
-                if (position && x === position.x && y === position.y) {
+                if (position && x === position.x.get() && y === position.y.get()) {
                     aliveActor = actor;
                     break;
                 }
@@ -314,9 +314,8 @@ export default class GameMap {
         let blockingActor = null;
         for (const actor of this.actors) {
             const position = actor.getComponent("position");
-            if (position && x === position.x && y === position.y) {
-                const component = actor.getComponent("blocksMovement");
-                if (component && component.blocksMovement) {
+            if (position && x === position.x.get() && y === position.y.get()) {
+                if (actor.getComponent("blocksMovement")?.blocksMovement.get()) {
                     blockingActor = actor;
                     break;
                 }
@@ -330,7 +329,7 @@ export default class GameMap {
         let cleanableActor = null;
         for (const actor of this.actors) {
             const position = actor.getComponent("position");
-            if (position && x === position.x && y === position.y) {
+            if (position && x === position.x.get() && y === position.y.get()) {
                 const component = actor.getComponent("cleanable");
                 if (component) {
                     cleanableActor = actor;

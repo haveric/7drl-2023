@@ -1,59 +1,15 @@
 import _Component from "./_Component";
-import entityLoader from "../entity/EntityLoader";
 import engine from "../Engine";
 import inventory from "../ui/Inventory";
+import Arg from "./_arg/Arg";
+import ArgEntityLoader from "./_arg/ArgEntityLoader";
 
 export default class Inventory extends _Component {
     constructor(args = {}) {
         super(args, "inventory");
 
-        this.capacity = 3;
-        this.items = [];
-
-        if (this.hasComponent()) {
-            this.capacity = this.loadArg("capacity", 3);
-
-            const inventory = args.components.inventory;
-            if (inventory.items !== undefined) {
-                for (let i = 0; i < inventory.items.length; i++) {
-                    const item = inventory.items[i];
-                    if (item !== null) {
-                        if (item.load !== undefined) {
-                            this.items[i] = entityLoader.createFromTemplate(item.load, item);
-                        } else {
-                            this.items[i] = entityLoader.create(item);
-                        }
-                        this.items[i].parentEntity = this;
-                    }
-                }
-            }
-        }
-    }
-
-    save() {
-        if (this.cachedSave) {
-            return this.cachedSave;
-        }
-
-        const saveJson = {
-            inventory: {}
-        };
-
-        if (this.capacity !== 3) {
-            saveJson.inventory.capacity = this.capacity;
-        }
-
-        const itemJson = [];
-        for (const item of this.items) {
-            if (item) {
-                itemJson.push(JSON.stringify(item.save()));
-            }
-        }
-
-        saveJson.inventory.items = itemJson;
-
-        this.cachedSave = saveJson;
-        return saveJson;
+        this.capacity = this.addArg(new Arg("capacity", 3));
+        this.items = this.addArg(new ArgEntityLoader("items"));
     }
 
     addItem(itemToAdd) {
@@ -62,8 +18,9 @@ export default class Inventory extends _Component {
         }
         let success = false;
 
-        for (let i = 0; i < this.items.length; i++) {
-            const item = this.items[i]?.item;
+        const items = this.items.get();
+        for (let i = 0; i < items.length; i++) {
+            const item = items[i]?.item;
             if (item) {
                 success = this.addPartialStacks(itemToAdd);
                 if (success) {
@@ -80,17 +37,17 @@ export default class Inventory extends _Component {
     }
 
     addFullStacks(item) {
-        console.log("Item: ", item);
         this.clearSaveCache();
 
+        const items = this.items.get();
         // Add full stack
-        if (this.capacity === -1) {
-            this.items.push(item);
+        if (this.capacity.get() === -1) {
+            items.push(item);
             item.parentEntity = this;
         } else {
-            for (let i = 0; i < this.capacity; i++) {
-                if (!this.items[i]) {
-                    this.items[i] = item;
+            for (let i = 0; i < this.capacity.get(); i++) {
+                if (!items[i]) {
+                    items[i] = item;
                     item.parentEntity = this;
                     return true;
                 }
@@ -109,15 +66,16 @@ export default class Inventory extends _Component {
         const originalAmount = item.amount;
         let amountToAdd = item.amount;
 
+        const items = this.items.get();
         let partialMax;
-        if (this.capacity === -1) {
-            partialMax = this.items.length;
+        if (this.capacity.get() === -1) {
+            partialMax = items.length;
         } else {
-            partialMax = this.capacity;
+            partialMax = this.capacity.get();
         }
         // Add partial stack
         for (let i = 0; i < partialMax; i++) {
-            const inventoryItem = this.items[i];
+            const inventoryItem = items[i];
             if (inventoryItem) {
                 if (item.id === inventoryItem.id) {
                     const amountCanAdd = inventoryItem.maxStackSize - inventoryItem.amount;
@@ -147,7 +105,7 @@ export default class Inventory extends _Component {
 
     removeByIndex(index) {
         if (index > -1) {
-            this.items.splice(index, 1, null);
+            this.items.get().splice(index, 1, null);
         }
 
         this.clearSaveCache();
@@ -155,25 +113,26 @@ export default class Inventory extends _Component {
     }
 
     remove(item) {
-        const index = this.items.indexOf(item);
+        const index = this.items.get().indexOf(item);
         this.removeByIndex(index);
     }
 
     getItem(index) {
-        return this.items[index];
+        return this.items.get()[index];
     }
 
     setItem(index, item) {
-        this.items[index] = item;
+        this.items.get()[index] = item;
         this.clearSaveCache();
     }
 
     move(fromIndex, toIndex) {
+        const items = this.items.get();
         if (fromIndex !== toIndex) {
-            const fromItem = this.items[fromIndex];
+            const fromItem = items[fromIndex];
 
-            this.items[fromIndex] = this.items[toIndex];
-            this.items[toIndex] = fromItem;
+            items[fromIndex] = items[toIndex];
+            items[toIndex] = fromItem;
 
             this.clearSaveCache();
             if (engine.isPlayer(this.parentEntity)) {

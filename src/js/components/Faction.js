@@ -1,32 +1,12 @@
 import _Component from "./_Component";
+import ArgSimpleArray from "./_arg/ArgSimpleArray";
 
 export default class Faction extends _Component {
     constructor(args = {}) {
         super(args, "faction");
 
-        this.factions = [];
-        this.enemies = [];
-
-        if (this.hasComponent()) {
-            this.factions = this.loadArgArray("factions");
-            this.enemies = this.loadArgArray("enemies");
-        }
-    }
-
-    save() {
-        if (this.cachedSave) {
-            return this.cachedSave;
-        }
-
-        const saveJson = {
-            faction: {}
-        };
-
-        saveJson.faction.factions = this.factions.toString();
-        saveJson.faction.enemies = this.enemies.toString();
-
-        this.cachedSave = saveJson;
-        return saveJson;
+        this.factions = this.addArg(new ArgSimpleArray("factions"));
+        this.enemies = this.addArg(new ArgSimpleArray("enemies"));
     }
 
     /**
@@ -38,8 +18,8 @@ export default class Faction extends _Component {
             return false;
         }
 
-        for (const faction of this.factions) {
-            if (otherFaction.enemies.indexOf(faction) > -1) {
+        for (const faction of this.factions.get()) {
+            if (otherFaction.enemies.get().indexOf(faction) > -1) {
                 return true;
             }
         }

@@ -9,5 +9,7 @@ export default class _Interactable extends _Component {
         return super.save();
     }
 
-    interact() {}
+    interact(entityInteracted) { // eslint-disable-line no-unused-vars
+
+    }
 }

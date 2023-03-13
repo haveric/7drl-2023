@@ -15,18 +15,20 @@ export default class LootableEventHandler extends _TradeListEventHandler {
     updateTradeOptions() {
         const playerInventory = this.entityInteracted.getComponent("inventory");
         const playerInventoryWithEmpties = [];
-        for (const item of playerInventory.items) {
+        const playerItems = playerInventory.items.get();
+        for (const item of playerItems) {
             playerInventoryWithEmpties.push(item);
         }
-        while (playerInventoryWithEmpties.length < playerInventory.capacity) {
+        while (playerInventoryWithEmpties.length < playerInventory.capacity.get()) {
             playerInventoryWithEmpties.push(null);
         }
 
         const lootableItemsWithEmpties = [];
-        for (const item of this.lootableInteractable.items) {
+        const lootableItems = this.lootableInteractable.items.get();
+        for (const item of lootableItems) {
             lootableItemsWithEmpties.push(item);
         }
-        while(lootableItemsWithEmpties.length < this.lootableInteractable.capacity) {
+        while(lootableItemsWithEmpties.length < this.lootableInteractable.capacity.get()) {
             lootableItemsWithEmpties.push(null);
         }
 
@@ -37,7 +39,6 @@ export default class LootableEventHandler extends _TradeListEventHandler {
         const entityInventory = this.entityInteracted.getComponent("inventory");
 
         if (leftActiveIndex > -1) {
-            console.log(entityInventory, this.lootableInteractable);
             const itemToMove = entityInventory.getItem(leftActiveIndex);
             if (this.lootableInteractable.addItem(itemToMove)) {
                 entityInventory.removeByIndex(leftActiveIndex);

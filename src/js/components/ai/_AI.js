@@ -9,7 +9,7 @@ export default class _AI extends _Component {
         return super.save();
     }
 
-    perform(/*gameMap*/) {
+    perform(gameMap) { // eslint-disable-line no-unused-vars
         console.error("Not Implemented");
     }
 }

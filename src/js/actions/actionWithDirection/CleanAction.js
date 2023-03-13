@@ -13,18 +13,18 @@ export default class CleanAction extends _ActionWithDirection {
             return new UnableToPerformAction(this.entity, "Entity doesn't have a position.");
         }
 
-        const destX = position.x + this.dx;
-        const destY = position.y + this.dy;
+        const destX = position.x.get() + this.dx;
+        const destY = position.y.get() + this.dy;
 
         const cleanableActor = gameMap.getCleanableActorAtLocation(destX, destY);
         if (cleanableActor) {
             const cleanable = cleanableActor.getComponent("cleanable");
             if (cleanable) {
-                const decreasesTo = cleanable.decreasesTo;
+                const decreasesTo = cleanable.decreasesTo.get();
                 if (decreasesTo) {
                     const cleanablePosition = cleanableActor.getComponent("position");
 
-                    const changedEntity = entityLoader.createFromTemplate(decreasesTo, {components: {position: {x: cleanablePosition.x, y: cleanablePosition.y}}});
+                    const changedEntity = entityLoader.createFromTemplate(decreasesTo, {components: {position: {x: cleanablePosition.x.get(), y: cleanablePosition.y.get()}}});
                     gameMap.addActor(changedEntity);
                 }
 

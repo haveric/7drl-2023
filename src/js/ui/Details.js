@@ -13,8 +13,8 @@ class Details extends _UIElement {
 
     getPosition(entity) {
         const position = entity.getComponent("position");
-        const x = position.x;
-        const y = position.y;
+        const x = position.x.get();
+        const y = position.y.get();
         return "<span class='details__line'>Looking at: X:" + x + " - Y:" + y + "</span>";
     }
 

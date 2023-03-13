@@ -7,6 +7,7 @@ import Graph from "../../pathfinding/Graph";
 import WaitAction from "../../actions/WaitAction";
 import BumpAction from "../../actions/actionWithDirection/BumpAction";
 import MathUtil from "../../util/MathUtil";
+import Arg from "../_arg/Arg";
 
 export default class AIMeleeChase extends AI {
     constructor(args = {}) {
@@ -14,47 +15,16 @@ export default class AIMeleeChase extends AI {
 
         this.fov = new AdamMilazzoFov();
         this.chaseLocation = null;
-        this.radius = 5;
-        this.movementActions = 1;
-        this.currentMovement = 0;
-
-        if (this.hasComponent()) {
-            this.radius = this.loadArg("radius", 5);
-            this.movementActions = this.loadArg("movementActions", 1);
-            this.currentMovement = this.loadArg("currentMovement", 0);
-        }
-    }
-
-    save() {
-        if (this.cachedSave) {
-            return this.cachedSave;
-        }
-
-        const saveJson = {
-            "aiMeleeChase": {}
-        };
-
-        if (this.radius !== 5) {
-            saveJson.aiMeleeChase.radius = this.radius;
-        }
-
-        if (this.movementActions !== 1) {
-            saveJson.aiMeleeChase.movementActions = this.movementActions;
-        }
-
-        if (this.currentMovement !== 0) {
-            saveJson.aiMeleeChase.currentMovement = this.currentMovement;
-        }
-
-        this.cachedSave = saveJson;
-        return saveJson;
+        this.radius = this.addArg(new Arg("radius", 5));
+        this.movementActions = this.addArg(new Arg("movementActions", 1));
+        this.currentMovement = this.addArg(new Arg("currentMovement", 0));
     }
 
     perform(gameMap) {
         const entity = this.parentEntity;
         const entityPosition = entity.getComponent("position");
         if (entityPosition) {
-            this.fov.compute(gameMap, entityPosition.x, entityPosition.y, this.radius);
+            this.fov.compute(gameMap, entityPosition.x.get(), entityPosition.y.get(), this.radius.get());
 
             let closestEnemies = [];
             let closestDistance = null;
@@ -67,10 +37,7 @@ export default class AIMeleeChase extends AI {
                             const actorPosition = actor.getComponent("position");
 
                             if (actorPosition) {
-                                const dx = Math.abs(actorPosition.x - entityPosition.x);
-                                const dy = Math.abs(actorPosition.y - entityPosition.y);
-                                const distance = Math.max(dx, dy);
-
+                                const distance = actorPosition.distanceTo(entityPosition);
                                 if (closestDistance === null || distance < closestDistance) {
                                     closestEnemies = [];
                                     closestEnemies.push(actor);
@@ -95,15 +62,15 @@ export default class AIMeleeChase extends AI {
             if (closestEnemy) {
                 const closestEnemyPosition = closestEnemy.getComponent("position");
                 this.chaseLocation = {
-                    x: closestEnemyPosition.x,
-                    y: closestEnemyPosition.y
+                    x: closestEnemyPosition.x.get(),
+                    y: closestEnemyPosition.y.get()
                 };
 
                 if (closestDistance <= 1) {
-                    return new MeleeAction(entity, closestEnemyPosition.x - entityPosition.x, closestEnemyPosition.y - entityPosition.y).perform(gameMap);
+                    return new MeleeAction(entity, closestEnemyPosition.x.get() - entityPosition.x.get(), closestEnemyPosition.y.get() - entityPosition.y.get()).perform(gameMap);
                 }
             } else {
-                if (this.chaseLocation !== null && this.chaseLocation.x === entityPosition.x && this.chaseLocation.y === entityPosition.y) {
+                if (this.chaseLocation !== null && this.chaseLocation.x === entityPosition.x.get() && this.chaseLocation.y === entityPosition.y.get()) {
                     this.chaseLocation = null;
                 }
 
@@ -112,9 +79,9 @@ export default class AIMeleeChase extends AI {
                 }
             }
 
-            this.currentMovement += this.movementActions;
+            this.currentMovement.set(this.currentMovement.get() + this.movementActions.get());
 
-            if (this.currentMovement >= 1) {
+            if (this.currentMovement.get() >= 1) {
                 // Move towards enemy
                 const fovWidth = this.fov.right - this.fov.left;
                 const fovHeight = this.fov.bottom - this.fov.top;
@@ -124,8 +91,7 @@ export default class AIMeleeChase extends AI {
                     for (let j = this.fov.top; j < this.fov.bottom; j++) {
                         const tile = gameMap.tiles[i][j];
                         if (tile) {
-                            const blocksMovementComponent = tile.getComponent("blocksMovement");
-                            if (blocksMovementComponent && blocksMovementComponent.blocksMovement) {
+                            if (tile.getComponent("blocksMovement")?.blocksMovement.get()) {
                                 continue;
                             }
 
@@ -138,18 +104,18 @@ export default class AIMeleeChase extends AI {
                     if (actor.isAlive()) {
                         const actorPosition = actor.getComponent("position");
                         if (actorPosition) {
-                            cost[actorPosition.x - this.fov.left][actorPosition.y - this.fov.top] += 100;
+                            cost[actorPosition.x.get() - this.fov.left][actorPosition.y.get() - this.fov.top] += 100;
                         }
                     }
                 }
 
                 const costGraph = new Graph(cost, {diagonal: true});
 
-                const start = costGraph.grid[entityPosition.x - this.fov.left][entityPosition.y - this.fov.top];
+                const start = costGraph.grid[entityPosition.x.get() - this.fov.left][entityPosition.y.get() - this.fov.top];
                 const end = costGraph.grid[this.chaseLocation.x - this.fov.left][this.chaseLocation.y - this.fov.top];
                 const path = AStar.search(costGraph, start, end);
                 let lastAction;
-                while (this.currentMovement >= 1) {
+                while (this.currentMovement.get() >= 1) {
                     if (path && path.length > 0) {
                         const next = path.shift();
                         if (next) {
@@ -159,7 +125,7 @@ export default class AIMeleeChase extends AI {
                         lastAction = new WaitAction(entity).perform(gameMap);
                     }
 
-                    this.currentMovement -= 1;
+                    this.currentMovement.set(this.currentMovement.get() - 1);
                 }
 
                 return lastAction;
