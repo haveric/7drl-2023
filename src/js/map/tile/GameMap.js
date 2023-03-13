@@ -88,7 +88,7 @@ export default class GameMap {
         for (const mapItem of this.items) {
             if (mapItem.id === item.id) {
                 const position = mapItem.getComponent("position");
-                if (position && groundPosition.isSamePosition(position)) {
+                if (position && groundPosition.isEqual(position)) {
                     if (mapItem.maxStackSize === -1) {
                         mapItem.setAmount(mapItem.amount + item.amount);
                         itemPosition.teardown();
@@ -113,7 +113,7 @@ export default class GameMap {
         if (amountToAdd > 0) {
             item.setAmount(amountToAdd);
 
-            itemPosition.moveTo(groundPosition.x, groundPosition.y);
+            itemPosition.moveTo(groundPosition.x.get(), groundPosition.y.get());
             item.parent = null;
             this.items.push(item);
             itemPosition.setVisible();
@@ -300,7 +300,7 @@ export default class GameMap {
         for (const actor of this.actors) {
             if (actor.isAlive()) {
                 const position = actor.getComponent("position");
-                if (position && x === position.x.get() && y === position.y.get()) {
+                if (position && position.isAt(x, y)) {
                     aliveActor = actor;
                     break;
                 }
@@ -314,7 +314,7 @@ export default class GameMap {
         let blockingActor = null;
         for (const actor of this.actors) {
             const position = actor.getComponent("position");
-            if (position && x === position.x.get() && y === position.y.get()) {
+            if (position && position.isAt(x, y)) {
                 if (actor.getComponent("blocksMovement")?.blocksMovement.get()) {
                     blockingActor = actor;
                     break;
@@ -329,7 +329,7 @@ export default class GameMap {
         let cleanableActor = null;
         for (const actor of this.actors) {
             const position = actor.getComponent("position");
-            if (position && x === position.x.get() && y === position.y.get()) {
+            if (position && position.isAt(x, y)) {
                 const component = actor.getComponent("cleanable");
                 if (component) {
                     cleanableActor = actor;

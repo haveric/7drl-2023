@@ -93,7 +93,7 @@ export default class BaseFov {
         for (const actor of gameMap.actors) {
             const position = actor.getComponent("position");
             if (position) {
-                if (position.x.get() === x && position.y.get() === y) {
+                if (position.isAt(x, y)) {
                     this.addVisibleActor(actor);
                 }
             }
@@ -102,7 +102,7 @@ export default class BaseFov {
         for (const item of gameMap.items) {
             const position = item.getComponent("position");
             if (position) {
-                if (position.x.get() === x && position.y.get() === y) {
+                if (position.isAt(x, y)) {
                     this.addVisibleItem(item);
                 }
             }

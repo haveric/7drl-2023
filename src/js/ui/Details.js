@@ -51,7 +51,7 @@ class Details extends _UIElement {
         //     }
         //
         //     const position = actor.getComponent("position");
-        //     if (position && x === position.x && y === position.y) {
+        //     if (position && position.isAt(x, y)) {
         //         text += "<span class='details__line'><span style='color:" + position.color + "'>" + position.letter + "</span>: " + actor.name;
         //
         //         // const fighter = actor.getComponent("fighter");
@@ -66,7 +66,7 @@ class Details extends _UIElement {
         // const itemLines = [];
         // for (const item of engine.gameMap.items) {
         //     const position = item.getComponent("position");
-        //     if (position && x === position.x && y === position.y) {
+        //     if (position && position.isAt(x, y)) {
         //         itemLines.push("<span class='details__line'><span style='color:" + position.color + "'>" + position.letter + "</span>: " + item.name + "</span>");
         //     }
         // }

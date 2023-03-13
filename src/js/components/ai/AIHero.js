@@ -93,7 +93,7 @@ export default class AIHero extends _AI {
                         }
                     }
 
-                    if (this.chaseLocation !== null && this.chaseLocation.x === entityPosition.x.get() && this.chaseLocation.y === entityPosition.y.get()) {
+                    if (this.chaseLocation !== null && entityPosition.isAt(this.chaseLocation.x, this.chaseLocation.y)) {
                         this.chaseLocation = null;
                     }
 

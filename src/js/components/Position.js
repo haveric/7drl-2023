@@ -25,4 +25,12 @@ export default class Position extends _Component {
 
         return Math.max(dx, dy);
     }
+
+    isAt(x, y) {
+        return this.x === x && this.y === y;
+    }
+
+    isEqual(position) {
+        return this.x.get() === position.x.get() && this.y.get() === position.y.get();
+    }
 }

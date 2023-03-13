@@ -70,7 +70,7 @@ export default class AIMeleeChase extends AI {
                     return new MeleeAction(entity, closestEnemyPosition.x.get() - entityPosition.x.get(), closestEnemyPosition.y.get() - entityPosition.y.get()).perform(gameMap);
                 }
             } else {
-                if (this.chaseLocation !== null && this.chaseLocation.x === entityPosition.x.get() && this.chaseLocation.y === entityPosition.y.get()) {
+                if (this.chaseLocation !== null && entityPosition.isAt(this.chaseLocation.x, this.chaseLocation.y)) {
                     this.chaseLocation = null;
                 }
 
