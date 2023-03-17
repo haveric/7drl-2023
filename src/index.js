@@ -1,16 +1,25 @@
 import "./styles/style.css";
-import engine from "./js/Engine";
-import DefaultPlayerEventHandler from "./js/event/DefaultPlayerEventHandler";
-import messageManager from "./js/message/MessageManager";
-import entityLoader from "./js/entity/EntityLoader";
-import sceneState from "./js/SceneState";
-import viewInfo from "./js/ui/ViewInfo";
-import Tutorial from "./js/map/tile/Tutorial";
-import BasicDungeon from "./js/map/tile/BasicDungeon";
-import Shop from "./js/map/tile/Shop";
+import engine from "./js/game/Engine";
+import DefaultPlayerEventHandler from "./js/game/event/DefaultPlayerEventHandler";
+import messageManager from "./js/game/message/MessageManager";
+import entityLoader from "./js/engine/entity/EntityLoader";
+import sceneState from "./js/engine/SceneState";
+import viewInfo from "./js/game/ui/ViewInfo";
+import Tutorial from "./js/game/map/tiled/Tutorial";
+import BasicDungeon from "./js/game/map/tiled/BasicDungeon";
+import Shop from "./js/game/map/tiled/Shop";
+import heroInfo from "./js/game/ui/HeroInfo";
+import selectList from "./js/game/ui/SelectList";
+import tradeList from "./js/game/ui/TradeList";
+import playerInfo from "./js/game/ui/PlayerInfo";
+import messageConsole from "./js/game/ui/MessageConsole";
+import details from "./js/game/ui/Details";
+import spriteManager from "./js/engine/sprite/SpriteManager";
+import componentLoader from "./js/engine/component/ComponentLoader";
 
 (function () {
     function init() {
+        setupGameHtml();
         engine.clearMaps();
         engine.initTextures();
         sceneState.resizeCanvas();
@@ -65,14 +74,33 @@ import Shop from "./js/map/tile/Shop";
         window.requestAnimationFrame(update);
     }
 
+    function setupGameHtml() {
+        heroInfo.open();
+        heroInfo.appendTo(sceneState.gameDom);
+
+        selectList.appendTo(sceneState.gameDom);
+        tradeList.appendTo(sceneState.gameDom);
+
+        playerInfo.open();
+        viewInfo.open();
+        messageConsole.open();
+        details.open();
+
+        playerInfo.appendTo(details.dom);
+        viewInfo.appendTo(details.dom);
+        messageConsole.appendTo(details.dom);
+        details.appendTo(sceneState.gameDom);
+    }
+
     function update() {
         engine.handleEvents();
 
-        if (engine.spriteManager.preloadSprites()) {
-            if (engine.needsRenderUpdate) {
+        if (spriteManager.preloadSprites()) {
+            if (engine.needsRenderUpdate || sceneState.needsRenderUpdate) {
                 render();
 
                 engine.needsRenderUpdate = false;
+                sceneState.needsRenderUpdate = false;
             }
         }
 
@@ -84,9 +112,44 @@ import Shop from "./js/map/tile/Shop";
         engine.draw();
     }
 
+    let componentsLoaded = false;
+    function preloadComponents() {
+        const components = require.context("/src/js/game/components", true, /\.js$/, "eager");
+        let numToLoad = components.keys().length;
+        let numLoaded = 0;
+        components.keys().forEach(filePath => {
+            if (filePath.indexOf("_") !== -1) {
+                numToLoad --;
+
+                if (numLoaded === numToLoad) {
+                    componentsLoaded = true;
+                }
+                return;
+            }
+            components(filePath).then(module => {
+                const constructor = module.default;
+
+                // Skip frozen objects (such as enums)
+                if (constructor.constructor.isFrozen) {
+                    numLoaded ++;
+                    return;
+                }
+
+                componentLoader.load(new constructor());
+
+                numLoaded ++;
+                if (numLoaded === numToLoad) {
+                    componentsLoaded = true;
+                }
+            });
+        });
+    }
+
+    componentLoader.preloadComponents();
+    preloadComponents();
 
     const preloadEntities = window.setInterval(() => {
-        if (entityLoader.isLoaded()) {
+        if (componentsLoaded && componentLoader.componentsLoaded && sceneState.renderer.componentsLoaded && entityLoader.isLoaded()) {
             clearInterval(preloadEntities);
             init();
         }
