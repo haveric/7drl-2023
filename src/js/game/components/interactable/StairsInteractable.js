@@ -30,9 +30,9 @@ export default class StairsInteractable extends _Interactable {
         this.generator.set(generator);
     }
 
-    interact(entityInteracted) {
+    interact(entityInteracted, gameMap) {
         if (engine.isPlayer(entityInteracted)) {
-            const playerLevel = engine.playerMap.level;
+            const playerLevel = gameMap.level;
             const nextLevel = engine.nextMap.level;
             const futureLevel = engine.futureMap.level;
 
@@ -49,15 +49,16 @@ export default class StairsInteractable extends _Interactable {
                 mapToUpdate.explored = true;
                 engine.needsRenderUpdate = true;
                 mapToUpdate.addActor(engine.player);
-                engine.playerMap.removeActor(engine.player);
+                gameMap.removeActor(engine.player);
                 engine.playerMap = mapToUpdate;
                 const position = engine.player.getComponent("position");
                 position.moveTo(5, 0);
 
                 if (createNextMap) {
                     engine.setNextMap(engine.futureMap);
-                    engine.setFutureMap(new BasicDungeon(11, 11, {level: futureLevel + 1}));
-                    engine.futureMap.create();
+                    const futureMap = new BasicDungeon(11, 11, {level: futureLevel + 1});
+                    engine.setFutureMap(futureMap);
+                    futureMap.create();
                 }
                 return new WaitAction();
             } else {
@@ -70,12 +71,13 @@ export default class StairsInteractable extends _Interactable {
                     } else {
                         if (createNextMap) {
                             engine.setNextMap(engine.futureMap);
-                            engine.setFutureMap(new BasicDungeon(11, 11, {level: futureLevel + 1}));
-                            engine.futureMap.create();
+                            const futureMap = new BasicDungeon(11, 11, {level: futureLevel + 1});
+                            engine.setFutureMap(futureMap);
+                            futureMap.create();
                         }
 
                         mapToUpdate.addActor(engine.player);
-                        engine.playerMap.removeActor(engine.player);
+                        gameMap.removeActor(engine.player);
                         engine.playerMap = mapToUpdate;
                         const position = engine.player.getComponent("position");
                         position.moveTo(5, 0);
@@ -87,25 +89,26 @@ export default class StairsInteractable extends _Interactable {
                 engine.eventHandler.render((entityPosition.x.get() * 64 * sceneState.scale) + 100, entityPosition.y.get() * 64 * sceneState.scale);
             }
         } else {
-            const nextLevel = engine.heroMap.level + 1;
+            const nextLevel = gameMap.level + 1;
             const nextMapName = (this.generator.get() || this.map.get()) + "-" + nextLevel.toString();
             const nextMap = engine.getMap(nextMapName);
             if (!nextMap || nextLevel > engine.playerMap.level) {
                 messageManager.text("The hero has gotten too far ahead.").build();
                 // TODO: Game Over
             } else {
-                engine.heroMap.removeActor(entityInteracted);
+                gameMap.removeActor(entityInteracted);
                 engine.heroMap = nextMap;
-                engine.heroMap.explored = true;
+                nextMap.explored = true;
                 engine.needsRenderUpdate = true;
-                engine.heroMap.addActor(entityInteracted);
+                nextMap.addActor(entityInteracted);
                 const entityPosition = entityInteracted.getComponent("position");
                 entityPosition.moveTo(5, 0);
 
-                if (engine.heroMap === engine.nextMap) {
+                if (nextMap === engine.nextMap) {
                     engine.nextMap = engine.futureMap;
-                    engine.setFutureMap(new BasicDungeon(11, 11, {level: engine.futureMap.level + 1}));
-                    engine.futureMap.create();
+                    const futureMap = new BasicDungeon(11, 11, {level: engine.futureMap.level + 1});
+                    engine.setFutureMap(futureMap);
+                    futureMap.create();
                 }
             }
         }

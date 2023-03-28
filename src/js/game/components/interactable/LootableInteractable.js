@@ -19,7 +19,7 @@ export default class LootableInteractable extends _Interactable {
         this.items = this.addArg(new ArgEntityLoader("items"));
     }
 
-    interact(entityInteracted) {
+    interact(entityInteracted/*, gameMap*/) {
         if (engine.isPlayer(entityInteracted)) {
             engine.eventHandler = new LootableEventHandler(function() {
                 return new WaitAction();

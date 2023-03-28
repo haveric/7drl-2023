@@ -20,7 +20,7 @@ export default class InteractAtAction extends _ActionWithDirection {
         if (tile) {
             const interactable = tile.getComponent("interactable");
             if (interactable) {
-                interactable.interact(this.entity);
+                interactable.interact(this.entity, gameMap);
                 return new NoAction(this.entity);
             }
         }

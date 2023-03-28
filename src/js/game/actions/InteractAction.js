@@ -17,7 +17,7 @@ export default class InteractAction extends _Action {
         if (tile) {
             const interactable = tile.getComponent("interactable");
             if (interactable) {
-                interactable.interact(this.entity);
+                interactable.interact(this.entity, gameMap);
                 return new NoAction(this.entity);
             }
         }

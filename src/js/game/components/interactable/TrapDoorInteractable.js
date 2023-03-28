@@ -25,7 +25,7 @@ export default class TrapDoorInteractable extends _Interactable {
         this.generator.set(generator);
     }
 
-    interact(/*entityInteracted*/) {
+    interact(entityInteracted, gameMap) {
         if (this.map.get()) {
             // const entity = this.parentEntity;
             // const position = entity.getComponent("position");
@@ -40,8 +40,8 @@ export default class TrapDoorInteractable extends _Interactable {
             // }
         } else if (this.generator.get()) {
             const args = {};
-            if (engine.playerMap.level) {
-                args.level = engine.playerMap.level;
+            if (gameMap.level) {
+                args.level = gameMap.level;
             }
             const newMap = engine.mapLoader.loadMap(this.generator.get(), args);
             newMap.create();

@@ -9,7 +9,7 @@ export default class _Interactable extends _Component {
         return super.save();
     }
 
-    interact(entityInteracted) { // eslint-disable-line no-unused-vars
+    interact(entityInteracted, gameMap) { // eslint-disable-line no-unused-vars
 
     }
 }

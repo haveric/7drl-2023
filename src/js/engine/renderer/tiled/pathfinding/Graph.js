@@ -6,7 +6,7 @@ export default class Graph {
      * A graph memory structure
      * @param {Array} gridIn 2D array of input weights
      * @param {Object} [options]
-     * @param {bool} [options.diagonal] Specifies whether diagonal moves are allowed
+     * @param {boolean} [options.diagonal] Specifies whether diagonal moves are allowed
      */
     constructor(gridIn, options) {
         options = options || {};
