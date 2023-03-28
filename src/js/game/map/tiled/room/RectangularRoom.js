@@ -1,4 +1,4 @@
-import Room from "./_Room";
+import Room from "../../../../engine/renderer/tiled/room/_Room";
 import MathUtil from "../../../../engine/util/MathUtil";
 import entityLoader from "../../../../engine/entity/EntityLoader";
 import chanceLoader from "../../mapGeneration/ChanceLoader";
