@@ -22,7 +22,7 @@ class EntityLoader {
     }
 
     load(entity) {
-        this.types.set(entity.type, entity);
+        this.types.set(entity.type.get(), entity);
     }
 
     create(json, components = {}) {

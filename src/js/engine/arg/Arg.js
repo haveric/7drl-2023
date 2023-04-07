@@ -1,5 +1,5 @@
 export default class Arg {
-    #parentComponent;
+    #parentComponentOrEntity;
     _name;
     _defaultValue;
     _value;
@@ -9,17 +9,21 @@ export default class Arg {
         this._defaultValue = defaultValue;
     }
 
-    setParentComponent(component) {
-        this.#parentComponent = component;
+    setParentComponentOrEntity(component) {
+        this.#parentComponentOrEntity = component;
     }
 
-    getParentComponent() {
-        return this.#parentComponent;
+    getParentComponentOrEntity() {
+        return this.#parentComponentOrEntity;
     }
 
     save(saveJson, type) {
         if (this._value !== this._defaultValue) {
-            saveJson[type][this._name] = this._value;
+            if (type === undefined) {
+                saveJson[this._name] = this._value;
+            } else {
+                saveJson[type][this._name] = this._value;
+            }
         }
 
         return saveJson;
@@ -35,6 +39,6 @@ export default class Arg {
 
     set(value) {
         this._value = value;
-        this.#parentComponent.clearSaveCache();
+        this.#parentComponentOrEntity.clearSaveCache();
     }
 }

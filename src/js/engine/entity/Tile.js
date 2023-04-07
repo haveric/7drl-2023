@@ -10,10 +10,6 @@ export default class Tile extends _Entity {
         return new Tile(this.save());
     }
 
-    save() {
-        return super.save();
-    }
-
     isWall() {
         return this.getComponent("blocksMovement")?.blocksMovement.get();
     }

@@ -33,7 +33,7 @@ export default class ArgEntityLoader extends Arg {
                     } else {
                         newEntity = entityLoader.create(entity);
                     }
-                    newEntity.parentEntity = this.getParentComponent();
+                    newEntity.parentEntity = this.getParentComponentOrEntity();
                     array.push(newEntity);
                 }
             }

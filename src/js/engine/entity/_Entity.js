@@ -2,17 +2,20 @@ import Extend from "../util/Extend";
 import componentLoader from "../component/ComponentLoader";
 import sceneState from "../SceneState";
 import spriteManager from "../sprite/SpriteManager";
+import Arg from "../arg/Arg";
 
 export default class _Entity {
     constructor(json) {
         this.json = json;
-        this.type = json.type || "entity";
-        this.id = json.id;
-        this.name = json.name || "";
-        this.description = json.description || "";
-        this.sprite = json.sprite || "";
-        this.letter = json.letter || "?";
-        this.color = json.color || "#fff";
+        this.args = [];
+
+        this.type = this.addArg(new Arg("type", "entity"));
+        this.id = this.addArg(new Arg("id"));
+        this.name = this.addArg(new Arg("name"), "");
+        this.description = this.addArg(new Arg("description", ""));
+        this.sprite = this.addArg(new Arg("sprite", ""));
+        this.letter = this.addArg(new Arg("letter", "?"));
+        this.color = this.addArg(new Arg("color", "#fff"));
 
         this.componentArray = [];
         this.components = {};
@@ -42,7 +45,7 @@ export default class _Entity {
     draw(xTileOffset, yTileOffset) {
         const position = this.getComponent("position");
         if (position) {
-            spriteManager.getImage(this.sprite).drawImage(sceneState.ctx, (position.x.get() + xTileOffset) * 64, (position.y.get() + yTileOffset) * 64);
+            spriteManager.getImage(this.sprite.get()).drawImage(sceneState.ctx, (position.x.get() + xTileOffset) * 64, (position.y.get() + yTileOffset) * 64);
         }
     }
 
@@ -64,7 +67,6 @@ export default class _Entity {
         component.parentEntity = this;
         this.components[component.baseType] = component;
         this.componentArray.push(component);
-
     }
 
     getComponent(baseType) {
@@ -95,31 +97,29 @@ export default class _Entity {
             return this.cachedSave;
         }
 
-        const json = {
-            id: this.id,
-            type: this.type,
-            name: this.name,
-            description: this.description,
-            sprite: this.sprite,
-            letter: this.letter,
-            color: this.color
-        };
+        const saveJson = {};
+        for (const arg of this.args) {
+            arg.save(saveJson);
+        }
 
-        json.components = {};
+        saveJson.components = {};
         for (const component of this.componentArray) {
             const save = component.save();
             if (save !== null && save !== {}) {
-                Extend.deep(json.components, save);
+                Extend.deep(saveJson.components, save);
             }
         }
 
-        this.cachedSave = json;
-        return json;
+        this.cachedSave = saveJson;
+        return saveJson;
     }
 
-    loadArg(name, defaultValue) {
-        return this.json[name] || defaultValue;
+    addArg(arg) {
+        arg.setParentComponentOrEntity(this);
+        this.args.push(arg);
+
+        arg.load(this.json);
+
+        return arg;
     }
-
-
 }

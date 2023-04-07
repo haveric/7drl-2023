@@ -9,7 +9,6 @@ export default class Actor extends _Entity {
         this.fov = new AdamMilazzoFov();
     }
 
-
     clone() {
         return new Actor(this.save());
     }

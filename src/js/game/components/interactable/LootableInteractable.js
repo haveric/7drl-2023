@@ -23,11 +23,11 @@ export default class LootableInteractable extends _Interactable {
         if (engine.isPlayer(entityInteracted)) {
             engine.eventHandler = new LootableEventHandler(function() {
                 return new WaitAction();
-            }, engine.eventHandler, "Viewing " + this.parentEntity.name + "'s Contents", entityInteracted, this);
+            }, engine.eventHandler, "Viewing " + this.parentEntity.name.get() + "'s Contents", entityInteracted, this);
 
             const entityPosition = entityInteracted.getComponent("position");
             engine.eventHandler.render((entityPosition.x.get() * 64 * sceneState.scale) + 100, entityPosition.y.get() * 64 * sceneState.scale);
-        } else if (this.parentEntity.id === "hero") {
+        } else if (this.parentEntity.id.get() === "hero") {
             //
         }
     }

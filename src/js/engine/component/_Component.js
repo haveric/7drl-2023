@@ -39,7 +39,7 @@ export default class _Component {
     }
 
     addArg(arg) {
-        arg.setParentComponent(this);
+        arg.setParentComponentOrEntity(this);
         this.args.push(arg);
 
         if (this.hasComponent()) {

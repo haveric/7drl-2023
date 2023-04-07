@@ -23,7 +23,7 @@ export default class HealingConsumable extends _Consumable {
             if (amountHealed > 0) {
                 this.consume();
                 if (this.isPlayer()) {
-                    messageManager.text("You consume the " + this.parentEntity.name + ", and recover " + amountHealed + " HP!").build();
+                    messageManager.text("You consume the " + this.parentEntity.name.get() + ", and recover " + amountHealed + " HP!").build();
                 }
                 return this;
             } else {

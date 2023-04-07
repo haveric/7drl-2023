@@ -50,12 +50,12 @@ export default class Fighter extends _Component {
         const entity = this.parentEntity;
         if (engine.isPlayer(this.parentEntity)) {
             messageManager.text("You died!", "#f00").build();
-        } else if (this.parentEntity.id === "hero") {
-            messageManager.text(entity.name + " dies!", "#ffa030").build();
+        } else if (this.parentEntity.id.get() === "hero") {
+            messageManager.text(entity.name.get() + " dies!", "#ffa030").build();
             messageManager.text("You managed to keep the hero alive for " + engine.heroMap.level + " levels!", "#ffa030").build();
             // TODO: Game Over
         } else {
-            messageManager.text(entity.name + " dies!", "#ffa030").build();
+            messageManager.text(entity.name.get() + " dies!", "#ffa030").build();
         }
 
         entity.callEvent("onEntityDeath");
@@ -74,11 +74,10 @@ export default class Fighter extends _Component {
             entity.setComponent(new AIDead(aiArgs));
         }
 
-        entity.sprite = "rltiles_corpse";
-        entity.name = "Corpse of " + this.name;
+        entity.sprite.set("rltiles_corpse");
+        entity.name.set("Corpse of " + this.name);
 
         this.clearSaveCache();
-        entity.clearSaveCache();
     }
 
     getDamage() {
@@ -172,7 +171,7 @@ export default class Fighter extends _Component {
             playerInfo.updateHealth(this.hp.get(), this.maxHp);
             playerInfo.updatePower(this.getDamageDisplay());
             playerInfo.updateDefense(this.defense);
-        } else if (this.parentEntity.id === "hero") {
+        } else if (this.parentEntity.id.get() === "hero") {
             heroInfo.updateHealth(this.hp.get(), this.maxHp);
             heroInfo.updatePower(this.getDamageDisplay());
             heroInfo.updateDefense(this.defense);

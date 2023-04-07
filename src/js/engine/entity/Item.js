@@ -1,35 +1,20 @@
 import _Entity from "./_Entity";
+import Arg from "../arg/Arg";
 
 export default class Item extends _Entity {
     constructor(json = {}) {
         json.type = "item";
         super(json);
 
-        this.amount = this.loadArg("amount", 1);
-        this.maxStackSize = this.loadArg("maxStackSize", 1);
-    }
-
-    save() {
-        const saveJson = super.save();
-
-        if (this.amount !== 1) {
-            saveJson.amount = this.amount;
-        }
-
-        if (this.maxStackSize !== 1) {
-            saveJson.maxStackSize = this.maxStackSize;
-        }
-
-        return saveJson;
+        this.amount = this.addArg(new Arg("amount", 1));
+        this.maxStackSize = this.addArg(new Arg("maxStackSize", 1));
     }
 
     clone() {
         return new Item(this.save());
     }
 
-
     setAmount(amount) {
-        this.amount = amount;
-        this.clearSaveCache();
+        this.amount.set(amount);
     }
 }

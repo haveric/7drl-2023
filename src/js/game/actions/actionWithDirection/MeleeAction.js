@@ -28,7 +28,7 @@ export default class MeleeAction extends ActionWithDirection {
                     name = "You";
                     plural = "";
                 } else {
-                    name = this.entity.name;
+                    name = this.entity.name.get();
                     plural = "s";
                 }
 
