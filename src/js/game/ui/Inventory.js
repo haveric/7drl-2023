@@ -158,16 +158,16 @@ class Inventory extends _UIElement {
                     rotation = "transform: rotate(" + (itemPosition.zRot * 180) + "deg);";
                 }
                 slot.classList.add("has-item");
-                let html = "<div class='item' style='color:" + itemPosition.color + ";" + rotation + "'><div class='item__icon'>" + itemPosition.letter + "</div>";
+                let html = "<div class='item' style='color:" + item.color.get() + ";" + rotation + "'><div class='item__icon'>" + item.letter.get() + "</div>";
 
                 if (item.amount > 1) {
-                    html += "<span class='item__amount'>" + item.amount + "</span>";
+                    html += "<span class='item__amount'>" + item.amount.get() + "</span>";
                 }
 
                 html += "<div class='item__details'>"
-                    + "<span class='item__details-line item__name'>" + item.name + "</span>";
+                    + "<span class='item__details-line item__name'>" + item.name.get() + "</span>";
                 if (item.description) {
-                    html += "<span class='item__details-line item__description'>" + item.description + "</span>";
+                    html += "<span class='item__details-line item__description'>" + item.description.get() + "</span>";
                 }
 
                 html += "<span class='item__details-line'><hr/></span>";
