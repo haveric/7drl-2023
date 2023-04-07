@@ -1,11 +1,11 @@
 import _Consumable from "./_Consumable";
 import UnableToPerformAction from "../../../engine/actions/UnableToPerformAction";
 import messageManager from "../../message/MessageManager";
-import Arg from "../../../engine/component/_arg/Arg";
+import Arg from "../../../engine/arg/Arg";
 
 export default class HealingConsumable extends _Consumable {
-    constructor(args = {}) {
-        super(args, "healingConsumable");
+    constructor(json = {}) {
+        super(json, "healingConsumable");
 
         this.amount = this.addArg(new Arg("amount", 0));
     }

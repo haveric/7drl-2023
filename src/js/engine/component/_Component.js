@@ -1,10 +1,10 @@
 export default class _Component {
-    constructor(rawArgs = {}, baseType, type) {
-        this.rawArgs = rawArgs;
+    constructor(json = {}, baseType, type) {
+        this.json = json;
         this.args = [];
         this.baseType = baseType || "component";
         this.type = type || this.baseType;
-        this.parentEntity = rawArgs.parentEntity;
+        this.parentEntity = json.parentEntity;
 
         this.cachedSave = null;
     }
@@ -31,11 +31,11 @@ export default class _Component {
     }
 
     hasComponent() {
-        return this.rawArgs.components && this.rawArgs.components[this.type] !== undefined;
+        return this.json.components && this.json.components[this.type] !== undefined;
     }
 
     getComponent() {
-        return this.rawArgs.components[this.type];
+        return this.json.components[this.type];
     }
 
     addArg(arg) {

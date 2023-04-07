@@ -1,5 +1,5 @@
 import Arg from "./Arg";
-import MathUtil from "../../util/MathUtil";
+import MathUtil from "../util/MathUtil";
 
 export default class ArgRandomBetween extends Arg {
     constructor(name, defaultValue) {

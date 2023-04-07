@@ -1,9 +1,9 @@
 import _Component from "../_Component";
-import ArgSingularBool from "../_arg/ArgSingularBool";
+import ArgSingularBool from "../../arg/ArgSingularBool";
 
 export default class BlocksMovement extends _Component {
-    constructor(args = {}) {
-        super(args, "blocksMovement");
+    constructor(json = {}) {
+        super(json, "blocksMovement");
 
         // Whether the entity prevents movement
         this.blocksMovement = this.addArg(new ArgSingularBool("blocksMovement", false));

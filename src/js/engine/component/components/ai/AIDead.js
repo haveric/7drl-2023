@@ -1,9 +1,9 @@
 import _AI from "./_AI";
-import Arg from "../../_arg/Arg";
+import Arg from "../../../arg/Arg";
 
 export default class AIDead extends _AI {
-    constructor(args = {}) {
-        super(args, "aiDead");
+    constructor(json = {}) {
+        super(json, "aiDead");
 
         this.previousAI = this.addArg(new Arg("previousAI", ""));
     }

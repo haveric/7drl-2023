@@ -3,14 +3,14 @@ import EquipmentType from "./EquipmentType";
 import engine from "../../Engine";
 import messageConsole from "../../ui/MessageConsole";
 import inventory from "../../ui/Inventory";
-import Arg from "../../../engine/component/_arg/Arg";
-import ArgEntityLoader from "../../../engine/component/_arg/ArgEntityLoader";
-import ArgRandomBetween from "../../../engine/component/_arg/ArgRandomBetween";
-import ArgMinMaxRandomBetween from "../../../engine/component/_arg/ArgMinMaxRandomBetween";
+import Arg from "../../../engine/arg/Arg";
+import ArgEntityLoader from "../../../engine/arg/ArgEntityLoader";
+import ArgRandomBetween from "../../../engine/arg/ArgRandomBetween";
+import ArgMinMaxRandomBetween from "../../../engine/arg/ArgMinMaxRandomBetween";
 
 export default class Equippable extends _Component {
-    constructor(args = {}) {
-        super(args, "equippable");
+    constructor(json = {}) {
+        super(json, "equippable");
 
         this.slot = this.addArg(new Arg("slot", EquipmentType.MAIN_HAND));
         this.damage = this.addArg(new ArgMinMaxRandomBetween("damage", 0));

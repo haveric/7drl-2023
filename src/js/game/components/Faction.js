@@ -1,9 +1,9 @@
 import _Component from "../../engine/component/_Component";
-import ArgSimpleArray from "../../engine/component/_arg/ArgSimpleArray";
+import ArgSimpleArray from "../../engine/arg/ArgSimpleArray";
 
 export default class Faction extends _Component {
-    constructor(args = {}) {
-        super(args, "faction");
+    constructor(json = {}) {
+        super(json, "faction");
 
         this.factions = this.addArg(new ArgSimpleArray("factions"));
         this.enemies = this.addArg(new ArgSimpleArray("enemies"));

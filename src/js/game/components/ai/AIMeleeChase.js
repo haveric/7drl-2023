@@ -7,11 +7,11 @@ import Graph from "../../../engine/renderer/tiled/pathfinding/Graph";
 import WaitAction from "../../../engine/actions/WaitAction";
 import BumpAction from "../../actions/actionWithDirection/BumpAction";
 import MathUtil from "../../../engine/util/MathUtil";
-import Arg from "../../../engine/component/_arg/Arg";
+import Arg from "../../../engine/arg/Arg";
 
 export default class AIMeleeChase extends AI {
-    constructor(args = {}) {
-        super(args, "aiMeleeChase");
+    constructor(json = {}) {
+        super(json, "aiMeleeChase");
 
         this.fov = new AdamMilazzoFov();
         this.chaseLocation = null;

@@ -7,8 +7,8 @@ import messageConsole from "../../ui/MessageConsole";
 import inventory from "../../ui/Inventory";
 
 export default class Equipment extends _Component {
-    constructor(args = {}) {
-        super(args, "equipment");
+    constructor(json = {}) {
+        super(json, "equipment");
 
         this.items = [];
         this.items.push(new EquipmentSlot(EquipmentType.SHOULDER));
@@ -25,7 +25,7 @@ export default class Equipment extends _Component {
         this.items.push(new EquipmentSlot(EquipmentType.GLOVES));
 
         if (this.hasComponent()) {
-            const equipment = args.components.equipment;
+            const equipment = json.components.equipment;
             if (equipment.items !== undefined) {
                 for (let i = 0; i < equipment.items.length; i++) {
                     const item = equipment.items[i];

@@ -1,9 +1,9 @@
 import _Entity from "./_Entity";
 
 export default class Tile extends _Entity {
-    constructor(args = {}) {
-        args.type = "tile";
-        super(args);
+    constructor(json = {}) {
+        json.type = "tile";
+        super(json);
     }
 
     clone() {

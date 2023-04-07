@@ -1,9 +1,9 @@
 import _Component from "../../../component/_Component";
-import Arg from "../../../component/_arg/Arg";
+import Arg from "../../../arg/Arg";
 
 export default class Position extends _Component {
-    constructor(args = {}) {
-        super(args, "position");
+    constructor(json = {}) {
+        super(json, "position");
 
         this.x = this.addArg(new Arg("x", 0));
         this.y = this.addArg(new Arg("y", 0));

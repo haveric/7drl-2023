@@ -2,9 +2,9 @@ import AdamMilazzoFov from "../../engine/renderer/tiled/fov/AdamMilazzoFov";
 import _Entity from "../../engine/entity/_Entity";
 
 export default class Actor extends _Entity {
-    constructor(args = {}) {
-        args.type = "actor";
-        super(args);
+    constructor(json = {}) {
+        json.type = "actor";
+        super(json);
 
         this.fov = new AdamMilazzoFov();
     }

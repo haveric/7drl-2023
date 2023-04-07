@@ -1,9 +1,9 @@
 import _Entity from "./_Entity";
 
 export default class Item extends _Entity {
-    constructor(args = {}) {
-        args.type = "item";
-        super(args);
+    constructor(json = {}) {
+        json.type = "item";
+        super(json);
 
         this.amount = this.loadArg("amount", 1);
         this.maxStackSize = this.loadArg("maxStackSize", 1);

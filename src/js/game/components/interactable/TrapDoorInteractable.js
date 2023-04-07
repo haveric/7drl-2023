@@ -1,10 +1,10 @@
 import _Interactable from "../../../engine/component/components/interactable/_Interactable";
 import engine from "../../Engine";
-import Arg from "../../../engine/component/_arg/Arg";
+import Arg from "../../../engine/arg/Arg";
 
 export default class TrapDoorInteractable extends _Interactable {
-    constructor(args = {}) {
-        super(args, "trapDoorInteractable");
+    constructor(json = {}) {
+        super(json, "trapDoorInteractable");
 
         this.map = this.addArg(new Arg("map", null));
         this.x = this.addArg(new Arg("x", null));

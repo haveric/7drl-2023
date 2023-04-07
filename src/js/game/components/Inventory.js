@@ -1,12 +1,12 @@
 import _Component from "../../engine/component/_Component";
 import engine from "../Engine";
 import inventory from "../ui/Inventory";
-import Arg from "../../engine/component/_arg/Arg";
-import ArgEntityLoader from "../../engine/component/_arg/ArgEntityLoader";
+import Arg from "../../engine/arg/Arg";
+import ArgEntityLoader from "../../engine/arg/ArgEntityLoader";
 
 export default class Inventory extends _Component {
-    constructor(args = {}) {
-        super(args, "inventory");
+    constructor(json = {}) {
+        super(json, "inventory");
 
         this.capacity = this.addArg(new Arg("capacity", 3));
         this.items = this.addArg(new ArgEntityLoader("items"));

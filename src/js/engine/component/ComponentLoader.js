@@ -41,10 +41,10 @@ class ComponentLoader {
         this.types.set(component.type, component);
     }
 
-    create(entity, type, args) {
+    create(entity, type, json) {
         const component = this.types.get(type);
         const constructor = component.constructor;
-        return new constructor(args);
+        return new constructor(json);
     }
 }
 

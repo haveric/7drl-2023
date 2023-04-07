@@ -1,5 +1,5 @@
 import Arg from "./Arg";
-import entityLoader from "../../entity/EntityLoader";
+import entityLoader from "../entity/EntityLoader";
 
 export default class ArgEntityLoader extends Arg {
     constructor(name, defaultValue) {

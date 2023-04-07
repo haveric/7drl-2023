@@ -25,7 +25,7 @@ class EntityLoader {
         this.types.set(entity.type, entity);
     }
 
-    create(json, args = {}) {
+    create(json, components = {}) {
         let parsedJson;
         if (typeof json === "object") {
             parsedJson = json;
@@ -38,19 +38,19 @@ class EntityLoader {
                 const template = JSON.parse(this.templates.get(parsedJson.extends));
 
                 delete parsedJson["extends"];
-                return this.create(Extend.deep(template, parsedJson), args);
+                return this.create(Extend.deep(template, parsedJson), components);
             } else {
                 console.error("Json template for id '" + parsedJson.extends + "' is missing. Cannot extend from it.");
             }
         }
 
         const entity = this.types.get(parsedJson.type);
-        return new entity.constructor(Extend.deep(parsedJson, args));
+        return new entity.constructor(Extend.deep(parsedJson, components));
     }
 
-    createFromTemplate(id, args = {}) {
+    createFromTemplate(id, components = {}) {
         if (this.templates.has(id)) {
-            return this.create(this.templates.get(id), args);
+            return this.create(this.templates.get(id), components);
         } else {
             console.error("Json template for id '" + id + "' is missing.");
             return null;

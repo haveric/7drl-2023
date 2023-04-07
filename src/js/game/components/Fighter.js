@@ -5,11 +5,11 @@ import playerInfo from "../ui/PlayerInfo";
 import MathUtil from "../../engine/util/MathUtil";
 import heroInfo from "../ui/HeroInfo";
 import engine from "../Engine";
-import Arg from "../../engine/component/_arg/Arg";
+import Arg from "../../engine/arg/Arg";
 
 export default class Fighter extends _Component {
-    constructor(args) {
-        super(args, "fighter");
+    constructor(json) {
+        super(json, "fighter");
 
         this.baseHp = this.addArg(new Arg("baseHp", 0));
         this.hp = this.addArg(new Arg("hp", null));

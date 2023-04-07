@@ -10,11 +10,11 @@ import AStar from "../../../engine/renderer/tiled/pathfinding/AStar";
 import BumpAction from "../../actions/actionWithDirection/BumpAction";
 import WaitAction from "../../../engine/actions/WaitAction";
 import InteractAction from "../../actions/InteractAction";
-import Arg from "../../../engine/component/_arg/Arg";
+import Arg from "../../../engine/arg/Arg";
 
 export default class AIHero extends _AI {
-    constructor(args = {}) {
-        super(args, "aiHero");
+    constructor(json = {}) {
+        super(json, "aiHero");
 
         this.fov = new AdamMilazzoFov();
         this.chaseLocation = null;

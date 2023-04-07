@@ -4,12 +4,12 @@ import StairsSelectEventHandler from "../../event/askUserEventHandler/selectList
 import WaitAction from "../../../engine/actions/WaitAction";
 import BasicDungeon from "../../map/tiled/BasicDungeon";
 import messageManager from "../../message/MessageManager";
-import Arg from "../../../engine/component/_arg/Arg";
+import Arg from "../../../engine/arg/Arg";
 import sceneState from "../../../engine/SceneState";
 
 export default class StairsInteractable extends _Interactable {
-    constructor(args = {}) {
-        super(args, "stairsInteractable");
+    constructor(json = {}) {
+        super(json, "stairsInteractable");
 
         this.map = this.addArg(new Arg("map", null));
         this.x = this.addArg(new Arg("x", null));

@@ -4,20 +4,20 @@ import sceneState from "../SceneState";
 import spriteManager from "../sprite/SpriteManager";
 
 export default class _Entity {
-    constructor(args) {
-        this.args = args;
-        this.type = args.type || "entity";
-        this.id = args.id;
-        this.name = args.name || "";
-        this.description = args.description || "";
-        this.sprite = args.sprite || "";
-        this.letter = args.letter || "?";
-        this.color = args.color || "#fff";
+    constructor(json) {
+        this.json = json;
+        this.type = json.type || "entity";
+        this.id = json.id;
+        this.name = json.name || "";
+        this.description = json.description || "";
+        this.sprite = json.sprite || "";
+        this.letter = json.letter || "?";
+        this.color = json.color || "#fff";
 
         this.componentArray = [];
         this.components = {};
-        if (args.components) {
-            this.loadComponents(args, args.components);
+        if (json.components) {
+            this.loadComponents(json, json.components);
             this.callEvent("onComponentsLoaded");
         }
 
@@ -46,7 +46,7 @@ export default class _Entity {
         }
     }
 
-    loadComponents(args, components) {
+    loadComponents(json, components) {
         const self = this;
         Object.keys(components).forEach(function(key) {
             const type = componentLoader.types.get(key);
@@ -54,7 +54,7 @@ export default class _Entity {
                 const baseType = type.baseType;
                 const existingComponent = self.getComponent(baseType);
                 if (!existingComponent) {
-                    self.setComponent(componentLoader.create(this, key, args), false);
+                    self.setComponent(componentLoader.create(this, key, json), false);
                 }
             }
         });
@@ -118,7 +118,7 @@ export default class _Entity {
     }
 
     loadArg(name, defaultValue) {
-        return this.args[name] || defaultValue;
+        return this.json[name] || defaultValue;
     }
 
 

@@ -3,13 +3,13 @@ import engine from "../../Engine";
 import LootableEventHandler from "../../event/askUserEventHandler/tradeListEventHandler/LootableEventHandler";
 import WaitAction from "../../../engine/actions/WaitAction";
 import inventory from "../../ui/Inventory";
-import Arg from "../../../engine/component/_arg/Arg";
-import ArgEntityLoader from "../../../engine/component/_arg/ArgEntityLoader";
+import Arg from "../../../engine/arg/Arg";
+import ArgEntityLoader from "../../../engine/arg/ArgEntityLoader";
 import sceneState from "../../../engine/SceneState";
 
 export default class LootableInteractable extends _Interactable {
-    constructor(args = {}) {
-        super(args, "lootableInteractable");
+    constructor(json = {}) {
+        super(json, "lootableInteractable");
 
         this.isLooted = this.addArg(new Arg("isLooted", true));
         this.isOpen = this.addArg(new Arg("isOpen", true));
