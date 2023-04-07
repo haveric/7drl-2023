@@ -41,4 +41,8 @@ export default class Arg {
         this._value = value;
         this.#parentComponentOrEntity.clearSaveCache();
     }
+
+    toString() {
+        return this.get();
+    }
 }
