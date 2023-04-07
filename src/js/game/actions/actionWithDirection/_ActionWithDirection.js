@@ -8,7 +8,10 @@ export default class ActionWithDirection extends _Action {
         this.dy = dy;
     }
 
-    perform(/*gameMap*/) {
+    /**
+     * @returns {_Action}
+     */
+    perform(gameMap) { // eslint-disable-line no-unused-vars
         console.error("Not Implemented");
     }
 }

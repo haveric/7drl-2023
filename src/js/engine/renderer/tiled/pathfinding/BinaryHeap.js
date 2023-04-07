@@ -13,7 +13,7 @@ export default class BinaryHeap {
     }
 
     pop() {
-        // Store the first element so we can return it later.
+        // Store the first element, so we can return it later.
         const result = this.content[0];
         // Get the element at the end of the array.
         const end = this.content.pop();

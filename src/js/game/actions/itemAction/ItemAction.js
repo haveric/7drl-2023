@@ -16,7 +16,10 @@ export default class ItemAction extends _Action {
         this.y = y;
     }
 
-    perform(/*gameMap*/) {
+    /**
+     * @returns {_Action}
+     */
+    perform(gameMap) { // eslint-disable-line no-unused-vars
         const consumable = this.item.getComponent("consumable");
         if (consumable) {
             return consumable.activate(this, this.x, this.y);
