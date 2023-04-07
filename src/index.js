@@ -112,44 +112,16 @@ import componentLoader from "./js/engine/component/ComponentLoader";
         engine.draw();
     }
 
-    let componentsLoaded = false;
-    function preloadComponents() {
-        const components = require.context("/src/js/game/components", true, /\.js$/, "eager");
-        let numToLoad = components.keys().length;
-        let numLoaded = 0;
-        components.keys().forEach(filePath => {
-            if (filePath.indexOf("_") !== -1) {
-                numToLoad --;
-
-                if (numLoaded === numToLoad) {
-                    componentsLoaded = true;
-                }
-                return;
-            }
-            components(filePath).then(module => {
-                const constructor = module.default;
-
-                // Skip frozen objects (such as enums)
-                if (constructor.constructor.isFrozen) {
-                    numLoaded ++;
-                    return;
-                }
-
-                componentLoader.load(new constructor());
-
-                numLoaded ++;
-                if (numLoaded === numToLoad) {
-                    componentsLoaded = true;
-                }
-            });
-        });
+    function preloadGameComponents() {
+        const gameComponents = require.context("/src/js/game/components", true, /\.js$/, "eager");
+        componentLoader.preloadComponents("game", gameComponents);
     }
 
     componentLoader.preloadComponents();
-    preloadComponents();
+    preloadGameComponents();
 
     const preloadEntities = window.setInterval(() => {
-        if (componentsLoaded && componentLoader.componentsLoaded && sceneState.renderer.componentsLoaded && entityLoader.isLoaded()) {
+        if (componentLoader.loaded["default"] && componentLoader.loaded["game"] && componentLoader.loaded["renderer"] && entityLoader.isLoaded()) {
             clearInterval(preloadEntities);
             init();
         }

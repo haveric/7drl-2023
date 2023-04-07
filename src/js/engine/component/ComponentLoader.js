@@ -2,11 +2,14 @@ class ComponentLoader {
     constructor() {
         this.types = new Map();
 
-        this.componentsLoaded = false;
+        this.loaded = [];
     }
 
-    preloadComponents() {
-        const components = require.context("./components", true, /\.js$/, "eager");
+    preloadComponents(name = "default", components) {
+        if (components === undefined) {
+            components = require.context("./components", true, /\.js$/, "eager");
+        }
+
         let numToLoad = components.keys().length;
         let numLoaded = 0;
         components.keys().forEach(filePath => {
@@ -14,7 +17,7 @@ class ComponentLoader {
                 numToLoad --;
 
                 if (numLoaded === numToLoad) {
-                    this.componentsLoaded = true;
+                    this.loaded[name] = true;
                 }
                 return;
             }
@@ -31,7 +34,7 @@ class ComponentLoader {
 
                 numLoaded ++;
                 if (numLoaded === numToLoad) {
-                    this.componentsLoaded = true;
+                    this.loaded[name] = true;
                 }
             });
         });
