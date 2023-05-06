@@ -1,6 +1,6 @@
 import _Component from "../../engine/component/_Component";
 import AIDead from "../../engine/component/components/ai/AIDead";
-import messageManager from "../message/MessageManager";
+import messageManager from "../../engine/message/MessageManager";
 import playerInfo from "../ui/PlayerInfo";
 import MathUtil from "../../engine/util/MathUtil";
 import heroInfo from "../ui/HeroInfo";

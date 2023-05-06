@@ -1,6 +1,6 @@
 import NoAction from "../engine/actions/NoAction";
 import UnableToPerformAction from "../engine/actions/UnableToPerformAction";
-import messageManager from "./message/MessageManager";
+import messageManager from "../engine/message/MessageManager";
 import viewInfo from "./ui/ViewInfo";
 import textureManager from "../engine/sprite/TextureManager";
 import spriteManager from "../engine/sprite/SpriteManager";

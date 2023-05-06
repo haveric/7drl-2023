@@ -1,6 +1,6 @@
 import _Consumable from "./_Consumable";
 import UnableToPerformAction from "../../../engine/actions/UnableToPerformAction";
-import messageManager from "../../message/MessageManager";
+import messageManager from "../../../engine/message/MessageManager";
 import Arg from "../../../engine/arg/Arg";
 
 export default class HealingConsumable extends _Consumable {

@@ -1,7 +1,7 @@
 import "./styles/style.css";
 import engine from "./js/game/Engine";
 import DefaultPlayerEventHandler from "./js/game/event/DefaultPlayerEventHandler";
-import messageManager from "./js/game/message/MessageManager";
+import messageManager from "./js/engine/message/MessageManager";
 import entityLoader from "./js/engine/entity/EntityLoader";
 import sceneState from "./js/engine/SceneState";
 import viewInfo from "./js/game/ui/ViewInfo";
@@ -12,7 +12,7 @@ import heroInfo from "./js/game/ui/HeroInfo";
 import selectList from "./js/game/ui/SelectList";
 import tradeList from "./js/game/ui/TradeList";
 import playerInfo from "./js/game/ui/PlayerInfo";
-import messageConsole from "./js/game/ui/MessageConsole";
+import messageConsole from "./js/engine/ui/MessageConsole";
 import details from "./js/game/ui/Details";
 import spriteManager from "./js/engine/sprite/SpriteManager";
 import componentLoader from "./js/engine/component/ComponentLoader";

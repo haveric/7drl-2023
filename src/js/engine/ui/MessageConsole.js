@@ -1,5 +1,5 @@
 import html from "../../../html/ui/MessageConsole.html";
-import _UIElement from "../../engine/ui/_UIElement";
+import _UIElement from "./_UIElement";
 
 class MessageConsole extends _UIElement {
     constructor() {

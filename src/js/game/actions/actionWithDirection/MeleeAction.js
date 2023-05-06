@@ -1,7 +1,7 @@
 import ActionWithDirection from "./_ActionWithDirection";
 import UnableToPerformAction from "../../../engine/actions/UnableToPerformAction";
 import engine from "../../Engine";
-import messageManager from "../../message/MessageManager";
+import messageManager from "../../../engine/message/MessageManager";
 
 export default class MeleeAction extends ActionWithDirection {
     constructor(entity, dx = 0, dy = 0) {

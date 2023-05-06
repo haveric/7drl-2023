@@ -3,7 +3,7 @@ import engine from "../../Engine";
 import StairsSelectEventHandler from "../../event/askUserEventHandler/selectListEventHandler/StairsSelectEventHandler";
 import WaitAction from "../../../engine/actions/WaitAction";
 import BasicDungeon from "../../map/tiled/BasicDungeon";
-import messageManager from "../../message/MessageManager";
+import messageManager from "../../../engine/message/MessageManager";
 import Arg from "../../../engine/arg/Arg";
 import sceneState from "../../../engine/SceneState";
 

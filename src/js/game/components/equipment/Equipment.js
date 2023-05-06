@@ -3,7 +3,7 @@ import EquipmentType from "./EquipmentType";
 import EquipmentSlot from "./EquipmentSlot";
 import entityLoader from "../../../engine/entity/EntityLoader";
 import engine from "../../Engine";
-import messageConsole from "../../ui/MessageConsole";
+import messageConsole from "../../../engine/ui/MessageConsole";
 import inventory from "../../ui/Inventory";
 
 export default class Equipment extends _Component {
