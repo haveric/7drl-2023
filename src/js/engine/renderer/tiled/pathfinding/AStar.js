@@ -43,7 +43,7 @@ export default class AStar {
         if (this.heuristicType === "manhattan") {
             start.h = this.heuristicManhattan(start, end);
         } else if (this.heuristicType === "diagonal") {
-            this.heuristicDiagonal(start, end);
+            start.h = this.heuristicDiagonal(start, end);
         }
         graph.markDirty(start);
 
