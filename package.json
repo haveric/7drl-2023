@@ -9,7 +9,8 @@
   "scripts": {
     "clean": "rm -rf node_modules",
     "start": "webpack serve --open --config webpack.dev.js",
-    "build": "webpack --config webpack.prod.js"
+    "build": "webpack --config webpack.prod.js",
+    "perf": "webpack serve --open --config webpack.perf.js"
   },
   "repository": {
     "type": "git",
@@ -30,6 +31,7 @@
     "eslint-webpack-plugin": "^4.0.0",
     "html-webpack-plugin": "^5.5.0",
     "style-loader": "^3.3.2",
+    "tinybench": "^2.5.0",
     "webpack": "^5.78.0",
     "webpack-cli": "^5.0.1",
     "webpack-dev-server": "^4.13.2",

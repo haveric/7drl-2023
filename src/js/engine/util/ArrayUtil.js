@@ -4,11 +4,6 @@ export default class ArrayUtil {
     }
 
     static create2dArray(numRows) {
-        const array = [];
-
-        for (let i = 0; i < numRows; i++) {
-            array[i] = [];
-        }
-        return array;
+        return Array(numRows).fill([]);
     }
 }
